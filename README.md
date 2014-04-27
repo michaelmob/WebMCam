@@ -4,17 +4,15 @@ WebMCam
 Capture video in real-time and save it as a WebM.
 
 
-Main Form
+Main Form<br/>
 ![ScreenShot](https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/main.png)
 
-Edit Frames Form
+Edit Frames Form<br/>
 ![ScreenShot](https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/frames.png)
 
-Settings Form
+Settings Form<br/>
 ![ScreenShot](https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/settings.png)
 
-WebM Examples:
-
-Settings Form
-https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/Example.webm
+WebM Examples:<br/>
+https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/Example.webm<br/>
 https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/WebM.webm
