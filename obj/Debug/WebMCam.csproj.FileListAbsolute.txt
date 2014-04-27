@@ -1,0 +1,9 @@
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\bin\Debug\WebMCam.exe.config
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\bin\Debug\WebMCam.exe
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\bin\Debug\WebMCam.pdb
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.csprojResolveAssemblyReference.cache
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.exe
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.pdb
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.csproj.GenerateResource.Cache
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.Form_Main.resources
+C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.Form_Settings.resources
