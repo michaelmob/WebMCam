@@ -4,6 +4,9 @@ WebMCam
 Capture frames in real-time and save them as WebM.
 
 
+Release / Downloads:
+https://github.com/TheTarkus/WebMCam/blob/master/bin/Release
+
 Main Form<br/>
 ![ScreenShot](https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/main.png)
 
