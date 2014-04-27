@@ -14,5 +14,5 @@ Settings Form<br/>
 ![ScreenShot](https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/settings.png)
 
 WebM Examples:<br/>
-https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/Example.webm<br/>
-https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/WebM.webm
+https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/Example.webm (15 fps)<br/>
+https://raw.githubusercontent.com/TheTarkus/WebMCam/master/_screenshots/WebM.webm (30 fps)
