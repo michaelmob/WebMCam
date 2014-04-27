@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
@@ -126,8 +125,9 @@ namespace WebMCam
 					.Replace("%duration%", Convert.ToString(time_elapsed + 1))
 					.Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " " + save.FileName;
 				
+				Debug.WriteLine(ffmpeg.FileName + " " + ffmpeg.Arguments);
+				
 				var process = new Process {StartInfo = ffmpeg};
-				//Clipboard.SetText(ffmpeg.FileName + ffmpeg.Arguments);
 				process.Start();
 				process.WaitForExit();
 				

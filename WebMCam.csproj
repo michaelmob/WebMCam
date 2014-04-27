@@ -10,7 +10,7 @@
     <AssemblyName>WebMCam</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <ApplicationIcon>..\..\..\..\Desktop\FireRune.ico</ApplicationIcon>
+    <ApplicationIcon>FireRune.ico</ApplicationIcon>
     <NoWin32Manifest>False</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="FireRune.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form_Frames.resx">
