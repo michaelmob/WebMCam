@@ -205,7 +205,7 @@ namespace WebMCam
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(289, 289);
+			this.ClientSize = new System.Drawing.Size(289, 283);
 			this.Controls.Add(this.btn_open_temp);
 			this.Controls.Add(this.chk_delete_frames);
 			this.Controls.Add(this.btn_reset);
