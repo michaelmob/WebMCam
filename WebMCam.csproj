@@ -12,6 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <ApplicationIcon>FireRune.ico</ApplicationIcon>
     <NoWin32Manifest>False</NoWin32Manifest>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
