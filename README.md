@@ -1,7 +1,7 @@
 WebMCam
 =======
 
-Capture video in real-time and save it as a WebM.
+Capture frames in real-time and save them as WebM.
 
 
 Main Form<br/>
