@@ -25,7 +25,7 @@ namespace WebMCam
 			
 			Ini_File.Exists("Loc", "ffmpeg", String.Format("\"{0}\\ffmpeg.exe\"", Environment.CurrentDirectory));
 			Ini_File.Exists("Loc", "temp", Environment.CurrentDirectory + "\\temp\\");
-			Ini_File.Exists("Cmd", "args", "-f image2 -i \"%temp%%d.png\" -r %fps% -t %duration% -vb 20M");
+			Ini_File.Exists("Cmd", "args", "-f image2 -i \"%temp%f_%d.png\" -r %fps% -t %duration% -vb 20M");
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
 			Ini_File.Exists("Fmt", "delete", "True");			
@@ -112,9 +112,7 @@ namespace WebMCam
 			{
 				Visible = false;
 				
-				if(MessageBox.Show("Edit before conversion?", "Would you like to remove frames before converting?",
-						MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1 ) == DialogResult.Yes)
-					new Form_Frames(temp_storage).ShowDialog();
+				new Form_Frames(temp_storage).ShowDialog();
 				
 				// Now time for the conversion			
 				var ffmpeg = new ProcessStartInfo();

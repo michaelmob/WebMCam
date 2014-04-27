@@ -58,6 +58,7 @@ namespace WebMCam
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel_record.BackColor = System.Drawing.Color.Fuchsia;
 			this.panel_record.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel_record.ForeColor = System.Drawing.Color.Red;
 			this.panel_record.Location = new System.Drawing.Point(0, 0);
 			this.panel_record.Name = "panel_record";
 			this.panel_record.Size = new System.Drawing.Size(247, 220);
