@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace WebMCam
 {
@@ -64,6 +65,16 @@ namespace WebMCam
 		
 		void Btn_doneClick(object sender, System.EventArgs e)
 		{
+			// Before finishing we need to rename all files to be in numerical order
+			for(var i = 1; i < list_frames.Items.Count; i++) {
+				try {
+					File.Move(directory_path + list_frames.Items[i] + "." + file_format, directory_path + Convert.ToString(i) + "." + file_format);
+				} catch (Exception ex) {
+					// Instead of checking for each file, just skip over it
+					Debug.WriteLine(ex.Message);
+				}
+			}
+			
 			Close();
 		}
 		
