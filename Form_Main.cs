@@ -9,7 +9,7 @@ namespace WebMCam
 {
 	public partial class Form_Main : Form
 	{
-		Int16 frame_count;
+		static Int16 frame_count;
 		Int32 time_elapsed;
 		String temp_storage, image_format;
 		Boolean recording;
@@ -25,7 +25,7 @@ namespace WebMCam
 			
 			Ini_File.Exists("Loc", "ffmpeg", String.Format("\"{0}\\ffmpeg.exe\"", Environment.CurrentDirectory));
 			Ini_File.Exists("Loc", "temp", Environment.CurrentDirectory + "\\temp\\");
-			Ini_File.Exists("Cmd", "args", "-f image2 -i \"%temp%f_%d.png\" -r %fps% -t %duration% -vb 20M");
+			Ini_File.Exists("Cmd", "args", "-i \"%temp%f_%d.%format%\" -r %fps% -vb %bitrate%");
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
 			Ini_File.Exists("Fmt", "delete", "True");			
@@ -121,6 +121,8 @@ namespace WebMCam
 				ffmpeg.Arguments = Ini_File.Read("Cmd", "args")
 					.Replace("%temp%", temp_storage)
 					.Replace("%duration%", Convert.ToString(time_elapsed + 1))
+					.Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
+					.Replace("%format%", Ini_File.Read("Fmt", "image"))
 					.Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " " + save.FileName;
 				
 				Debug.WriteLine(ffmpeg.FileName + " " + ffmpeg.Arguments);

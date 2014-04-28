@@ -6,3 +6,11 @@ C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Release\WebMCa
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Release\WebMCam.csproj.GenerateResource.Cache
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Release\WebMCam.exe
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Release\WebMCam.Form_Frames.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.csprojResolveAssemblyReference.cache
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.Form_Frames.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.Form_Main.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.Form_Settings.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.csproj.GenerateResource.Cache
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Release\WebMCam.exe
+C:\Users\Mike\Documents\GitHub\WebMCam\bin\Release\WebMCam.exe.config
+C:\Users\Mike\Documents\GitHub\WebMCam\bin\Release\WebMCam.exe

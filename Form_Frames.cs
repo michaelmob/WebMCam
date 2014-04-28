@@ -21,7 +21,16 @@ namespace WebMCam
 		void Form_FramesLoad(object sender, EventArgs e)
 		{
 			directory_path = directory_path + "\\";
-			var files = Directory.GetFiles(directory_path, "*.png");
+			
+			String[] files = { };
+			String[] file_types = {"*.png", "*.jpg", "*.bmp"};
+			
+			for(int i = 0; i < file_types.Length; i++) {
+				files = Directory.GetFiles(directory_path, file_types[i]);
+				
+				if(files.Length > 0)
+					break;
+			}
 			
 			// Easiest way to sort files numerically
 			file_format = files[1].Split('.')[1];
