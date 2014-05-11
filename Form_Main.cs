@@ -25,7 +25,7 @@ namespace WebMCam
 			
 			Ini_File.Exists("Loc", "ffmpeg", String.Format("\"{0}\\ffmpeg.exe\"", Environment.CurrentDirectory));
 			Ini_File.Exists("Loc", "temp", Environment.CurrentDirectory + "\\temp\\");
-			Ini_File.Exists("Cmd", "args", "-i \"%temp%f_%d.%format%\" -r %fps% -vb %bitrate%");
+			Ini_File.Exists("Cmd", "args", "-r %fps% -i \"%temp%f_%d.%format%\" -r %fps% -vb %bitrate%");
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
 			Ini_File.Exists("Fmt", "delete", "True");			
@@ -123,6 +123,7 @@ namespace WebMCam
 					.Replace("%duration%", Convert.ToString(time_elapsed + 1))
 					.Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
 					.Replace("%format%", Ini_File.Read("Fmt", "image"))
+					.Replace("%rfps%", Convert.ToString(frame_count / time_elapsed))
 					.Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " " + save.FileName;
 				
 				Debug.WriteLine(ffmpeg.FileName + " " + ffmpeg.Arguments);
