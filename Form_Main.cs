@@ -169,13 +169,15 @@ namespace WebMCam
 			
 			if(!recording)
             {
-                this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                this.MinimumSize = new Size(this.Width, this.Height);
+                this.MaximumSize = new Size(this.Width, this.Height);
 				start_record(Convert.ToInt32(1000 / numeric_fps.Value));
                 btn_record.Text = "Stop";
 			}
 			else
             {
-                this.FormBorderStyle = FormBorderStyle.Sizable;
+                this.MinimumSize = new Size(100, 100);
+                this.MaximumSize = new Size(0, 0);
 				stop_record();
 				MainFormResize(sender, e);
 				btn_record.Text = "Record";
