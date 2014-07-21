@@ -12,8 +12,8 @@ namespace WebMCam
 	{
 		static Int16 frame_count;
 		Int32 time_elapsed;
-		static String temp_storage, image_format;
-		Boolean recording;
+		String temp_storage, image_format;
+		Boolean recording, seperate_threads;
 		
 		public Form_Main()
 		{
@@ -39,7 +39,10 @@ namespace WebMCam
 			Ini_File.Exists("Cmd", "args", "-r %rfps% -i \"f_%d.%format%\" -r %fps% -vb %bitrate%");
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
-			Ini_File.Exists("Fmt", "delete", "True");			
+            Ini_File.Exists("Fmt", "delete", "True");
+            Ini_File.Exists("Rec", "threads", "False");
+
+            seperate_threads = Ini_File.Read("Rec", "threads") == "True";
 		}
 		
 		void MainFormResize(object sender, EventArgs e)
@@ -52,7 +55,7 @@ namespace WebMCam
 			this.TopMost = chk_top_most.Checked;
 		}
 		
-		static ImageFormat image_format_format() {
+		ImageFormat image_format_format() {
 			image_format = Ini_File.Exists("Fmt", "image", "png");
 			
 			switch(image_format) {
@@ -85,14 +88,21 @@ namespace WebMCam
 			Point pt = panel_record.PointToScreen(new Point(0, 0));
 			
 			// Save our recently captured images to files instead of memory, otherwise theres a good chance we'll run out of memory	
-            // Put into anonymous threads so we don't lock up
-            new Thread(delegate()
+
+            if (seperate_threads)
+                new Thread(delegate()
+                {
+                    Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());
+                    bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
+                    bmp.Dispose();
+                }).Start();
+            else
             {
                 Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());
                 bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
                 bmp.Dispose();
-            }).Start();
-			
+            }
+
 			frame_count++;
 		}
 		
@@ -192,6 +202,7 @@ namespace WebMCam
 			var form_settings = new Form_Settings();
 			form_settings.ShowDialog();
 			TopMost = chk_top_most.Checked;
+            seperate_threads = Ini_File.Read("Rec", "threads") == "True";
 		}
 		
 		void Link_tarkusLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

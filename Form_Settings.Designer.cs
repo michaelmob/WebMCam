@@ -52,6 +52,7 @@ namespace WebMCam
             this.btn_reset = new System.Windows.Forms.Button();
             this.chk_delete_frames = new System.Windows.Forms.CheckBox();
             this.btn_open_temp = new System.Windows.Forms.Button();
+            this.chk_seperate_threads = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label_ffmpeg
@@ -89,7 +90,7 @@ namespace WebMCam
             // btn_save
             // 
             this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btn_save.Location = new System.Drawing.Point(147, 247);
+            this.btn_save.Location = new System.Drawing.Point(147, 277);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(130, 25);
             this.btn_save.TabIndex = 7;
@@ -100,7 +101,7 @@ namespace WebMCam
             // btn_cancel
             // 
             this.btn_cancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btn_cancel.Location = new System.Drawing.Point(12, 247);
+            this.btn_cancel.Location = new System.Drawing.Point(12, 277);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(130, 25);
             this.btn_cancel.TabIndex = 8;
@@ -201,11 +202,22 @@ namespace WebMCam
             this.btn_open_temp.UseVisualStyleBackColor = true;
             this.btn_open_temp.Click += new System.EventHandler(this.Btn_open_tempClick);
             // 
+            // chk_seperate_threads
+            // 
+            this.chk_seperate_threads.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.chk_seperate_threads.Location = new System.Drawing.Point(12, 247);
+            this.chk_seperate_threads.Name = "chk_seperate_threads";
+            this.chk_seperate_threads.Size = new System.Drawing.Size(265, 24);
+            this.chk_seperate_threads.TabIndex = 18;
+            this.chk_seperate_threads.Text = "Seperate threads for frames (may cause crashing)";
+            this.chk_seperate_threads.UseVisualStyleBackColor = true;
+            // 
             // Form_Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 276);
+            this.ClientSize = new System.Drawing.Size(289, 308);
+            this.Controls.Add(this.chk_seperate_threads);
             this.Controls.Add(this.btn_open_temp);
             this.Controls.Add(this.chk_delete_frames);
             this.Controls.Add(this.btn_reset);
@@ -246,5 +258,6 @@ namespace WebMCam
 		private System.Windows.Forms.Button btn_save;
 		private System.Windows.Forms.Label label_ffmpeg;
 		private System.Windows.Forms.TextBox text_ffmpeg;
+        private System.Windows.Forms.CheckBox chk_seperate_threads;
 	}
 }
