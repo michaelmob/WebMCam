@@ -21,11 +21,21 @@ namespace WebMCam
 		
 		void MainFormLoad(object sender, EventArgs e)
 		{
+            // Restore window size from previous session
+            var size = Ini_File.Exists("Frm", "size", "0,0");
+
+            if (size != "0,0")
+            {
+                var size_split = size.Split(',');
+                this.Size = new Size(Convert.ToInt16(size_split[0]), Convert.ToInt16(size_split[1]));
+            }
+
+            // Hit the method so the title sets the size
 			MainFormResize(sender, e);
 			
 			Ini_File.Exists("Loc", "ffmpeg", String.Format("\"{0}\\ffmpeg.exe\"", Environment.CurrentDirectory));
 			Ini_File.Exists("Loc", "temp", Environment.CurrentDirectory + "\\temp\\");
-			Ini_File.Exists("Cmd", "args", "-r %rfps% -i \"%temp%f_%d.%format%\" -r %fps% -vb %bitrate%");
+			Ini_File.Exists("Cmd", "args", "-r %rfps% -i \"f_%d.%format%\" -r %fps% -vb %bitrate%");
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
 			Ini_File.Exists("Fmt", "delete", "True");			
@@ -116,17 +126,17 @@ namespace WebMCam
 				
 				// Now time for the conversion			
 				var ffmpeg = new ProcessStartInfo();
-				ffmpeg.WorkingDirectory = Environment.CurrentDirectory;
+				ffmpeg.WorkingDirectory = temp_storage;
 				ffmpeg.FileName = Ini_File.Read("Loc", "ffmpeg");
 				ffmpeg.Arguments = Ini_File.Read("Cmd", "args")
-					.Replace("%temp%", temp_storage)
+                    .Replace("%temp%", "")
 					.Replace("%duration%", Convert.ToString(time_elapsed + 1))
 					.Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
 					.Replace("%format%", Ini_File.Read("Fmt", "image"))
 					.Replace("%rfps%", Convert.ToString(frame_count / time_elapsed))
-					.Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " " + save.FileName;
-				
-				Debug.WriteLine(ffmpeg.FileName + " " + ffmpeg.Arguments);
+					.Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " \"" + save.FileName + "\"";
+
+                Debug.WriteLine(ffmpeg.FileName + " " + ffmpeg.Arguments);
 				
 				var process = new Process {StartInfo = ffmpeg};
 				process.Start();
@@ -153,12 +163,14 @@ namespace WebMCam
 			}
 			
 			if(!recording)
-			{
+            {
+                this.FormBorderStyle = FormBorderStyle.FixedSingle;
 				start_record(Convert.ToInt32(1000 / numeric_fps.Value));
-				btn_record.Text = "Stop";
+                btn_record.Text = "Stop";
 			}
 			else
-			{
+            {
+                this.FormBorderStyle = FormBorderStyle.Sizable;
 				stop_record();
 				MainFormResize(sender, e);
 				btn_record.Text = "Record";
@@ -185,5 +197,10 @@ namespace WebMCam
 			Text = String.Format("{0}s, RECORDING", time_elapsed);
 			time_elapsed += 1;
 		}
+
+        private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Ini_File.Write("Frm", "size", this.Width.ToString() + "," + this.Height.ToString());
+        }
 	}
 }

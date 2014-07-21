@@ -57,15 +57,19 @@
     <Compile Include="Form_Frames.Designer.cs">
       <DependentUpon>Form_Frames.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_Settings.cs" />
+    <Compile Include="Form_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Main.designer.cs">
+      <DependentUpon>Form_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form_Settings.Designer.cs">
       <DependentUpon>Form_Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Image_Capture.cs" />
-    <Compile Include="Form_Main.cs" />
-    <Compile Include="Form_Main.Designer.cs">
-      <DependentUpon>Form_Main.cs</DependentUpon>
-    </Compile>
     <Compile Include="Ini_file.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

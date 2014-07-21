@@ -7,3 +7,12 @@ C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.csproj.GenerateResource.Cache
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.Form_Main.resources
 C:\Users\Mike\Documents\SharpDevelop Projects\WebMCam\WebMCam\obj\Debug\WebMCam.Form_Settings.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\bin\Debug\WebMCam.exe.config
+C:\Users\Mike\Documents\GitHub\WebMCam\bin\Debug\WebMCam.exe
+C:\Users\Mike\Documents\GitHub\WebMCam\bin\Debug\WebMCam.pdb
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.Form_Frames.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.Form_Main.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.Form_Settings.resources
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.csproj.GenerateResource.Cache
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.exe
+C:\Users\Mike\Documents\GitHub\WebMCam\obj\Debug\WebMCam.pdb
