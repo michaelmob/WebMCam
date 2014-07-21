@@ -2,6 +2,7 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -11,7 +12,7 @@ namespace WebMCam
 	{
 		static Int16 frame_count;
 		Int32 time_elapsed;
-		String temp_storage, image_format;
+		static String temp_storage, image_format;
 		Boolean recording;
 		
 		public Form_Main()
@@ -51,7 +52,7 @@ namespace WebMCam
 			this.TopMost = chk_top_most.Checked;
 		}
 		
-		ImageFormat image_format_format() {
+		static ImageFormat image_format_format() {
 			image_format = Ini_File.Exists("Fmt", "image", "png");
 			
 			switch(image_format) {
@@ -84,9 +85,13 @@ namespace WebMCam
 			Point pt = panel_record.PointToScreen(new Point(0, 0));
 			
 			// Save our recently captured images to files instead of memory, otherwise theres a good chance we'll run out of memory	
-			Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());		
-			bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
-			bmp.Dispose();
+            // Put into anonymous threads so we don't lock up
+            new Thread(delegate()
+            {
+                Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());
+                bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
+                bmp.Dispose();
+            }).Start();
 			
 			frame_count++;
 		}
