@@ -1,0 +1,9 @@
+obj/*
+bin/*
+obj\*
+bin\*
+*.Cache
+*.txt
+*.exe
+*.pdb
+*.resources

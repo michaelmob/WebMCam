@@ -35,7 +35,10 @@ namespace WebMCam
 					if (cursor_info.flags == (Int32)0x0001)
 					{
 						var hdc = g.GetHdc();
-						DrawIconEx(hdc, cursor_info.ptScreenPos.x - area.X, cursor_info.ptScreenPos.y - area.Y, cursor_info.hCursor, 0, 0, 0, IntPtr.Zero, (Int32)0x0003);
+						DrawIconEx(
+                            hdc, cursor_info.ptScreenPos.x - area.X, cursor_info.ptScreenPos.y - area.Y, cursor_info.hCursor,
+                            0, 0, 0, IntPtr.Zero, (Int32)0x0003
+                        );
 						g.ReleaseHdc();
 					}
 			}

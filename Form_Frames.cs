@@ -54,7 +54,7 @@ namespace WebMCam
 				var bmp = new FileStream(directory_path + list_frames.SelectedItem + "." + file_format, FileMode.Open, FileAccess.Read);
 				picture_frame.Image = Image.FromStream(bmp);
 				bmp.Close();
-			} catch (Exception ex) {
+			} catch {
 				list_frames.Items.RemoveAt(list_frames.SelectedIndex);
 			}
 		}

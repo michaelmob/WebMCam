@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,11 +10,12 @@ using System.Diagnostics;
 namespace WebMCam
 {
 	public partial class Form_Main : Form
-	{
-		static Int16 frame_count;
+    {
+        static List<Bitmap> frames = new List<Bitmap>();
+		static Int16 frame_count, saved_frame_count;
 		Int32 time_elapsed;
 		String temp_storage, image_format;
-		Boolean recording, seperate_threads;
+		Boolean recording;
 		
 		public Form_Main()
 		{
@@ -41,8 +43,6 @@ namespace WebMCam
 			Ini_File.Exists("Fmt", "image", "png");
             Ini_File.Exists("Fmt", "delete", "True");
             Ini_File.Exists("Rec", "threads", "False");
-
-            seperate_threads = Ini_File.Read("Rec", "threads") == "True";
 		}
 		
 		void MainFormResize(object sender, EventArgs e)
@@ -81,30 +81,38 @@ namespace WebMCam
 					return PixelFormat.Format32bppRgb;
 			}
 		}
+
+        static Point pt;
 		
 		void Timer_frameTick(object sender, EventArgs e)
-		{
-			// We need to get panel_records absolute position
-			Point pt = panel_record.PointToScreen(new Point(0, 0));
-			
-			// Save our recently captured images to files instead of memory, otherwise theres a good chance we'll run out of memory	
-
-            if (seperate_threads)
-                new Thread(delegate()
-                {
-                    Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());
-                    bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
-                    bmp.Dispose();
-                }).Start();
-            else
+        {
+            pt = panel_record.PointToScreen(new Point(0, 0));
+            new Thread(delegate()
             {
-                Bitmap bmp = Image_Capture.region(new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height), chk_cursor.Checked, pixel_format_format());
-                bmp.Save(String.Format("{0}{1}.{2}", temp_storage, frame_count, image_format), image_format_format());
-                bmp.Dispose();
-            }
+                // We need to get panel_records absolute position
 
-			frame_count++;
+                frames.Add(
+                    Image_Capture.region(
+                        new Rectangle(pt.X, pt.Y, panel_record.Width, panel_record.Height),
+                        chk_cursor.Checked,
+                        pixel_format_format()
+                    )
+                );
+
+                frame_count++;
+            }).Start();
 		}
+
+        private void timer_save_Tick(object sender, EventArgs e)
+        {
+            while(frames.Count > 0) {
+                Bitmap bmp = frames[0];
+                bmp.Save(String.Format("{0}{1}.{2}", temp_storage, saved_frame_count, image_format), image_format_format());
+                bmp.Dispose();
+                frames.RemoveAt(0);
+                saved_frame_count++;
+            }
+        }
 		
 		void start_record(int fps)
 		{
@@ -113,20 +121,28 @@ namespace WebMCam
 			// If our temp dir doesn't exist we need to create it
 			if(!Directory.Exists(temp_storage))
 				Directory.CreateDirectory(temp_storage);
-			
-			frame_count = 0;
+
+            frame_count = 0;
+            saved_frame_count = 0;
 			time_elapsed = 1;
 			
-			timer_frame.Interval = fps;
+			timer_frame.Interval = 1000 / fps;
 			
 			timer_elapsed.Start();
 			timer_frame.Start();
+            timer_save.Start();
 		}
 		
 		void stop_record()
 		{
 			timer_elapsed.Stop();
 			timer_frame.Stop();
+            
+            // While we still have frames that need to be saved, lets keep running
+            // the save timer
+            while (frames.Count < 0) {
+                timer_save.Stop();
+            }
 			
 			// Show dialog and only continue if OK.
 			var save = new SaveFileDialog();
@@ -169,7 +185,7 @@ namespace WebMCam
 			if(!File.Exists(Ini_File.Read("Loc", "ffmpeg"))) {
 				MessageBox.Show(
 					"Could not find FFmpeg.exe, please change your settings to set the FFmpeg.exe location.",
-					"FFmpeg.exe",
+					"ffmpeg.exe",
 					MessageBoxButtons.OK,
 					MessageBoxIcon.Error
 				);
@@ -177,42 +193,40 @@ namespace WebMCam
 				return;
 			}
 			
-			if(!recording)
-            {
-                this.MinimumSize = new Size(this.Width, this.Height);
-                this.MaximumSize = new Size(this.Width, this.Height);
-				start_record(Convert.ToInt32(1000 / numeric_fps.Value));
-                btn_record.Text = "Stop";
-			}
-			else
-            {
+			if(recording) {
+                // Now that we're done recording, set back to Record
+                // and allow any maximum size
                 this.MinimumSize = new Size(100, 100);
                 this.MaximumSize = new Size(0, 0);
 				stop_record();
 				MainFormResize(sender, e);
 				btn_record.Text = "Record";
 			}
+			else
+            {
+                // If we're recording, let's set the minimum and maximum size
+                // limits so we don't get an error while trying to convert
+                // with ffmpeg due to different image sizes
+                this.MinimumSize = new Size(this.Width, this.Height);
+                this.MaximumSize = new Size(this.Width, this.Height);
+				start_record(Convert.ToInt32(1000 / numeric_fps.Value));
+                btn_record.Text = "Stop";
+			}
 			
 			recording = !recording;
 		}
-		
-		void Btn_settingsClick(object sender, EventArgs e)
-		{
-			TopMost = false;
-			var form_settings = new Form_Settings();
-			form_settings.ShowDialog();
-			TopMost = chk_top_most.Checked;
-            seperate_threads = Ini_File.Read("Rec", "threads") == "True";
-		}
-		
-		void Link_tarkusLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			Process.Start("http://tarkus.co");
-		}
+
+        void Btn_settingsClick(object sender, EventArgs e)
+        {
+            TopMost = false;
+            var form_settings = new Form_Settings();
+            form_settings.ShowDialog();
+            TopMost = chk_top_most.Checked;
+        }
 		
 		void Timer_elapsedTick(object sender, EventArgs e)
 		{
-			Text = String.Format("{0}s, RECORDING", time_elapsed);
+			Text = String.Format("{0}s, RECORDING ({1} frames)", time_elapsed, frame_count);
 			time_elapsed += 1;
 		}
 
@@ -220,5 +234,22 @@ namespace WebMCam
         {
             Ini_File.Write("Frm", "size", this.Width.ToString() + "," + this.Height.ToString());
         }
-	}
+
+        #region Links
+        private void link_author_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://mikeserver.org/");
+        }
+
+        private void link_github_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/TheTarkus/WebMCam");
+        }
+
+        private void link_ffmpeg_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://ffmpeg.org/");
+        }
+        #endregion
+    }
 }

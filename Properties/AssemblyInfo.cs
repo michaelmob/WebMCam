@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WebMCam")]
 [assembly: AssemblyDescription("Capture frames in real-time and save them as WebM.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Tarkus.co")]
+[assembly: AssemblyCompany("MikeServer.org")]
 [assembly: AssemblyProduct("WebMCam")]
 [assembly: AssemblyCopyright("Copyright 2014")]
 [assembly: AssemblyTrademark("")]

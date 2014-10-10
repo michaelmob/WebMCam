@@ -23,7 +23,6 @@ namespace WebMCam
 			combo_image_format.Text = Ini_File.Read("Fmt", "image");
 			combo_pixel_format.Text = Ini_File.Read("Fmt", "pixel");
             chk_delete_frames.Checked = Ini_File.Read("Fmt", "delete") == "True";
-            chk_seperate_threads.Checked = Ini_File.Read("Rec", "threads") == "True";
 		}
 		
 		void Btn_cancelClick(object sender, System.EventArgs e)
@@ -39,7 +38,6 @@ namespace WebMCam
 			Ini_File.Write("Fmt", "image", combo_image_format.Text);
 			Ini_File.Write("Fmt", "pixel", combo_pixel_format.Text);
             Ini_File.Write("Fmt", "delete", Convert.ToString(chk_delete_frames.Checked));
-            Ini_File.Write("Rec", "threads", Convert.ToString(chk_seperate_threads.Checked));
 			Close();
 		}
 		
