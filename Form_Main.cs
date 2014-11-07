@@ -42,7 +42,7 @@ namespace WebMCam
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
             Ini_File.Exists("Fmt", "delete", "True");
-            Ini_File.Exists("Rec", "threads", "False");
+            Ini_File.Exists("Rec", "threads", Convert.ToString(Environment.ProcessorCount));
 		}
 		
 		void MainFormResize(object sender, EventArgs e)
@@ -87,7 +87,7 @@ namespace WebMCam
 		void Timer_frameTick(object sender, EventArgs e)
         {
             pt = panel_record.PointToScreen(new Point(0, 0));
-            new Thread(delegate()
+            ThreadPool.QueueUserWorkItem(delegate(Object state)
             {
                 // We need to get panel_records absolute position
 
@@ -100,7 +100,7 @@ namespace WebMCam
                 );
 
                 frame_count++;
-            }).Start();
+            });
 		}
 
         private void timer_save_Tick(object sender, EventArgs e)
@@ -122,6 +122,10 @@ namespace WebMCam
 			if(!Directory.Exists(temp_storage))
 				Directory.CreateDirectory(temp_storage);
 
+			Int32 t = Convert.ToInt32(Ini_File.Read("Rec", "threads"));
+			ThreadPool.SetMinThreads(t, 1);
+			ThreadPool.SetMaxThreads(t, 1);
+
             frame_count = 0;
             saved_frame_count = 0;
 			time_elapsed = 1;
@@ -135,6 +139,8 @@ namespace WebMCam
 		
 		void stop_record()
 		{
+			ThreadPool.SetMinThreads(0, 0);
+
 			timer_elapsed.Stop();
 			timer_frame.Stop();
             
