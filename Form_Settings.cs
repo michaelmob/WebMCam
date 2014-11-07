@@ -43,6 +43,8 @@ namespace WebMCam
 		
 		void Btn_open_tempClick(object sender, System.EventArgs e)
 		{
+			if (!Directory.Exists(text_temp.Text))
+				Directory.CreateDirectory(text_temp.Text);
 			Process.Start(text_temp.Text);
 		}
 		void Btn_resetClick(object sender, System.EventArgs e)
