@@ -200,7 +200,7 @@ namespace WebMCam
 			if(recording) {
                 // Now that we're done recording, set back to Record
                 // and allow any maximum size
-                this.MinimumSize = new Size(100, 100);
+                this.MinimumSize = new Size(107, 155);
                 this.MaximumSize = new Size(0, 0);
 				stop_record();
 				MainFormResize(sender, e);
