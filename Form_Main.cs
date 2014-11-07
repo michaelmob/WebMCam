@@ -152,7 +152,11 @@ namespace WebMCam
 			if (save.ShowDialog() == DialogResult.OK)
 			{
 				Visible = false;
-				
+
+				// The SaveFileDialog handled overwrite requesting
+				if (File.Exists(save.FileName))
+					File.Delete(save.FileName);
+
 				new Form_Frames(temp_storage).ShowDialog();
 				
 				// Now time for the conversion			
