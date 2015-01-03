@@ -55,7 +55,7 @@ namespace WebMCam
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.picture_frame.Location = new System.Drawing.Point(212, 1);
 			this.picture_frame.Name = "picture_frame";
-			this.picture_frame.Size = new System.Drawing.Size(308, 202);
+			this.picture_frame.Size = new System.Drawing.Size(651, 504);
 			this.picture_frame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.picture_frame.TabIndex = 0;
 			this.picture_frame.TabStop = false;
@@ -69,7 +69,7 @@ namespace WebMCam
 			this.list_frames.Location = new System.Drawing.Point(1, 1);
 			this.list_frames.Name = "list_frames";
 			this.list_frames.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-			this.list_frames.Size = new System.Drawing.Size(210, 225);
+			this.list_frames.Size = new System.Drawing.Size(210, 524);
 			this.list_frames.TabIndex = 1;
 			this.list_frames.SelectedIndexChanged += new System.EventHandler(this.List_framesSelectedIndexChanged);
 			this.list_frames.KeyDown += new System.Windows.Forms.KeyEventHandler(this.List_framesKeyDown);
@@ -99,9 +99,9 @@ namespace WebMCam
 			this.btn_done.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_done.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_done.Location = new System.Drawing.Point(212, 204);
+			this.btn_done.Location = new System.Drawing.Point(212, 506);
 			this.btn_done.Name = "btn_done";
-			this.btn_done.Size = new System.Drawing.Size(308, 23);
+			this.btn_done.Size = new System.Drawing.Size(651, 23);
 			this.btn_done.TabIndex = 0;
 			this.btn_done.Text = "Done";
 			this.btn_done.UseVisualStyleBackColor = true;
@@ -111,7 +111,7 @@ namespace WebMCam
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(521, 227);
+			this.ClientSize = new System.Drawing.Size(864, 529);
 			this.Controls.Add(this.btn_done);
 			this.Controls.Add(this.list_frames);
 			this.Controls.Add(this.picture_frame);
@@ -125,6 +125,7 @@ namespace WebMCam
 			((System.ComponentModel.ISupportInitialize)(this.picture_frame)).EndInit();
 			this.cms_frame_options.ResumeLayout(false);
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ContextMenuStrip cms_frame_options;
