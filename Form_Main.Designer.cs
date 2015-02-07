@@ -243,7 +243,7 @@ namespace WebMCam
             	this.MinimumSize = new System.Drawing.Size(107, 41);
             	this.Name = "Form_Main";
             	this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            	this.Text = "WebMCam 1.3";
+            	this.Text = "WebMCam 1.31";
             	this.TopMost = true;
             	this.TransparencyKey = System.Drawing.Color.Fuchsia;
             	this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);

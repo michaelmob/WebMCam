@@ -17,7 +17,7 @@ namespace WebMCam
 		String temp_storage, image_format;
 		Rectangle record_rect;
 		Boolean recording, saving;
-		const double version = 1.3;
+		const double version = 1.31;
 		
 		public Form_Main()
 		{
@@ -29,9 +29,15 @@ namespace WebMCam
 			// Restore window size from previous session
 			var size = Ini_File.Exists("Frm", "size", "0,0");
 
-			if (size != "0,0") {
-				var size_split = size.Split(',');
-				this.Size = new Size(Convert.ToInt16(size_split[0]), Convert.ToInt16(size_split[1]));
+			// Catch if size is incorrect and fix it if it is
+			try {
+				if (size != "0,0") {
+					var size_split = size.Split(',');
+					Size = new Size(Convert.ToInt16(size_split[0]), Convert.ToInt16(size_split[1]));
+				}
+			} catch (Exception ex) {
+				Debug.WriteLine(ex.Message);
+				Ini_File.Write("Frm", "size", "0,0");
 			}
 
 			// Hit the method so the title sets the size
