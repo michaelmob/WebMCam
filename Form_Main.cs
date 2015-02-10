@@ -17,7 +17,7 @@ namespace WebMCam
 		String temp_storage, image_format;
 		Rectangle record_rect;
 		Boolean recording, saving;
-		const double version = 1.31;
+		const double version = 1.32;
 		
 		public Form_Main()
 		{
@@ -49,7 +49,7 @@ namespace WebMCam
 			Ini_File.Exists("Fmt", "pixel", "32bppRgb");
 			Ini_File.Exists("Fmt", "image", "png");
 			Ini_File.Exists("Fmt", "delete", "True");
-			Ini_File.Exists("Rec", "threads", Convert.ToString(Environment.ProcessorCount));
+			//Ini_File.Exists("Rec", "threads", Convert.ToString(Environment.ProcessorCount));
 		}
 		
 		void MainFormResize(object sender, EventArgs e)

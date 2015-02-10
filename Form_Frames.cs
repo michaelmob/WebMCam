@@ -25,11 +25,27 @@ namespace WebMCam
 			String[] files = { };
 			String[] file_types = {"*.png", "*.jpg", "*.bmp"};
 			
+			// Find files
 			for(int i = 0; i < file_types.Length; i++) {
 				files = Directory.GetFiles(directory_path, file_types[i]);
 				
 				if(files.Length > 0)
 					break;
+			}
+			
+			if(files.Length < 1) {
+				MessageBox.Show(
+					"No images were able to be saved, make sure you have set your temp folder."
+					+ Environment.NewLine + Environment.NewLine
+					+ "Your save path: " + directory_path
+					+ Environment.NewLine +
+					"Is the above path a valid directory with write permissions?",
+					
+					"Uh-oh!",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
+				Close();
 			}
 			
 			// Easiest way to sort files numerically
@@ -38,7 +54,13 @@ namespace WebMCam
 			var frame_list = new List<Int16> {};
 			
 			for(int i = 0; i < files.Length; i++)
-				frame_list.Add(Convert.ToInt16(files[i].Replace(directory_path, "").Replace("." + file_format, "")));
+				frame_list.Add(
+					Convert.ToInt16(
+						files[i]
+							.Replace(directory_path, "")
+							.Replace("." + file_format, "")
+					)
+				);
 			
 			frame_list.Sort();
 			
