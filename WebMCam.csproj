@@ -54,6 +54,9 @@
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="SmartThreadPool">
+      <HintPath>.\SmartThreadPool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -82,7 +85,9 @@
     <Compile Include="Form_Main.designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_Output.cs" />
+    <Compile Include="Form_Output.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form_Output.Designer.cs">
       <DependentUpon>Form_Output.cs</DependentUpon>
     </Compile>

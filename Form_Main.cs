@@ -19,7 +19,7 @@ namespace WebMCam
         Rectangle record_rect;
         Boolean recording, saving;
         static SmartThreadPool threadPool = new SmartThreadPool();
-        const double version = 1.33;
+        const double version = 1.34;
 
         public Form_Main()
         {

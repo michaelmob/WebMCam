@@ -19,9 +19,7 @@ namespace WebMCam
 		}
 		
 		void Form_FramesLoad(object sender, EventArgs e)
-		{
-			directory_path = directory_path + "\\";
-			
+		{			
 			String[] files = { };
 			String[] file_types = {"*.png", "*.jpg", "*.bmp"};
 			
@@ -51,16 +49,24 @@ namespace WebMCam
 			// Easiest way to sort files numerically
 			file_format = files[1].Split('.')[1];
 			
-			var frame_list = new List<Int16> {};
-			
-			for(int i = 0; i < files.Length; i++)
-				frame_list.Add(
-					Convert.ToInt16(
-						files[i]
-							.Replace(directory_path, "")
-							.Replace("." + file_format, "")
-					)
-				);
+			var frame_list = new List<int> {};
+
+            File.WriteAllLines(directory_path + "files.txt", files);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                /*
+                frame_list.Add(
+                    Convert.ToInt16(
+                        files[i]
+                            .Replace(directory_path, "")
+                            .Replace("." + file_format, "")
+                    )
+                );
+                */
+
+                frame_list.Add(i);
+            }
 			
 			frame_list.Sort();
 			
