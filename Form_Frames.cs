@@ -93,9 +93,12 @@ namespace WebMCam
 				
 				for(var i = list_frames.SelectedIndices.Count - 1; i >= 0; i--)
 				{
-					var index = list_frames.SelectedIndices[i];
-					File.Delete(directory_path + list_frames.Items[index] + "." + file_format);
-					list_frames.Items.RemoveAt(index);
+                    if (i > -1)
+                    {
+                        var index = list_frames.SelectedIndices[i];
+                        File.Delete(directory_path + list_frames.Items[index] + "." + file_format);
+                        list_frames.Items.RemoveAt(index);
+                    }
 				}
 			} catch { }
 		}
