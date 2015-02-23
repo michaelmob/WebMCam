@@ -7,11 +7,11 @@ namespace WebMCam
 {
 	public partial class Form_Output : Form
 	{
-		String temp_storage, ffmpeg_loc, save_file, arguments;
-		Int16 frame_count;
+		string temp_storage, ffmpeg_loc, save_file, arguments;
+		int frame_count;
 		Process process = new Process();
 		
-		public Form_Output(String _temp_storage, String _ffmpeg_loc, String _save_file, String _arguments, Int16 _frame_count = 0)
+		public Form_Output(string _temp_storage, string _ffmpeg_loc, string _save_file, string _arguments, int _frame_count = 0)
 		{
 			// Assign class variables
 			temp_storage = _temp_storage;
@@ -53,7 +53,8 @@ namespace WebMCam
 			
 			process.BeginOutputReadLine();
 			process.BeginErrorReadLine();
-			
+
+            this.BringToFront();
 		}
 				
 		private void process_DataReceived(object sender, DataReceivedEventArgs e)
@@ -72,24 +73,22 @@ namespace WebMCam
 		void CancelClick(object sender, EventArgs e)
 		{
 			// If our process is not dead, kill it
-			if (!process.HasExited) {
+			if (!process.HasExited)
 				process.Kill();
-			}
-			
-			Close();
-			Application.Restart();
+
+            this.Close();
 		}
 		
 		// So we don't have to mess with invoking the progress_bar in DataRecieved
 		void OutputTextChanged(object sender, EventArgs e)
 		{
 			// Get last line
-			String line = output.Lines[output.Lines.Length - 2];
+			string line = output.Lines[output.Lines.Length - 2];
 			
 			// Parse line for progress
 			if (line.StartsWith("frame=")) {
-				progress_bar.Value = Convert.ToInt16(
-					((float)Convert.ToInt16(line.Replace(" ", "").Substring(6).Split('f')[0]) / (float)frame_count) * 100
+				progress_bar.Value = Convert.ToInt32(
+					((float)Convert.ToInt32(line.Replace(" ", "").Substring(6).Split('f')[0]) / (float)frame_count) * 100
 				);
 			} else if (line.StartsWith("video:")) {
 				progress_bar.Value = 100;

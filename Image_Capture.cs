@@ -9,7 +9,7 @@ namespace WebMCam
 	public static class Image_Capture
 	{		
 		[StructLayout(LayoutKind.Sequential)]
-		struct CURSORINFO { public Int32 cbSize; public Int32 flags; public IntPtr hCursor; public POINTAPI ptScreenPos; }
+		struct CURSORINFO { public int cbSize; public int flags; public IntPtr hCursor; public POINTAPI ptScreenPos; }
 	
 		[StructLayout(LayoutKind.Sequential)]
 		struct POINTAPI { public int x; public int y; }
@@ -32,12 +32,12 @@ namespace WebMCam
 				cursor_info.cbSize = Marshal.SizeOf(typeof (CURSORINFO));
 
 				if (GetCursorInfo(out cursor_info))
-					if (cursor_info.flags == (Int32)0x0001)
+					if (cursor_info.flags == (int)0x0001)
 					{
 						var hdc = g.GetHdc();
 						DrawIconEx(
                             hdc, cursor_info.ptScreenPos.x - area.X, cursor_info.ptScreenPos.y - area.Y, cursor_info.hCursor,
-                            0, 0, 0, IntPtr.Zero, (Int32)0x0003
+                            0, 0, 0, IntPtr.Zero, (int)0x0003
                         );
 						g.ReleaseHdc();
 					}

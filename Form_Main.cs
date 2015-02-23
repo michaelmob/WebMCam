@@ -13,13 +13,15 @@ namespace WebMCam
     public partial class Form_Main : Form
     {
         static List<Bitmap> frames = new List<Bitmap>();
-        static Int16 frame_count, saved_frame_count;
-        Int32 time_elapsed;
-        String temp_storage, image_format;
+        static int frame_count, saved_frame_count;
+        int time_elapsed;
+        const double version = 1.35;
+        string temp_storage, image_format;
         Rectangle record_rect;
         Boolean recording, saving;
         static SmartThreadPool threadPool = new SmartThreadPool();
-        const double version = 1.34;
+
+        public Form_Settings settings;
 
         public Form_Main()
         {
@@ -28,6 +30,9 @@ namespace WebMCam
 
         void MainFormLoad(object sender, EventArgs e)
         {
+            // Load Settings
+            settings = new Form_Settings();
+
             // Restore window size from previous session
             var size = Ini_File.Exists("Frm", "size", "0,0");
 
@@ -37,7 +42,7 @@ namespace WebMCam
                 if (size != "0,0")
                 {
                     var size_split = size.Split(',');
-                    Size = new Size(Convert.ToInt16(size_split[0]), Convert.ToInt16(size_split[1]));
+                    Size = new Size(Convert.ToInt32(size_split[0]), Convert.ToInt32(size_split[1]));
                 }
             }
             catch (Exception ex)
@@ -48,19 +53,11 @@ namespace WebMCam
 
             // Hit the method so the title sets the size
             MainFormResize(sender, e);
-
-            Ini_File.Exists("Loc", "ffmpeg", String.Format("\"{0}\\ffmpeg.exe\"", Environment.CurrentDirectory));
-            Ini_File.Exists("Loc", "temp", Environment.CurrentDirectory + "\\temp\\");
-            Ini_File.Exists("Cmd", "args", "-r %rfps% -i \"f_%d.%format%\" -r %fps% -vb %bitrate%");
-            Ini_File.Exists("Fmt", "pixel", "32bppRgb");
-            Ini_File.Exists("Fmt", "image", "png");
-            Ini_File.Exists("Fmt", "delete", "True");
-            Ini_File.Exists("Rec", "threads", Convert.ToString(Environment.ProcessorCount));
         }
 
         void MainFormResize(object sender, EventArgs e)
         {
-            Text = String.Format("WebMCam {0} | {1}x{2}", version, panel_record.Size.Width, panel_record.Size.Height);
+            Text = string.Format("WebMCam {0} | {1}x{2}", version, panel_record.Size.Width, panel_record.Size.Height);
             Form_MainMove(sender, e);
         }
 
@@ -77,7 +74,7 @@ namespace WebMCam
 
         ImageFormat image_format_format()
         {
-            image_format = Ini_File.Exists("Fmt", "image", "png");
+            image_format = settings.fmt_image;
 
             switch (image_format)
             {
@@ -92,8 +89,7 @@ namespace WebMCam
 
         PixelFormat pixel_format_format()
         {
-
-            switch (Ini_File.Exists("Fmt", "pixel", "32bppRgb"))
+            switch (settings.fmt_pixel)
             {
                 case "16bppRgb555":
                     return PixelFormat.Format16bppRgb555;
@@ -108,7 +104,7 @@ namespace WebMCam
 
         void bgw_captureDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            Int16 fps = Convert.ToInt16(e.Argument);
+            int fps = Convert.ToInt32(e.Argument);
             var format = pixel_format_format();
 
             while (timer_elapsed.Enabled)
@@ -142,7 +138,15 @@ namespace WebMCam
                 {
                     try
                     {
-                        frames[0].Save(String.Format("{0}{1}.{2}", temp_storage, saved_frame_count, image_format), format);
+                        // Save First Frame
+                        frames[0].Save(
+                            Path.Combine(
+                                temp_storage, string.Format("{0}.{1}", saved_frame_count + 1, image_format)
+                            ),
+                            format
+                        );
+
+                        // Remove Frame now
                         frames.RemoveAt(0);
                         saved_frame_count++;
                     }
@@ -175,14 +179,16 @@ namespace WebMCam
                 }
             }
 
-            temp_storage = String.Format(@"{0}{1}\", Ini_File.Read("Loc", "temp"), DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+            temp_storage = Path.Combine(
+                settings.loc_temp, string.Format("WebMCam-{0}\\" ,DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond)
+            );
 
             // If our temp dir doesn't exist we need to create it
             if (!Directory.Exists(temp_storage))
                 Directory.CreateDirectory(temp_storage);
-
-            Int32 t = Convert.ToInt32(Ini_File.Read("Rec", "threads"));
-            threadPool.Concurrency = t;
+            
+            int threads = Convert.ToInt32(settings.rec_threads);
+            threadPool.Concurrency = threads;
 
             frame_count = 0;
             saved_frame_count = 0;
@@ -205,51 +211,58 @@ namespace WebMCam
             progress_bar.Visible = true;
             while (saving)
             {
-                progress_bar.Value = Convert.ToInt16(((float)saved_frame_count / (float)frame_count) * 100);
+                progress_bar.Value = Convert.ToInt32(((float)saved_frame_count / (float)frame_count) * 100);
                 Thread.Sleep(1000);
             }
 
             // Show dialog and only continue if OK.
-            var save = new SaveFileDialog();
-            save.Title = "Select a location and name for your webm";
-            save.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
+            var save_dialog = new SaveFileDialog();
+            save_dialog.Title = "Select a location and name for your webm";
+            save_dialog.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
 
-            if (save.ShowDialog() == DialogResult.OK)
+            this.Visible = false;
+
+            Form_Frames frames_form = new Form_Frames(temp_storage, settings.fmt_image);
+            bool save_frames = frames_form.ShowDialog() == DialogResult.OK;
+
+            if (save_frames)
             {
-                Visible = false;
+                if (save_dialog.ShowDialog() == DialogResult.OK)
+                {
+                    // The SaveFileDialog handled overwrite requesting
+                    if (File.Exists(save_dialog.FileName))
+                        File.Delete(save_dialog.FileName);
 
-                // The SaveFileDialog handled overwrite requesting
-                if (File.Exists(save.FileName))
-                    File.Delete(save.FileName);
+                    Form_Output form_output = new Form_Output(
+                        temp_storage,
+                        settings.loc_ffmpeg,
+                        save_dialog.FileName,
+                        settings.cmd_args
+                            .Replace("%temp%", "")
+                            .Replace("%duration%", Convert.ToString(time_elapsed + 1))
+                            .Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
+                            .Replace("%format%", settings.fmt_image)
+                            .Replace("%rfps%", Convert.ToString(frame_count / time_elapsed))
+                            .Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " \"" + save_dialog.FileName + "\"",
+                        frame_count
+                    );
 
-                new Form_Frames(temp_storage).ShowDialog();
-
-                new Form_Output(
-                    temp_storage,
-                    Ini_File.Read("Loc", "ffmpeg"),
-                    save.FileName,
-                    Ini_File.Read("Cmd", "args")
-                        .Replace("%temp%", "")
-                        .Replace("%duration%", Convert.ToString(time_elapsed + 1))
-                        .Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
-                        .Replace("%format%", Ini_File.Read("Fmt", "image"))
-                        .Replace("%rfps%", Convert.ToString(frame_count / time_elapsed))
-                        .Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " \"" + save.FileName + "\"",
-                    frame_count
-                ).ShowDialog();
-
-                Visible = true;
+                    form_output.ShowDialog();
+                    form_output.BringToFront();
+                }
             }
 
-            if (Ini_File.Read("Fmt", "delete") == "True")
+            // Delete our temp storage folder?
+            if (settings.fmt_delete == "True")
                 Directory.Delete(temp_storage, true);
 
-            progress_bar.Visible = false;
+            // Restart WebMCam so no errors
+            Application.Restart();
         }
 
         void Btn_recordClick(object sender, EventArgs e)
         {
-            if (!File.Exists(Ini_File.Read("Loc", "ffmpeg")))
+            if (!File.Exists(settings.loc_ffmpeg))
             {
                 MessageBox.Show(
                     "Could not find FFmpeg.exe, please change your settings to set the FFmpeg.exe location.",
@@ -278,7 +291,7 @@ namespace WebMCam
                 // with ffmpeg due to different image sizes
                 this.MinimumSize = new Size(this.Width, this.Height);
                 this.MaximumSize = new Size(this.Width, this.Height);
-                start_record(Convert.ToInt16(numeric_fps.Value));
+                start_record(Convert.ToInt32(numeric_fps.Value));
                 btn_record.Text = "Stop";
             }
 
@@ -287,15 +300,18 @@ namespace WebMCam
 
         void Btn_settingsClick(object sender, EventArgs e)
         {
-            TopMost = false;
-            var form_settings = new Form_Settings();
-            form_settings.ShowDialog();
-            TopMost = chk_top_most.Checked;
+            this.TopMost = false;
+            settings.ShowDialog();
+            this.TopMost = chk_top_most.Checked;
         }
 
         void Timer_elapsedTick(object sender, EventArgs e)
         {
-            Text = String.Format("{0}s, RECORDING | {3} fps ({1} frames / {2} saved) (Threads: {4})", time_elapsed, frame_count, saved_frame_count, frame_count / time_elapsed, threadPool.ActiveThreads);
+            this.Text = string.Format(
+                "{0}s, RECORDING | {3} fps ({1} frames / {2} saved) (Threads: {4})",
+                time_elapsed, frame_count, saved_frame_count,
+                frame_count / time_elapsed, threadPool.ActiveThreads
+            );
             time_elapsed += 1;
         }
 
