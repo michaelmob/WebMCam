@@ -24,10 +24,7 @@ namespace WebMCam
 
 		public void Stop()
 		{
-			try
-			{
-				Source.StopRecording();
-			}
+			try { Source.StopRecording(); }
 			catch { }
 			Recording = false;
 		}

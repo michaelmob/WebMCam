@@ -38,119 +38,119 @@ namespace WebMCam
             {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
-			this.panel_record = new System.Windows.Forms.Panel();
-			this.progress_bar = new System.Windows.Forms.ProgressBar();
-			this.btn_record = new System.Windows.Forms.Button();
-			this.chk_top_most = new System.Windows.Forms.CheckBox();
-			this.btn_settings = new System.Windows.Forms.Button();
-			this.link_author = new System.Windows.Forms.LinkLabel();
-			this.numeric_fps = new System.Windows.Forms.NumericUpDown();
+			this.Panel_Record = new System.Windows.Forms.Panel();
+			this.Progress_Bar = new System.Windows.Forms.ProgressBar();
+			this.btn_Record = new System.Windows.Forms.Button();
+			this.chk_Top_Most = new System.Windows.Forms.CheckBox();
+			this.btn_Settings = new System.Windows.Forms.Button();
+			this.link_Author = new System.Windows.Forms.LinkLabel();
+			this.num_FPS = new System.Windows.Forms.NumericUpDown();
 			this.label_fps = new System.Windows.Forms.Label();
-			this.timer_elapsed = new System.Windows.Forms.Timer(this.components);
-			this.chk_sound = new System.Windows.Forms.CheckBox();
-			this.link_github = new System.Windows.Forms.LinkLabel();
-			this.link_ffmpeg = new System.Windows.Forms.LinkLabel();
-			this.timer_save = new System.Windows.Forms.Timer(this.components);
-			this.bgw_capture = new System.ComponentModel.BackgroundWorker();
-			this.bgw_save = new System.ComponentModel.BackgroundWorker();
-			this.chk_cursor = new System.Windows.Forms.CheckBox();
-			this.panel_record.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numeric_fps)).BeginInit();
+			this.timer_Elapsed = new System.Windows.Forms.Timer(this.components);
+			this.chk_Sound = new System.Windows.Forms.CheckBox();
+			this.link_GitHub = new System.Windows.Forms.LinkLabel();
+			this.link_FFMpeg = new System.Windows.Forms.LinkLabel();
+			this.timer_Save = new System.Windows.Forms.Timer(this.components);
+			this.bgw_Capture = new System.ComponentModel.BackgroundWorker();
+			this.bgw_Save = new System.ComponentModel.BackgroundWorker();
+			this.chk_Cursor = new System.Windows.Forms.CheckBox();
+			this.Panel_Record.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_FPS)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// panel_record
+			// Panel_Record
 			// 
-			this.panel_record.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.Panel_Record.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel_record.BackColor = System.Drawing.Color.Fuchsia;
-			this.panel_record.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel_record.Controls.Add(this.progress_bar);
-			this.panel_record.ForeColor = System.Drawing.Color.Red;
-			this.panel_record.Location = new System.Drawing.Point(0, 0);
-			this.panel_record.Name = "panel_record";
-			this.panel_record.Size = new System.Drawing.Size(251, 240);
-			this.panel_record.TabIndex = 0;
+			this.Panel_Record.BackColor = System.Drawing.Color.Fuchsia;
+			this.Panel_Record.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Panel_Record.Controls.Add(this.Progress_Bar);
+			this.Panel_Record.ForeColor = System.Drawing.Color.Red;
+			this.Panel_Record.Location = new System.Drawing.Point(0, 0);
+			this.Panel_Record.Name = "Panel_Record";
+			this.Panel_Record.Size = new System.Drawing.Size(251, 240);
+			this.Panel_Record.TabIndex = 0;
 			// 
-			// progress_bar
+			// Progress_Bar
 			// 
-			this.progress_bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.Progress_Bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.progress_bar.Location = new System.Drawing.Point(0, 216);
-			this.progress_bar.Name = "progress_bar";
-			this.progress_bar.Size = new System.Drawing.Size(251, 23);
-			this.progress_bar.TabIndex = 0;
-			this.progress_bar.Visible = false;
+			this.Progress_Bar.Location = new System.Drawing.Point(0, 216);
+			this.Progress_Bar.Name = "Progress_Bar";
+			this.Progress_Bar.Size = new System.Drawing.Size(251, 23);
+			this.Progress_Bar.TabIndex = 0;
+			this.Progress_Bar.Visible = false;
 			// 
-			// btn_record
+			// btn_Record
 			// 
-			this.btn_record.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_record.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_record.Location = new System.Drawing.Point(256, 88);
-			this.btn_record.Name = "btn_record";
-			this.btn_record.Size = new System.Drawing.Size(77, 39);
-			this.btn_record.TabIndex = 5;
-			this.btn_record.Text = "Record";
-			this.btn_record.UseVisualStyleBackColor = true;
-			this.btn_record.Click += new System.EventHandler(this.Btn_recordClick);
+			this.btn_Record.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btn_Record.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btn_Record.Location = new System.Drawing.Point(256, 88);
+			this.btn_Record.Name = "btn_Record";
+			this.btn_Record.Size = new System.Drawing.Size(77, 39);
+			this.btn_Record.TabIndex = 5;
+			this.btn_Record.Text = "Record";
+			this.btn_Record.UseVisualStyleBackColor = true;
+			this.btn_Record.Click += new System.EventHandler(this.Btn_recordClick);
 			// 
-			// chk_top_most
+			// chk_Top_Most
 			// 
-			this.chk_top_most.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.chk_top_most.Checked = true;
-			this.chk_top_most.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chk_top_most.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.chk_top_most.Location = new System.Drawing.Point(258, 3);
-			this.chk_top_most.Name = "chk_top_most";
-			this.chk_top_most.Size = new System.Drawing.Size(76, 20);
-			this.chk_top_most.TabIndex = 7;
-			this.chk_top_most.Text = "Top Most";
-			this.chk_top_most.UseVisualStyleBackColor = true;
-			this.chk_top_most.CheckedChanged += new System.EventHandler(this.Chk_top_mostCheckedChanged);
+			this.chk_Top_Most.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.chk_Top_Most.Checked = true;
+			this.chk_Top_Most.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chk_Top_Most.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.chk_Top_Most.Location = new System.Drawing.Point(258, 3);
+			this.chk_Top_Most.Name = "chk_Top_Most";
+			this.chk_Top_Most.Size = new System.Drawing.Size(76, 20);
+			this.chk_Top_Most.TabIndex = 7;
+			this.chk_Top_Most.Text = "Top Most";
+			this.chk_Top_Most.UseVisualStyleBackColor = true;
+			this.chk_Top_Most.CheckedChanged += new System.EventHandler(this.Chk_top_mostCheckedChanged);
 			// 
-			// btn_settings
+			// btn_Settings
 			// 
-			this.btn_settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_settings.Location = new System.Drawing.Point(256, 133);
-			this.btn_settings.Name = "btn_settings";
-			this.btn_settings.Size = new System.Drawing.Size(77, 39);
-			this.btn_settings.TabIndex = 8;
-			this.btn_settings.Text = "Settings";
-			this.btn_settings.UseVisualStyleBackColor = true;
-			this.btn_settings.Click += new System.EventHandler(this.Btn_settingsClick);
+			this.btn_Settings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btn_Settings.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btn_Settings.Location = new System.Drawing.Point(256, 133);
+			this.btn_Settings.Name = "btn_Settings";
+			this.btn_Settings.Size = new System.Drawing.Size(77, 39);
+			this.btn_Settings.TabIndex = 8;
+			this.btn_Settings.Text = "Settings";
+			this.btn_Settings.UseVisualStyleBackColor = true;
+			this.btn_Settings.Click += new System.EventHandler(this.Btn_settingsClick);
 			// 
-			// link_author
+			// link_Author
 			// 
-			this.link_author.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.link_author.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.link_author.Location = new System.Drawing.Point(256, 175);
-			this.link_author.Name = "link_author";
-			this.link_author.Size = new System.Drawing.Size(77, 20);
-			this.link_author.TabIndex = 13;
-			this.link_author.TabStop = true;
-			this.link_author.Text = "MikeServer";
-			this.link_author.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.link_author.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_author_LinkClicked);
+			this.link_Author.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.link_Author.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.link_Author.Location = new System.Drawing.Point(256, 175);
+			this.link_Author.Name = "link_Author";
+			this.link_Author.Size = new System.Drawing.Size(77, 20);
+			this.link_Author.TabIndex = 13;
+			this.link_Author.TabStop = true;
+			this.link_Author.Text = "MikeServer";
+			this.link_Author.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.link_Author.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_author_LinkClicked);
 			// 
-			// numeric_fps
+			// num_FPS
 			// 
-			this.numeric_fps.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.numeric_fps.Location = new System.Drawing.Point(284, 62);
-			this.numeric_fps.Maximum = new decimal(new int[] {
+			this.num_FPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.num_FPS.Location = new System.Drawing.Point(284, 62);
+			this.num_FPS.Maximum = new decimal(new int[] {
             120,
             0,
             0,
             0});
-			this.numeric_fps.Minimum = new decimal(new int[] {
+			this.num_FPS.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.numeric_fps.Name = "numeric_fps";
-			this.numeric_fps.Size = new System.Drawing.Size(49, 20);
-			this.numeric_fps.TabIndex = 14;
-			this.numeric_fps.Value = new decimal(new int[] {
+			this.num_FPS.Name = "num_FPS";
+			this.num_FPS.Size = new System.Drawing.Size(49, 20);
+			this.num_FPS.TabIndex = 14;
+			this.num_FPS.Value = new decimal(new int[] {
             30,
             0,
             0,
@@ -166,89 +166,89 @@ namespace WebMCam
 			this.label_fps.Text = "FPS:";
 			this.label_fps.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// timer_elapsed
+			// timer_Elapsed
 			// 
-			this.timer_elapsed.Interval = 1000;
-			this.timer_elapsed.Tick += new System.EventHandler(this.Timer_elapsedTick);
+			this.timer_Elapsed.Interval = 1000;
+			this.timer_Elapsed.Tick += new System.EventHandler(this.Timer_elapsedTick);
 			// 
-			// chk_sound
+			// chk_Sound
 			// 
-			this.chk_sound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.chk_sound.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.chk_sound.Location = new System.Drawing.Point(258, 41);
-			this.chk_sound.Name = "chk_sound";
-			this.chk_sound.Size = new System.Drawing.Size(76, 20);
-			this.chk_sound.TabIndex = 16;
-			this.chk_sound.Text = "Sound";
-			this.chk_sound.UseVisualStyleBackColor = true;
+			this.chk_Sound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.chk_Sound.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.chk_Sound.Location = new System.Drawing.Point(258, 41);
+			this.chk_Sound.Name = "chk_Sound";
+			this.chk_Sound.Size = new System.Drawing.Size(76, 20);
+			this.chk_Sound.TabIndex = 16;
+			this.chk_Sound.Text = "Sound";
+			this.chk_Sound.UseVisualStyleBackColor = true;
 			// 
-			// link_github
+			// link_GitHub
 			// 
-			this.link_github.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.link_github.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.link_github.Location = new System.Drawing.Point(256, 195);
-			this.link_github.Name = "link_github";
-			this.link_github.Size = new System.Drawing.Size(77, 20);
-			this.link_github.TabIndex = 17;
-			this.link_github.TabStop = true;
-			this.link_github.Text = "GitHub";
-			this.link_github.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.link_github.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_github_LinkClicked);
+			this.link_GitHub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.link_GitHub.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.link_GitHub.Location = new System.Drawing.Point(256, 195);
+			this.link_GitHub.Name = "link_GitHub";
+			this.link_GitHub.Size = new System.Drawing.Size(77, 20);
+			this.link_GitHub.TabIndex = 17;
+			this.link_GitHub.TabStop = true;
+			this.link_GitHub.Text = "GitHub";
+			this.link_GitHub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.link_GitHub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_github_LinkClicked);
 			// 
-			// link_ffmpeg
+			// link_FFMpeg
 			// 
-			this.link_ffmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.link_ffmpeg.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-			this.link_ffmpeg.Location = new System.Drawing.Point(256, 215);
-			this.link_ffmpeg.Name = "link_ffmpeg";
-			this.link_ffmpeg.Size = new System.Drawing.Size(77, 20);
-			this.link_ffmpeg.TabIndex = 18;
-			this.link_ffmpeg.TabStop = true;
-			this.link_ffmpeg.Text = "FFmpeg";
-			this.link_ffmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.link_ffmpeg.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_ffmpeg_LinkClicked);
+			this.link_FFMpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.link_FFMpeg.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+			this.link_FFMpeg.Location = new System.Drawing.Point(256, 215);
+			this.link_FFMpeg.Name = "link_FFMpeg";
+			this.link_FFMpeg.Size = new System.Drawing.Size(77, 20);
+			this.link_FFMpeg.TabIndex = 18;
+			this.link_FFMpeg.TabStop = true;
+			this.link_FFMpeg.Text = "FFmpeg";
+			this.link_FFMpeg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.link_FFMpeg.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.link_ffmpeg_LinkClicked);
 			// 
-			// bgw_capture
+			// bgw_Capture
 			// 
-			this.bgw_capture.WorkerSupportsCancellation = true;
-			this.bgw_capture.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_captureDoWork);
+			this.bgw_Capture.WorkerSupportsCancellation = true;
+			this.bgw_Capture.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_captureDoWork);
 			// 
-			// bgw_save
+			// bgw_Save
 			// 
-			this.bgw_save.WorkerReportsProgress = true;
-			this.bgw_save.WorkerSupportsCancellation = true;
-			this.bgw_save.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Bgw_saveDoWork);
-			this.bgw_save.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Bgw_saveProgressChanged);
+			this.bgw_Save.WorkerReportsProgress = true;
+			this.bgw_Save.WorkerSupportsCancellation = true;
+			this.bgw_Save.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Bgw_saveDoWork);
+			this.bgw_Save.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Bgw_saveProgressChanged);
 			// 
-			// chk_cursor
+			// chk_Cursor
 			// 
-			this.chk_cursor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.chk_cursor.Checked = true;
-			this.chk_cursor.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chk_cursor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.chk_cursor.Location = new System.Drawing.Point(258, 22);
-			this.chk_cursor.Name = "chk_cursor";
-			this.chk_cursor.Size = new System.Drawing.Size(76, 20);
-			this.chk_cursor.TabIndex = 19;
-			this.chk_cursor.Text = "Cursor";
-			this.chk_cursor.UseVisualStyleBackColor = true;
+			this.chk_Cursor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.chk_Cursor.Checked = true;
+			this.chk_Cursor.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chk_Cursor.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.chk_Cursor.Location = new System.Drawing.Point(258, 22);
+			this.chk_Cursor.Name = "chk_Cursor";
+			this.chk_Cursor.Size = new System.Drawing.Size(76, 20);
+			this.chk_Cursor.TabIndex = 19;
+			this.chk_Cursor.Text = "Cursor";
+			this.chk_Cursor.UseVisualStyleBackColor = true;
 			// 
 			// Form_Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(339, 240);
-			this.Controls.Add(this.chk_sound);
-			this.Controls.Add(this.chk_cursor);
-			this.Controls.Add(this.link_ffmpeg);
-			this.Controls.Add(this.link_github);
-			this.Controls.Add(this.numeric_fps);
+			this.Controls.Add(this.chk_Sound);
+			this.Controls.Add(this.chk_Cursor);
+			this.Controls.Add(this.link_FFMpeg);
+			this.Controls.Add(this.link_GitHub);
+			this.Controls.Add(this.num_FPS);
 			this.Controls.Add(this.label_fps);
-			this.Controls.Add(this.link_author);
-			this.Controls.Add(this.btn_settings);
-			this.Controls.Add(this.chk_top_most);
-			this.Controls.Add(this.btn_record);
-			this.Controls.Add(this.panel_record);
+			this.Controls.Add(this.link_Author);
+			this.Controls.Add(this.btn_Settings);
+			this.Controls.Add(this.chk_Top_Most);
+			this.Controls.Add(this.btn_Record);
+			this.Controls.Add(this.Panel_Record);
 			this.DoubleBuffered = true;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
@@ -263,26 +263,26 @@ namespace WebMCam
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.Move += new System.EventHandler(this.Form_MainMove);
 			this.Resize += new System.EventHandler(this.MainFormResize);
-			this.panel_record.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.numeric_fps)).EndInit();
+			this.Panel_Record.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.num_FPS)).EndInit();
 			this.ResumeLayout(false);
 
             }
-            private System.Windows.Forms.CheckBox chk_sound;
-            private System.Windows.Forms.Timer timer_elapsed;
-            private System.Windows.Forms.NumericUpDown numeric_fps;
+            private System.Windows.Forms.CheckBox chk_Sound;
+            private System.Windows.Forms.Timer timer_Elapsed;
+            private System.Windows.Forms.NumericUpDown num_FPS;
             private System.Windows.Forms.Label label_fps;
-            private System.Windows.Forms.LinkLabel link_author;
-            private System.Windows.Forms.Button btn_settings;
-            private System.Windows.Forms.CheckBox chk_top_most;
-            private System.Windows.Forms.Button btn_record;
-            private System.Windows.Forms.Panel panel_record;
-        private System.Windows.Forms.LinkLabel link_github;
-        private System.Windows.Forms.LinkLabel link_ffmpeg;
-        private System.Windows.Forms.Timer timer_save;
-        private System.ComponentModel.BackgroundWorker bgw_capture;
-        private System.ComponentModel.BackgroundWorker bgw_save;
-        private System.Windows.Forms.ProgressBar progress_bar;
-		private System.Windows.Forms.CheckBox chk_cursor;
+            private System.Windows.Forms.LinkLabel link_Author;
+            private System.Windows.Forms.Button btn_Settings;
+            private System.Windows.Forms.CheckBox chk_Top_Most;
+            private System.Windows.Forms.Button btn_Record;
+            private System.Windows.Forms.Panel Panel_Record;
+        private System.Windows.Forms.LinkLabel link_GitHub;
+        private System.Windows.Forms.LinkLabel link_FFMpeg;
+        private System.Windows.Forms.Timer timer_Save;
+        private System.ComponentModel.BackgroundWorker bgw_Capture;
+        private System.ComponentModel.BackgroundWorker bgw_Save;
+        private System.Windows.Forms.ProgressBar Progress_Bar;
+		private System.Windows.Forms.CheckBox chk_Cursor;
       }
 }
