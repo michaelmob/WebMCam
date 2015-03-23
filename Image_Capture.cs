@@ -50,5 +50,35 @@ namespace WebMCam
 		public static Bitmap screen(bool cursor = true, PixelFormat pixel_format = PixelFormat.Format32bppRgb) {
 			return region(Screen.PrimaryScreen.Bounds, cursor, pixel_format);
 		}
+
+		public static PixelFormat Pixel_Format(string Format)
+		{
+			switch (Format)
+			{
+				case "16bppRgb555":
+					return PixelFormat.Format16bppRgb555;
+				case "24bppRgb":
+					return PixelFormat.Format24bppRgb;
+				case "48bppRgb":
+					return PixelFormat.Format48bppRgb;
+				default:
+					return PixelFormat.Format32bppRgb;
+			}
+		}
+
+		public static ImageFormat Image_Format(string Format)
+		{
+			switch (Format)
+			{
+				case "jpg":
+					return ImageFormat.Jpeg;
+				case "bmp":
+					return ImageFormat.Bmp;
+
+				case "png":
+				default:
+					return ImageFormat.Png;
+			}
+		}
 	}
 }

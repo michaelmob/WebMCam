@@ -11,17 +11,26 @@ using Amib.Threading;
 namespace WebMCam
 {
     public partial class Form_Main : Form
-    {
+	{
+		static int fps;
         static List<Bitmap> frames = new List<Bitmap>();
         static int frame_count, saved_frame_count;
         int time_elapsed;
-        const double version = 1.35;
-        string temp_storage, image_format;
+        const double version = 1.40;
+        string temp_storage;
         Rectangle record_rect;
         Boolean recording, saving;
+
+		
+		PixelFormat Pixel_Format;
+		ImageFormat Image_Format;
+		string Image_Extension;
+
+		// Amib Smart Thread Pool
         static SmartThreadPool threadPool = new SmartThreadPool();
 
         public Form_Settings settings;
+		Audio_Capture Audio_Capture = new Audio_Capture();
 
         public Form_Main()
         {
@@ -30,6 +39,7 @@ namespace WebMCam
 
         void MainFormLoad(object sender, EventArgs e)
         {
+
             // Load Settings
             settings = new Form_Settings();
 
@@ -72,44 +82,11 @@ namespace WebMCam
             this.TopMost = chk_top_most.Checked;
         }
 
-        ImageFormat image_format_format()
-        {
-            image_format = settings.fmt_image;
-
-            switch (image_format)
-            {
-                case "jpg":
-                    return ImageFormat.Jpeg;
-                case "bmp":
-                    return ImageFormat.Bmp;
-                default:
-                    return ImageFormat.Png;
-            }
-        }
-
-        PixelFormat pixel_format_format()
-        {
-            switch (settings.fmt_pixel)
-            {
-                case "16bppRgb555":
-                    return PixelFormat.Format16bppRgb555;
-                case "24bppRgb":
-                    return PixelFormat.Format24bppRgb;
-                case "48bppRgb":
-                    return PixelFormat.Format48bppRgb;
-                default:
-                    return PixelFormat.Format32bppRgb;
-            }
-        }
-
         void bgw_captureDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            int fps = Convert.ToInt32(e.Argument);
-            var format = pixel_format_format();
-
             while (timer_elapsed.Enabled)
             {
-                threadPool.QueueWorkItem(new Amib.Threading.Func<PixelFormat, int>(capture_screen), format);
+                threadPool.QueueWorkItem(new Amib.Threading.Func<PixelFormat, int>(capture_screen), Pixel_Format);
                 Thread.Sleep(1000 / fps);
             }
         }
@@ -118,22 +95,25 @@ namespace WebMCam
         {
             try
             {
-                frames.Add(Image_Capture.region(record_rect, chk_cursor.Checked, format));
+				frames.Add(Image_Capture.region(record_rect, chk_cursor.Checked, format));
                 frame_count++;
             }
-            catch (Exception ex)
+            catch
             {
-                Debug.WriteLine(ex.Message);
+				frames.RemoveAt(1);
+				Debug.WriteLine("Out of memory!");
+				GC.Collect();
+				//MessageBox.Show("Ran out of memory!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             return 0;
         }
 
         void Bgw_saveDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var format = image_format_format();
-
             while (saving || timer_elapsed.Enabled)
             {
+
                 if (frames.Count > 1)
                 {
                     try
@@ -141,22 +121,24 @@ namespace WebMCam
                         // Save First Frame
                         frames[0].Save(
                             Path.Combine(
-                                temp_storage, string.Format("{0}.{1}", saved_frame_count + 1, image_format)
+                                temp_storage, string.Format("{0}.{1}", saved_frame_count + 1, Image_Extension)
                             ),
-                            format
+							Image_Format
                         );
 
-                        // Remove Frame now
-                        frames.RemoveAt(0);
-                        saved_frame_count++;
-                    }
+						// Remove Frame now
+						frames.RemoveAt(0);
+						saved_frame_count++;
+					}
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
                     }
                 }
-                else if (!timer_elapsed.Enabled)
-                    saving = false;
+				else if (!timer_elapsed.Enabled)
+				{
+					saving = false;
+				}
             }
         }
 
@@ -165,7 +147,7 @@ namespace WebMCam
             progress_bar.Value = e.ProgressPercentage;
         }
 
-        void start_record(int fps)
+        void start_record(int _fps)
         {
             // Set record rectangle
             Form_MainMove(null, null);
@@ -180,7 +162,7 @@ namespace WebMCam
             }
 
             temp_storage = Path.Combine(
-                settings.loc_temp, string.Format("WebMCam-{0}\\" ,DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond)
+                settings.loc_temp, string.Format("WebMCam-{0}\\", DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond)
             );
 
             // If our temp dir doesn't exist we need to create it
@@ -188,25 +170,47 @@ namespace WebMCam
                 Directory.CreateDirectory(temp_storage);
             
             int threads = Convert.ToInt32(settings.rec_threads);
-            threadPool.Concurrency = threads;
+			threadPool.Concurrency = threads;
+			
+			// FPS
+			fps = _fps;
 
+			// Framerate
             frame_count = 0;
             saved_frame_count = 0;
             time_elapsed = 1;
-            saving = true;
 
+			// Set Formats
+			Image_Format = Image_Capture.Image_Format(settings.fmt_image);
+			Pixel_Format = Image_Capture.Pixel_Format(settings.fmt_pixel);
+			Image_Extension = settings.fmt_image;
+
+			// Set Saving & Recording variables
+			saving = true;
+			recording = true;
+
+			// Record Screen
             timer_elapsed.Start();
-            bgw_capture.RunWorkerAsync(fps);
+            bgw_capture.RunWorkerAsync();
             bgw_save.RunWorkerAsync();
+
+			// Record Audio
+			if(chk_sound.Checked)
+				this.Audio_Capture.Start(Path.Combine(temp_storage, "audio.wav"));
         }
 
         void stop_record()
         {
-            threadPool.Concurrency = 0;
+			recording = false;
 
+			// Stop Screen Recording
+			threadPool.Concurrency = 0;
             timer_elapsed.Stop();
             bgw_capture.CancelAsync();
             progress_bar.Value = 0;
+
+			// Stop Sound Recording
+			this.Audio_Capture.Stop();
 
             progress_bar.Visible = true;
             while (saving)
@@ -243,7 +247,9 @@ namespace WebMCam
                             .Replace("%bitrate%", Convert.ToString((3 * 8192) / time_elapsed) + "k")
                             .Replace("%format%", settings.fmt_image)
                             .Replace("%rfps%", Convert.ToString(frame_count / time_elapsed))
-                            .Replace("%fps%", Convert.ToString(numeric_fps.Value)) + " \"" + save_dialog.FileName + "\"",
+							.Replace("%audio%", chk_sound.Checked ? "-i audio.wav" : "")
+                            .Replace("%fps%", Convert.ToString(numeric_fps.Value))
+							+ " \"" + save_dialog.FileName + "\"",
                         frame_count
                     );
 
@@ -294,8 +300,6 @@ namespace WebMCam
                 start_record(Convert.ToInt32(numeric_fps.Value));
                 btn_record.Text = "Stop";
             }
-
-            recording = !recording;
         }
 
         void Btn_settingsClick(object sender, EventArgs e)
@@ -306,11 +310,12 @@ namespace WebMCam
         }
 
         void Timer_elapsedTick(object sender, EventArgs e)
-        {
+		{
+			fps = frame_count / time_elapsed;
             this.Text = string.Format(
                 "{0}s, RECORDING | {3} fps ({1} frames / {2} saved) (Threads: {4})",
                 time_elapsed, frame_count, saved_frame_count,
-                frame_count / time_elapsed, threadPool.ActiveThreads
+                fps, threadPool.ActiveThreads
             );
             time_elapsed += 1;
         }

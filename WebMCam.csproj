@@ -10,7 +10,8 @@
     <AssemblyName>WebMCam</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <ApplicationIcon>FireRune.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <NoWin32Manifest>False</NoWin32Manifest>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -54,8 +55,13 @@
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="SmartThreadPool">
-      <HintPath>.\SmartThreadPool.dll</HintPath>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool, Version=2.2.3.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\SmartThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -73,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio_Capture.cs" />
     <Compile Include="Form_Frames.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="FireRune.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form_Frames.resx">
@@ -122,6 +128,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SmartThreadPool.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

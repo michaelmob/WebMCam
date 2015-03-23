@@ -25,7 +25,8 @@ namespace WebMCam
 		
 		void Form_OutputLoad(object sender, EventArgs e)
 		{
-			
+			this.BringToFront();
+
 			// Redirect all info
 			var ffmpeg = new ProcessStartInfo();
 			
@@ -47,8 +48,8 @@ namespace WebMCam
 			process.ErrorDataReceived += process_DataReceived;
 			
 			// Allow for files to finish saving, 0.5s will be barely noticeable
-			Thread.Sleep(500);		
-			
+			Thread.Sleep(500);
+
 			process.Start();
 			
 			process.BeginOutputReadLine();
@@ -90,7 +91,9 @@ namespace WebMCam
 				progress_bar.Value = Convert.ToInt32(
 					((float)Convert.ToInt32(line.Replace(" ", "").Substring(6).Split('f')[0]) / (float)frame_count) * 100
 				);
-			} else if (line.StartsWith("video:")) {
+			}
+			else if (line.StartsWith("video:"))
+			{
 				progress_bar.Value = 100;
 				open.Enabled = true;
 				cancel.Text = "Done";

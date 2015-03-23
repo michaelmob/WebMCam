@@ -29,7 +29,7 @@ namespace WebMCam
             // Set Variables
             loc_ffmpeg = Ini_File.Exists("Loc", "ffmpeg", Path.Combine(Environment.CurrentDirectory, "ffmpeg.exe"));
             loc_temp = Ini_File.Exists("Loc", "temp", Path.GetTempPath());
-            cmd_args = Ini_File.Exists("Cmd", "args", "-i \"%d.%format%\" -r %fps% -b:v 1M -fs 3M");
+            cmd_args = Ini_File.Exists("Cmd", "args", "-i \"%d.%format%\" %audio% -r %fps% -b:v 1M -fs 3M");
             fmt_image = Ini_File.Exists("Fmt", "image", "png");
             fmt_pixel = Ini_File.Exists("Fmt", "pixel", "32bppRgb");
             fmt_delete =  Ini_File.Exists("Fmt", "delete", "True");
