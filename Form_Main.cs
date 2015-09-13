@@ -220,44 +220,45 @@ namespace WebMCam
             }
 
             this.Visible = false;
-
+            bool Save_Frames = true;
 			if (!chk_Sound.Checked)
 			{
 				Form_Frames Frames_Form = new Form_Frames(Temp_Storage, Settings.fmt_image);
-				bool Save_Frames = Frames_Form.ShowDialog() == DialogResult.OK;
+				Save_Frames = Frames_Form.ShowDialog() == DialogResult.OK;
 			}
+            if (Save_Frames) //Save only if there is frames
+            {
+                // Show dialog and only continue if OK.
+                var Save_Dialog = new SaveFileDialog();
+                Save_Dialog.Title = "Select a location and name for your webm";
+                Save_Dialog.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
 
-			// Show dialog and only continue if OK.
-			var Save_Dialog = new SaveFileDialog();
-			Save_Dialog.Title = "Select a location and name for your webm";
-			Save_Dialog.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
+                if (Save_Dialog.ShowDialog() == DialogResult.OK)
+                {
+                    // The SaveFileDialog handled overwrite requesting
+                    if (File.Exists(Save_Dialog.FileName))
+                        File.Delete(Save_Dialog.FileName);
 
-			if (Save_Dialog.ShowDialog() == DialogResult.OK)
-			{
-				// The SaveFileDialog handled overwrite requesting
-				if (File.Exists(Save_Dialog.FileName))
-					File.Delete(Save_Dialog.FileName);
+                    Form_Output form_output = new Form_Output(
+                        Temp_Storage,
+                        Settings.loc_ffmpeg,
+                        Save_Dialog.FileName,
+                        Settings.cmd_args
+                            .Replace("%temp%", "")
+                            .Replace("%duration%", Convert.ToString(Time_Elapsed + 1))
+                            .Replace("%bitrate%", Convert.ToString((3 * 8192) / Time_Elapsed) + "k")
+                            .Replace("%format%", Settings.fmt_image)
+                            .Replace("%rfps%", Convert.ToString(Frame_Count / Time_Elapsed))
+                            .Replace("%audio%", chk_Sound.Checked ? "-i audio.wav" : "")
+                            .Replace("%fps%", Convert.ToString(num_FPS.Value))
+                            + " \"" + Save_Dialog.FileName + "\"",
+                        Frame_Count
+                    );
 
-				Form_Output form_output = new Form_Output(
-					Temp_Storage,
-					Settings.loc_ffmpeg,
-					Save_Dialog.FileName,
-					Settings.cmd_args
-						.Replace("%temp%", "")
-						.Replace("%duration%", Convert.ToString(Time_Elapsed + 1))
-						.Replace("%bitrate%", Convert.ToString((3 * 8192) / Time_Elapsed) + "k")
-						.Replace("%format%", Settings.fmt_image)
-						.Replace("%rfps%", Convert.ToString(Frame_Count / Time_Elapsed))
-						.Replace("%audio%", chk_Sound.Checked ? "-i audio.wav" : "")
-						.Replace("%fps%", Convert.ToString(num_FPS.Value))
-						+ " \"" + Save_Dialog.FileName + "\"",
-					Frame_Count
-				);
-
-				form_output.ShowDialog();
-				form_output.BringToFront();
-			}
-
+                    form_output.ShowDialog();
+                    form_output.BringToFront();
+                }
+            }
             // Delete our temp storage folder?
             if (Settings.fmt_delete == "True")
                 Directory.Delete(Temp_Storage, true);
