@@ -7,30 +7,39 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Amib.Threading;
+using System.Runtime.InteropServices;
 
 namespace WebMCam
 {
     public partial class Form_Main : Form
-	{
-		static int FPS;
+    {
+        static int FPS;
         static List<Bitmap> Frames = new List<Bitmap>();
         static int Frame_Count, Saved_Frame_Count;
         int Time_Elapsed;
         const double Version = 1.40;
         string Temp_Storage;
-        Rectangle Record_Rectangle;
-        Boolean Is_Recording, Is_Saving;
+        Rectangle Record_Rectangle, Desktop_Rectangle;
+        Boolean Is_Recording, Is_Saving, Follow_Mouse = false;
+        //Native methods for global hotkey
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
 
-		
-		PixelFormat Pixel_Format;
-		ImageFormat Image_Format;
-		string Image_Extension;
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-		// Amib Smart Thread Pool
+        PixelFormat Pixel_Format;
+        ImageFormat Image_Format;
+        string Image_Extension;
+
+        // Amib Smart Thread Pool
         static SmartThreadPool Thread_Pool = new SmartThreadPool();
 
         public Form_Settings Settings;
-		Audio_Capture Audio_Capture = new Audio_Capture();
+        Audio_Capture Audio_Capture = new Audio_Capture();
+        private int lastX;
+        private int lastY;
+        private int offsetY;
 
         public Form_Main()
         {
@@ -63,6 +72,8 @@ namespace WebMCam
 
             // Hit the method so the title sets the size
             MainFormResize(sender, e);
+            //Register Hotkey
+            RegisterHotKey(this.Handle, 0x9724, (int)KeyModifier.Control, (int)Keys.F12);
         }
 
         void MainFormResize(object sender, EventArgs e)
@@ -95,25 +106,54 @@ namespace WebMCam
         {
             try
             {
-				Frames.Add(Image_Capture.region(Record_Rectangle, chk_Cursor.Checked, format));
+                Frames.Add(Image_Capture.region(Record_Rectangle, chk_Cursor.Checked, format));
                 Frame_Count++;
             }
             catch
             {
-				Frames.RemoveAt(1);
-				Debug.WriteLine("Out of memory!");
-				GC.Collect();
-				//MessageBox.Show("Ran out of memory!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Frames.RemoveAt(1);
+                Debug.WriteLine("Out of memory!");
+                GC.Collect();
+                //MessageBox.Show("Ran out of memory!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return 0;
         }
 
+        void Bgw_mouseFollowWork(object sender, System.ComponentModel.DoWorkEventArgs e) {
+            while (timer_Elapsed.Enabled||Is_Recording)
+            {
+                if (Follow_Mouse) //Code for mouse following
+                {
+                    var mousePoint = MousePosition;
+                    var midX = Record_Rectangle.Width / 2;
+                    var newX = mousePoint.X - midX;
+                    var maxX = Desktop_Rectangle.Width - Record_Rectangle.Width - 8;
+                    if (newX != this.lastX)
+                        this.Invoke((MethodInvoker)(() =>
+                        {
+                            if (!(this.Disposing || this.IsDisposed))
+                                this.Left = newX < -8 ? -8 : newX > maxX ? maxX : newX;
+                        }));
+                    this.lastX = newX;
+                    var midY = Record_Rectangle.Height / 2;
+                    var newY = mousePoint.Y - midY - Height + Record_Rectangle.Height;
+                    var maxY = Desktop_Rectangle.Height - Record_Rectangle.Height + offsetY;
+                    if (newY != this.lastY)
+                        this.Invoke((MethodInvoker)(() =>
+                        {
+                            if (!(this.Disposing || this.IsDisposed))
+                                this.Top = newY < offsetY ? offsetY : newY > maxY ? maxY : newY;
+                        }));
+                    this.lastY = newY;
+                }
+            }
+        }
+
         void Bgw_saveDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             while (Is_Saving || timer_Elapsed.Enabled)
-            {
-
+            {                
                 if (Frames.Count > 1)
                 {
                     try
@@ -123,22 +163,22 @@ namespace WebMCam
                             Path.Combine(
                                 Temp_Storage, string.Format("{0}.{1}", Saved_Frame_Count + 1, Image_Extension)
                             ),
-							Image_Format
+                            Image_Format
                         );
 
-						// Remove Frame now
-						Frames.RemoveAt(0);
-						Saved_Frame_Count++;
-					}
+                        // Remove Frame now
+                        Frames.RemoveAt(0);
+                        Saved_Frame_Count++;
+                    }
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
                     }
                 }
-				else if (!timer_Elapsed.Enabled)
-				{
-					Is_Saving = false;
-				}
+                else if (!timer_Elapsed.Enabled)
+                {
+                    Is_Saving = false;
+                }
             }
         }
 
@@ -168,48 +208,50 @@ namespace WebMCam
             // If our temp dir doesn't exist we need to create it
             if (!Directory.Exists(Temp_Storage))
                 Directory.CreateDirectory(Temp_Storage);
-            
-            int threads = Convert.ToInt32(Settings.rec_threads);
-			Thread_Pool.Concurrency = threads;
-			
-			// FPS
-			FPS = _fps;
 
-			// Framerate
+            int threads = Convert.ToInt32(Settings.rec_threads);
+            Thread_Pool.Concurrency = threads;
+
+            // FPS
+            FPS = _fps;
+
+            // Framerate
             Frame_Count = 0;
             Saved_Frame_Count = 0;
             Time_Elapsed = 1;
 
-			// Set Formats
-			Image_Format = Image_Capture.Image_Format(Settings.fmt_image);
-			Pixel_Format = Image_Capture.Pixel_Format(Settings.fmt_pixel);
-			Image_Extension = Settings.fmt_image;
+            // Set Formats
+            Image_Format = Image_Capture.Image_Format(Settings.fmt_image);
+            Pixel_Format = Image_Capture.Pixel_Format(Settings.fmt_pixel);
+            Image_Extension = Settings.fmt_image;
 
-			// Set Saving & Recording variables
-			Is_Saving = true;
-			Is_Recording = true;
+            // Set Saving & Recording variables
+            Is_Saving = true;
+            Is_Recording = true;
 
-			// Record Screen
+            // Record Screen
             timer_Elapsed.Start();
             bgw_Capture.RunWorkerAsync();
             bgw_Save.RunWorkerAsync();
+            bgw_MouseFollow.RunWorkerAsync();
 
-			// Record Audio
-			if(chk_Sound.Checked)
-				this.Audio_Capture.Start(Path.Combine(Temp_Storage, "audio.wav"));
+            // Record Audio
+            if (chk_Sound.Checked)
+                this.Audio_Capture.Start(Path.Combine(Temp_Storage, "audio.wav"));
         }
 
         void Stop_Record()
         {
-			Is_Recording = false;
+            Is_Recording = false;
 
-			// Stop Sound Recording
-			this.Audio_Capture.Stop();
+            // Stop Sound Recording
+            this.Audio_Capture.Stop();
 
-			// Stop Screen Recording
-			Thread_Pool.Concurrency = 0;
+            // Stop Screen Recording
+            Thread_Pool.Concurrency = 0;
             timer_Elapsed.Stop();
             bgw_Capture.CancelAsync();
+            bgw_MouseFollow.CancelAsync();
             Progress_Bar.Value = 0;
 
             Progress_Bar.Visible = true;
@@ -220,50 +262,75 @@ namespace WebMCam
             }
 
             this.Visible = false;
+            bool Save_Frames = true;
+            if (!chk_Sound.Checked)
+            {
+                Form_Frames Frames_Form = new Form_Frames(Temp_Storage, Settings.fmt_image);
+                Save_Frames = Frames_Form.ShowDialog() == DialogResult.OK;
+            }
+            if (Save_Frames) //Save only if there is frames
+            {
+                // Show dialog and only continue if OK.
+                var Save_Dialog = new SaveFileDialog();
+                Save_Dialog.Title = "Select a location and name for your webm";
+                Save_Dialog.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
 
-			if (!chk_Sound.Checked)
-			{
-				Form_Frames Frames_Form = new Form_Frames(Temp_Storage, Settings.fmt_image);
-				bool Save_Frames = Frames_Form.ShowDialog() == DialogResult.OK;
-			}
+                if (Save_Dialog.ShowDialog() == DialogResult.OK)
+                {
+                    // The SaveFileDialog handled overwrite requesting
+                    if (File.Exists(Save_Dialog.FileName))
+                        File.Delete(Save_Dialog.FileName);
 
-			// Show dialog and only continue if OK.
-			var Save_Dialog = new SaveFileDialog();
-			Save_Dialog.Title = "Select a location and name for your webm";
-			Save_Dialog.Filter = "WebM (*.webm)|*.webm|All files (*.*)|*.*";
+                    Form_Output form_output = new Form_Output(
+                        Temp_Storage,
+                        Settings.loc_ffmpeg,
+                        Save_Dialog.FileName,
+                        Settings.cmd_args
+                            .Replace("%temp%", "")
+                            .Replace("%duration%", Convert.ToString(Time_Elapsed + 1))
+                            .Replace("%bitrate%", Convert.ToString((3 * 8192) / Time_Elapsed) + "k")
+                            .Replace("%format%", Settings.fmt_image)
+                            .Replace("%rfps%", Convert.ToString(Frame_Count / Time_Elapsed))
+                            .Replace("%audio%", chk_Sound.Checked ? "-i audio.wav" : "")
+                            .Replace("%fps%", Convert.ToString(num_FPS.Value))
+                            + " \"" + Save_Dialog.FileName + "\"",
+                        Frame_Count
+                    );
 
-			if (Save_Dialog.ShowDialog() == DialogResult.OK)
-			{
-				// The SaveFileDialog handled overwrite requesting
-				if (File.Exists(Save_Dialog.FileName))
-					File.Delete(Save_Dialog.FileName);
-
-				Form_Output form_output = new Form_Output(
-					Temp_Storage,
-					Settings.loc_ffmpeg,
-					Save_Dialog.FileName,
-					Settings.cmd_args
-						.Replace("%temp%", "")
-						.Replace("%duration%", Convert.ToString(Time_Elapsed + 1))
-						.Replace("%bitrate%", Convert.ToString((3 * 8192) / Time_Elapsed) + "k")
-						.Replace("%format%", Settings.fmt_image)
-						.Replace("%rfps%", Convert.ToString(Frame_Count / Time_Elapsed))
-						.Replace("%audio%", chk_Sound.Checked ? "-i audio.wav" : "")
-						.Replace("%fps%", Convert.ToString(num_FPS.Value))
-						+ " \"" + Save_Dialog.FileName + "\"",
-					Frame_Count
-				);
-
-				form_output.ShowDialog();
-				form_output.BringToFront();
-			}
-
+                    form_output.ShowDialog();
+                    form_output.BringToFront();
+                }
+            }
             // Delete our temp storage folder?
             if (Settings.fmt_delete == "True")
                 Directory.Delete(Temp_Storage, true);
 
             // Restart WebMCam so no errors
             Application.Restart();
+        }
+        //Enum for the modifiers
+        enum KeyModifier
+        {
+            None = 0,
+            Alt = 1,
+            Control = 2,
+            Shift = 4,
+            WinKey = 8
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == 0x312) //Hotkey
+            {
+                Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF);
+                if (key == Keys.F12) //F12 pressed
+                {
+                    KeyModifier modifier = (KeyModifier)((int)m.LParam & 0xFFFF);
+                    if (modifier == KeyModifier.Control) //With Control
+                        Btn_recordClick(this, EventArgs.Empty); //Simulate the record button pressing
+                }
+            }
         }
 
         void Btn_recordClick(object sender, EventArgs e)
@@ -288,7 +355,7 @@ namespace WebMCam
                 this.MaximumSize = new Size(0, 0);
                 Stop_Record();
                 MainFormResize(sender, e);
-                btn_Record.Text = "Record";
+                btn_Record.Text = "Record (CTRL+F12)";
             }
             else
             {
@@ -298,7 +365,7 @@ namespace WebMCam
                 this.MinimumSize = new Size(this.Width, this.Height);
                 this.MaximumSize = new Size(this.Width, this.Height);
                 Start_Record(Convert.ToInt32(num_FPS.Value));
-                btn_Record.Text = "Stop";
+                btn_Record.Text = "Stop (CTRL+F12)";
             }
         }
 
@@ -310,8 +377,8 @@ namespace WebMCam
         }
 
         void Timer_elapsedTick(object sender, EventArgs e)
-		{
-			FPS = Frame_Count / Time_Elapsed;
+        {
+            FPS = Frame_Count / Time_Elapsed;
             this.Text = string.Format(
                 "{0}s, RECORDING | {3} fps ({1} frames / {2} saved) (Threads: {4})",
                 Time_Elapsed, Frame_Count, Saved_Frame_Count,
@@ -323,12 +390,22 @@ namespace WebMCam
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             Ini_File.Write("Frm", "size", Width + "," + Height);
+            UnregisterHotKey(this.Handle, 0x9724);
         }
 
         #region Links
         private void link_author_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://mikeserver.org/");
+        }
+
+        private void chk_Follow_Mouse_CheckedChanged(object sender, EventArgs e)
+        {
+            if (this.Follow_Mouse = chk_Follow_Mouse.Checked)
+            {
+                this.Desktop_Rectangle = Screen.PrimaryScreen.Bounds;
+                this.offsetY = Record_Rectangle.Height - (DesktopBounds).Height+8;
+            }
         }
 
         private void link_github_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

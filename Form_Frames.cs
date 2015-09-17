@@ -57,21 +57,29 @@ namespace WebMCam
                 using (var temp_bitmap = new Bitmap(files[list_frames.SelectedIndex].FullName))
                     picture_frame.Image = new Bitmap(temp_bitmap);
 		}
-		
-		void DeleteToolStripMenuItemClick(object sender, EventArgs e)
-		{
-            string path = files[list_frames.SelectedIndex].FullName;
 
-            // Delete File
-            if (File.Exists(path))
-                File.Delete(path);
+        private void DeleteToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            //All selected files
+            var Selected = list_frames.SelectedIndices;
+            //Count them
+            int Count = Selected.Count;
+            //Remove all of them
+            while (Count-- != 0)
+            {
+                string path = files[Selected[Count]].FullName;
 
-            // Remove from FileInfo list
-            files.RemoveAt(list_frames.SelectedIndex);
+                // Delete File
+                if (File.Exists(path))
+                    File.Delete(path);
 
-            // Remove from List
-            list_frames.Items.RemoveAt(list_frames.SelectedIndex);
-		}
+                // Remove from FileInfo list
+                files.RemoveAt(Selected[Count]);
+
+                // Remove from List
+                list_frames.Items.RemoveAt(Selected[Count]);
+            }
+        }
 
         void List_framesKeyDown(object sender, KeyEventArgs e)
         {
@@ -95,8 +103,8 @@ namespace WebMCam
                 );
                 name++;
             }
-
-            this.DialogResult = DialogResult.OK;
+            if(files.Any()) //Save only if there is frames
+                this.DialogResult = DialogResult.OK;
 			this.Close();
 		}
 	}
