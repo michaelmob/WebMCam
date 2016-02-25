@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.buttonToggle = new System.Windows.Forms.Button();
             this.displayBox = new System.Windows.Forms.PictureBox();
-            this.checkBoxShowCursor = new System.Windows.Forms.CheckBox();
+            this.checkBoxDrawCursor = new System.Windows.Forms.CheckBox();
             this.numericUpDownFramerate = new System.Windows.Forms.NumericUpDown();
             this.labelFPS = new System.Windows.Forms.Label();
             this.buttonOptions = new System.Windows.Forms.Button();
@@ -45,7 +45,7 @@
             // 
             this.buttonToggle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonToggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonToggle.Location = new System.Drawing.Point(304, 76);
+            this.buttonToggle.Location = new System.Drawing.Point(302, 76);
             this.buttonToggle.Name = "buttonToggle";
             this.buttonToggle.Size = new System.Drawing.Size(110, 35);
             this.buttonToggle.TabIndex = 0;
@@ -62,25 +62,25 @@
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.displayBox.Location = new System.Drawing.Point(2, 2);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(300, 200);
+            this.displayBox.Size = new System.Drawing.Size(298, 243);
             this.displayBox.TabIndex = 1;
             this.displayBox.TabStop = false;
             // 
-            // checkBoxShowCursor
+            // checkBoxDrawCursor
             // 
-            this.checkBoxShowCursor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBoxShowCursor.AutoSize = true;
-            this.checkBoxShowCursor.Location = new System.Drawing.Point(308, 27);
-            this.checkBoxShowCursor.Name = "checkBoxShowCursor";
-            this.checkBoxShowCursor.Size = new System.Drawing.Size(86, 17);
-            this.checkBoxShowCursor.TabIndex = 2;
-            this.checkBoxShowCursor.Text = "Show Cursor";
-            this.checkBoxShowCursor.UseVisualStyleBackColor = true;
+            this.checkBoxDrawCursor.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxDrawCursor.AutoSize = true;
+            this.checkBoxDrawCursor.Location = new System.Drawing.Point(306, 27);
+            this.checkBoxDrawCursor.Name = "checkBoxDrawCursor";
+            this.checkBoxDrawCursor.Size = new System.Drawing.Size(84, 17);
+            this.checkBoxDrawCursor.TabIndex = 2;
+            this.checkBoxDrawCursor.Text = "Draw Cursor";
+            this.checkBoxDrawCursor.UseVisualStyleBackColor = true;
             // 
             // numericUpDownFramerate
             // 
             this.numericUpDownFramerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownFramerate.Location = new System.Drawing.Point(335, 50);
+            this.numericUpDownFramerate.Location = new System.Drawing.Point(333, 50);
             this.numericUpDownFramerate.Maximum = new decimal(new int[] {
             200,
             0,
@@ -103,7 +103,7 @@
             // labelFPS
             // 
             this.labelFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelFPS.Location = new System.Drawing.Point(305, 50);
+            this.labelFPS.Location = new System.Drawing.Point(303, 50);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(33, 18);
             this.labelFPS.TabIndex = 4;
@@ -114,7 +114,7 @@
             // 
             this.buttonOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOptions.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonOptions.Location = new System.Drawing.Point(304, 117);
+            this.buttonOptions.Location = new System.Drawing.Point(302, 117);
             this.buttonOptions.Name = "buttonOptions";
             this.buttonOptions.Size = new System.Drawing.Size(110, 35);
             this.buttonOptions.TabIndex = 5;
@@ -128,7 +128,7 @@
             this.checkBoxTopMost.AutoSize = true;
             this.checkBoxTopMost.Checked = true;
             this.checkBoxTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxTopMost.Location = new System.Drawing.Point(308, 4);
+            this.checkBoxTopMost.Location = new System.Drawing.Point(306, 4);
             this.checkBoxTopMost.Name = "checkBoxTopMost";
             this.checkBoxTopMost.Size = new System.Drawing.Size(96, 17);
             this.checkBoxTopMost.TabIndex = 6;
@@ -139,7 +139,7 @@
             // linkGithub
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkGithub.Location = new System.Drawing.Point(304, 179);
+            this.linkGithub.Location = new System.Drawing.Point(302, 222);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 7;
@@ -152,16 +152,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(416, 204);
-            this.Controls.Add(this.linkGithub);
+            this.ClientSize = new System.Drawing.Size(414, 247);
             this.Controls.Add(this.checkBoxTopMost);
             this.Controls.Add(this.numericUpDownFramerate);
             this.Controls.Add(this.buttonOptions);
             this.Controls.Add(this.labelFPS);
-            this.Controls.Add(this.checkBoxShowCursor);
+            this.Controls.Add(this.checkBoxDrawCursor);
             this.Controls.Add(this.displayBox);
             this.Controls.Add(this.buttonToggle);
+            this.Controls.Add(this.linkGithub);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "FormMain";
             this.Text = "WebMCam 2.0";
             this.TopMost = true;
@@ -180,7 +181,7 @@
 
         private System.Windows.Forms.Button buttonToggle;
         private System.Windows.Forms.PictureBox displayBox;
-        private System.Windows.Forms.CheckBox checkBoxShowCursor;
+        private System.Windows.Forms.CheckBox checkBoxDrawCursor;
         private System.Windows.Forms.NumericUpDown numericUpDownFramerate;
         private System.Windows.Forms.Label labelFPS;
         private System.Windows.Forms.Button buttonOptions;
