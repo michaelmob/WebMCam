@@ -1,9 +1,5 @@
-obj/*
-bin/*
-obj\*
-bin\*
-*.Cache
-*.txt
+bin/
+obj/
+.vs/
 *.exe
-*.pdb
-*.resources
+*.cache
