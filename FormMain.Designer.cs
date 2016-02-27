@@ -95,7 +95,7 @@
             this.numericUpDownFramerate.Size = new System.Drawing.Size(79, 20);
             this.numericUpDownFramerate.TabIndex = 3;
             this.numericUpDownFramerate.Value = new decimal(new int[] {
-            15,
+            25,
             0,
             0,
             0});
@@ -169,7 +169,7 @@
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.Move += new System.EventHandler(this.FormMain_Move);
-            this.Resize += new System.EventHandler(this.FormMain_Resize);
+            this.Resize += new System.EventHandler(this.FormMain_Move);
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFramerate)).EndInit();
             this.ResumeLayout(false);
