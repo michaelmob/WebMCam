@@ -6,14 +6,17 @@ https://github.com/TheTarkus/WebMCam/releases
 
 Capture frames in real-time and save them as WebM.
 
-Main Form<br/>
+<b>Main Form</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormMain.png)
 
-Select/Remove Frames<br/>
+<b>Select/Remove Frames</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormOptions.png)
 
-Options Form<br/>
+<b>Options Form</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormShowFrames.png)
 
-WebM Examples:<br/>
-https://github.com/thetarkus/WebMCam/tree/master/Previe
+<b>WebM Examples:</b><br/>
+https://github.com/thetarkus/WebMCam/tree/master/Preview
+
+Recording massive resolutions with high framerate may not turn out as expected!
+Do not open an issue about this!
