@@ -23,7 +23,7 @@ namespace WebMCam
                 settings.FFmpegPath = "ffmpeg.exe";
 
             if (settings.FFmpegArguments.Length < 1)
-                settings.FFmpegArguments = "-framerate {rfps} -i {format} {audio} -c:v libvpx -t {duration} -r {fps} {output}";
+                settings.FFmpegArguments = "-framerate {rfps} -i {format} {audio} -c:v libvpx -r {fps} {output}";
 
             if (settings.ImageFormat.Length < 1)
                 settings.ImageFormat = "PNG";
