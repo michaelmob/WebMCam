@@ -39,6 +39,9 @@
     <ApplicationIcon>Resources\FireRune.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio">
+      <HintPath>Resources\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,15 +67,32 @@
     <Compile Include="FormOptions.Designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProcess.Designer.cs">
+      <DependentUpon>FormProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShowFrames.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShowFrames.Designer.cs">
+      <DependentUpon>FormShowFrames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FFMpegWrapper.cs" />
     <Compile Include="Recorder.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormOptions.resx">
       <DependentUpon>FormOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProcess.resx">
+      <DependentUpon>FormProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShowFrames.resx">
+      <DependentUpon>FormShowFrames.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -98,7 +118,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\ffmpeg.exe" />
     <Content Include="Resources\FireRune.ico" />
+    <Content Include="Resources\NAudio.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

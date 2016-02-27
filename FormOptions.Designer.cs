@@ -28,81 +28,123 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxFFmpegArgs = new System.Windows.Forms.TextBox();
-            this.labelFFmpegArgs = new System.Windows.Forms.Label();
+            this.textBoxFFmpegArguments = new System.Windows.Forms.TextBox();
+            this.labelFFmpegArguments = new System.Windows.Forms.Label();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.labelFFmpegLocation = new System.Windows.Forms.Label();
-            this.textBoxFFmpegLocation = new System.Windows.Forms.TextBox();
+            this.labelFFmpegPath = new System.Windows.Forms.Label();
+            this.textBoxFFmpegPath = new System.Windows.Forms.TextBox();
+            this.buttonBrowse = new System.Windows.Forms.Button();
+            this.labelImageFormat = new System.Windows.Forms.Label();
+            this.comboBoxImageFormat = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
-            // textBoxFFmpegArgs
+            // textBoxFFmpegArguments
             // 
-            this.textBoxFFmpegArgs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxFFmpegArguments.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFFmpegArgs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxFFmpegArgs.Location = new System.Drawing.Point(3, 59);
-            this.textBoxFFmpegArgs.Multiline = true;
-            this.textBoxFFmpegArgs.Name = "textBoxFFmpegArgs";
-            this.textBoxFFmpegArgs.Size = new System.Drawing.Size(283, 159);
-            this.textBoxFFmpegArgs.TabIndex = 0;
-            this.textBoxFFmpegArgs.Text = "{cursor}\r\n-f gdigrab\r\n-r {fps}\r\n-i desktop\r\n{size}\r\n{video}\r\n-b:v 1M\r\n-fs 3M\r\n-y " +
-    "{output}";
+            this.textBoxFFmpegArguments.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFFmpegArguments.Location = new System.Drawing.Point(3, 59);
+            this.textBoxFFmpegArguments.Multiline = true;
+            this.textBoxFFmpegArguments.Name = "textBoxFFmpegArguments";
+            this.textBoxFFmpegArguments.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.textBoxFFmpegArguments.Size = new System.Drawing.Size(319, 40);
+            this.textBoxFFmpegArguments.TabIndex = 0;
+            this.textBoxFFmpegArguments.WordWrap = false;
             // 
-            // labelFFmpegArgs
+            // labelFFmpegArguments
             // 
-            this.labelFFmpegArgs.AutoSize = true;
-            this.labelFFmpegArgs.Location = new System.Drawing.Point(3, 43);
-            this.labelFFmpegArgs.Name = "labelFFmpegArgs";
-            this.labelFFmpegArgs.Size = new System.Drawing.Size(72, 13);
-            this.labelFFmpegArgs.TabIndex = 1;
-            this.labelFFmpegArgs.Text = "FFmpeg Args:";
+            this.labelFFmpegArguments.AutoSize = true;
+            this.labelFFmpegArguments.Location = new System.Drawing.Point(3, 43);
+            this.labelFFmpegArguments.Name = "labelFFmpegArguments";
+            this.labelFFmpegArguments.Size = new System.Drawing.Size(101, 13);
+            this.labelFFmpegArguments.TabIndex = 1;
+            this.labelFFmpegArguments.Text = "FFmpeg Arguments:";
             // 
             // buttonSave
             // 
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSave.Location = new System.Drawing.Point(3, 221);
+            this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonSave.Location = new System.Drawing.Point(3, 143);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(283, 27);
-            this.buttonSave.TabIndex = 2;
+            this.buttonSave.Size = new System.Drawing.Size(319, 27);
+            this.buttonSave.TabIndex = 0;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // labelFFmpegLocation
+            // labelFFmpegPath
             // 
-            this.labelFFmpegLocation.AutoSize = true;
-            this.labelFFmpegLocation.Location = new System.Drawing.Point(3, 3);
-            this.labelFFmpegLocation.Name = "labelFFmpegLocation";
-            this.labelFFmpegLocation.Size = new System.Drawing.Size(92, 13);
-            this.labelFFmpegLocation.TabIndex = 4;
-            this.labelFFmpegLocation.Text = "FFmpeg Location:";
+            this.labelFFmpegPath.AutoSize = true;
+            this.labelFFmpegPath.Location = new System.Drawing.Point(3, 3);
+            this.labelFFmpegPath.Name = "labelFFmpegPath";
+            this.labelFFmpegPath.Size = new System.Drawing.Size(73, 13);
+            this.labelFFmpegPath.TabIndex = 4;
+            this.labelFFmpegPath.Text = "FFmpeg Path:";
             // 
-            // textBoxFFmpegLocation
+            // textBoxFFmpegPath
             // 
-            this.textBoxFFmpegLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxFFmpegPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFFmpegLocation.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxFFmpegLocation.Location = new System.Drawing.Point(3, 19);
-            this.textBoxFFmpegLocation.Multiline = true;
-            this.textBoxFFmpegLocation.Name = "textBoxFFmpegLocation";
-            this.textBoxFFmpegLocation.Size = new System.Drawing.Size(283, 21);
-            this.textBoxFFmpegLocation.TabIndex = 3;
-            this.textBoxFFmpegLocation.Text = "ffmpeg.exe";
-            this.textBoxFFmpegLocation.WordWrap = false;
+            this.textBoxFFmpegPath.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFFmpegPath.Location = new System.Drawing.Point(3, 19);
+            this.textBoxFFmpegPath.Multiline = true;
+            this.textBoxFFmpegPath.Name = "textBoxFFmpegPath";
+            this.textBoxFFmpegPath.Size = new System.Drawing.Size(254, 21);
+            this.textBoxFFmpegPath.TabIndex = 0;
+            this.textBoxFFmpegPath.WordWrap = false;
+            // 
+            // buttonBrowse
+            // 
+            this.buttonBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowse.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonBrowse.Location = new System.Drawing.Point(257, 19);
+            this.buttonBrowse.Name = "buttonBrowse";
+            this.buttonBrowse.Size = new System.Drawing.Size(65, 21);
+            this.buttonBrowse.TabIndex = 0;
+            this.buttonBrowse.Text = "...";
+            this.buttonBrowse.UseVisualStyleBackColor = true;
+            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
+            // 
+            // labelImageFormat
+            // 
+            this.labelImageFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelImageFormat.AutoSize = true;
+            this.labelImageFormat.Location = new System.Drawing.Point(3, 102);
+            this.labelImageFormat.Name = "labelImageFormat";
+            this.labelImageFormat.Size = new System.Drawing.Size(74, 13);
+            this.labelImageFormat.TabIndex = 6;
+            this.labelImageFormat.Text = "Image Format:";
+            // 
+            // comboBoxImageFormat
+            // 
+            this.comboBoxImageFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxImageFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxImageFormat.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.comboBoxImageFormat.FormattingEnabled = true;
+            this.comboBoxImageFormat.Location = new System.Drawing.Point(3, 118);
+            this.comboBoxImageFormat.Name = "comboBoxImageFormat";
+            this.comboBoxImageFormat.Size = new System.Drawing.Size(319, 21);
+            this.comboBoxImageFormat.TabIndex = 0;
             // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 251);
-            this.Controls.Add(this.labelFFmpegLocation);
-            this.Controls.Add(this.textBoxFFmpegLocation);
+            this.ClientSize = new System.Drawing.Size(325, 172);
+            this.Controls.Add(this.comboBoxImageFormat);
+            this.Controls.Add(this.labelImageFormat);
+            this.Controls.Add(this.buttonBrowse);
+            this.Controls.Add(this.labelFFmpegPath);
+            this.Controls.Add(this.textBoxFFmpegPath);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.labelFFmpegArgs);
-            this.Controls.Add(this.textBoxFFmpegArgs);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.labelFFmpegArguments);
+            this.Controls.Add(this.textBoxFFmpegArguments);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormOptions";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -116,10 +158,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxFFmpegArgs;
-        private System.Windows.Forms.Label labelFFmpegArgs;
+        private System.Windows.Forms.TextBox textBoxFFmpegArguments;
+        private System.Windows.Forms.Label labelFFmpegArguments;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Label labelFFmpegLocation;
-        private System.Windows.Forms.TextBox textBoxFFmpegLocation;
+        private System.Windows.Forms.Label labelFFmpegPath;
+        private System.Windows.Forms.TextBox textBoxFFmpegPath;
+        private System.Windows.Forms.Button buttonBrowse;
+        private System.Windows.Forms.Label labelImageFormat;
+        private System.Windows.Forms.ComboBox comboBoxImageFormat;
     }
 }

@@ -51,6 +51,7 @@ artifacts/
 *.meta
 *.obj
 *.pch
+*.cache
 *.pdb
 *.pgc
 *.pgd

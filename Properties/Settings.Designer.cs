@@ -22,5 +22,41 @@ namespace WebMCam.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FFmpegPath {
+            get {
+                return ((string)(this["FFmpegPath"]));
+            }
+            set {
+                this["FFmpegPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FFmpegArguments {
+            get {
+                return ((string)(this["FFmpegArguments"]));
+            }
+            set {
+                this["FFmpegArguments"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImageFormat {
+            get {
+                return ((string)(this["ImageFormat"]));
+            }
+            set {
+                this["ImageFormat"] = value;
+            }
+        }
     }
 }
