@@ -152,13 +152,12 @@
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "v2.0";
+            this.linkGithub.Text = "2.0.2";
             this.linkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
             // timerRecord
             // 
-            this.timerRecord.Interval = 500;
             this.timerRecord.Tick += new System.EventHandler(this.timerRecord_Tick);
             // 
             // checkBoxCaptureAudio
@@ -200,11 +199,13 @@
             this.Controls.Add(this.displayBox);
             this.Controls.Add(this.buttonToggle);
             this.Controls.Add(this.linkGithub);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "WebMCam 2.0";
+            this.Text = "WebMCam";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.Load += new System.EventHandler(this.FormMain_Load);

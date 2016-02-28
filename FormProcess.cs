@@ -24,15 +24,15 @@ namespace WebMCam
             InitializeComponent();
         }
 
-        public void formatArguments(int duration, string frameFormat, int rFps, int fps)
+        public void formatArguments(float duration, string frameFormat, float fps, float avg)
         {
             var audio = File.Exists(Path.Combine(framesPath, "audio.wav")) ? "-i audio.wav" : "";
 
             ffmpegArguments = ffmpegArguments
                 .Replace("{duration}", duration.ToString())
                 .Replace("{format}", frameFormat)
-                .Replace("{rfps}", rFps.ToString())
                 .Replace("{fps}", fps.ToString())
+                .Replace("{avg:fps}", avg.ToString())
                 .Replace("{audio}", audio);
         }
 

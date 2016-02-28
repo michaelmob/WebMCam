@@ -25,6 +25,7 @@ namespace WebMCam
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            Text += " " + linkGithub.Text;
             sText = Text;
             formOptions = new FormOptions();
 
@@ -53,9 +54,10 @@ namespace WebMCam
             var format = formOptions.getImageFormat().ToString().ToLower();
             var formProcess = new FormProcess(recorder.tempPath, framesCount);
 
+            formProcess.ffmpegPath = formOptions.getFFmpegPath();
             formProcess.ffmpegArguments = formOptions.getFFmpegArguments();
             formProcess.formatArguments(recorder.duration, "%d." + format,
-                (int)recorder.currentFps, (int)recorder.fps);
+                recorder.fps, recorder.averageFps);
 
             formProcess.ShowDialog();
         }
@@ -79,6 +81,8 @@ namespace WebMCam
                 // Start
                 recorder.Start(checkBoxCaptureAudio.Checked);
                 timerRecord.Start();
+
+                FormBorderStyle = FormBorderStyle.FixedDialog;
 
                 return;
             }
@@ -104,6 +108,7 @@ namespace WebMCam
                 // Delete leftovers
                 recorder.Flush();
 
+                FormBorderStyle = FormBorderStyle.Sizable;
                 TopMost = checkBoxTopMost.Checked;
             }
 
@@ -121,8 +126,8 @@ namespace WebMCam
             if (recorder == null)
                 return;
 
-            Text = string.Format("WebMCam [{0}f / {1}s = {2} FPS]",
-                recorder.frames, recorder.duration, recorder.currentFps);
+            Text = string.Format("WebMCam [{0}f / {1:F1}s = {2:F2} FPS]",
+                recorder.frames, recorder.duration, recorder.averageFps);
         }
 
         private void FormMain_Move(object sender, EventArgs e)

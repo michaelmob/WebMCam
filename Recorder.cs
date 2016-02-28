@@ -10,8 +10,8 @@ class Recorder
 {
     public Rectangle region;
     public float fps = 30;
-    public float currentFps { get; private set; }
-    public int duration { get; private set; }
+    public float averageFps { get; private set; }
+    public float duration { get; private set; }
     public int frames { get; private set; }
     public string tempPath { get; private set; }
     public bool drawCursor = true;
@@ -19,7 +19,8 @@ class Recorder
         get { return captureTimer.Enabled; }
         private set { }
     }
-    
+
+    private float fofSum = 0;
     private Timer durationTimer = new Timer();
     private Timer captureTimer = new Timer();
     private ImageFormat imageFormat = ImageFormat.Png;
@@ -47,16 +48,17 @@ class Recorder
 
         // Reset
         frames = 0;
+        fofSum = 0;
 
         // Create Temporary Directory
         CreateTemporaryPath();
 
         // Set Duration 
-        durationTimer.Interval = 1000;
+        durationTimer.Interval = 100;
         durationTimer.Elapsed += new ElapsedEventHandler(DurationTick);
 
         // Set Capture Timer
-        captureTimer.Interval = 1000 / fps;
+        captureTimer.Interval = 800 / fps;
         captureTimer.Elapsed += new ElapsedEventHandler(CaptureTick);
 
         // Setup Audio Recording
@@ -107,8 +109,8 @@ class Recorder
     /* Tick once a second second, update duration and current FPS */
     private void DurationTick(object sender, ElapsedEventArgs e)
     {
-        duration++;
-        currentFps = frames / duration;
+        duration += (float)0.1;
+        averageFps = frames / duration;
     }
 
     void WriteAudio(object sender, WaveInEventArgs e)

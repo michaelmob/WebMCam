@@ -36,6 +36,7 @@
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.labelImageFormat = new System.Windows.Forms.Label();
             this.comboBoxImageFormat = new System.Windows.Forms.ComboBox();
+            this.buttonResetArguments = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxFFmpegArguments
@@ -65,9 +66,9 @@
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonSave.Location = new System.Drawing.Point(3, 143);
+            this.buttonSave.Location = new System.Drawing.Point(129, 143);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(319, 27);
+            this.buttonSave.Size = new System.Drawing.Size(193, 27);
             this.buttonSave.TabIndex = 0;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -124,16 +125,34 @@
             this.comboBoxImageFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxImageFormat.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxImageFormat.FormattingEnabled = true;
+            this.comboBoxImageFormat.Items.AddRange(new object[] {
+            "PNG",
+            "BMP",
+            "JPG",
+            "GIF"});
             this.comboBoxImageFormat.Location = new System.Drawing.Point(3, 118);
             this.comboBoxImageFormat.Name = "comboBoxImageFormat";
             this.comboBoxImageFormat.Size = new System.Drawing.Size(319, 21);
             this.comboBoxImageFormat.TabIndex = 0;
+            // 
+            // buttonResetArguments
+            // 
+            this.buttonResetArguments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonResetArguments.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.buttonResetArguments.Location = new System.Drawing.Point(3, 143);
+            this.buttonResetArguments.Name = "buttonResetArguments";
+            this.buttonResetArguments.Size = new System.Drawing.Size(124, 27);
+            this.buttonResetArguments.TabIndex = 7;
+            this.buttonResetArguments.Text = "Reset Arguments";
+            this.buttonResetArguments.UseVisualStyleBackColor = true;
+            this.buttonResetArguments.Click += new System.EventHandler(this.buttonResetArguments_Click);
             // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(325, 172);
+            this.Controls.Add(this.buttonResetArguments);
             this.Controls.Add(this.comboBoxImageFormat);
             this.Controls.Add(this.labelImageFormat);
             this.Controls.Add(this.buttonBrowse);
@@ -166,5 +185,6 @@
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.Label labelImageFormat;
         private System.Windows.Forms.ComboBox comboBoxImageFormat;
+        private System.Windows.Forms.Button buttonResetArguments;
     }
 }

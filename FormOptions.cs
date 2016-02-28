@@ -6,6 +6,8 @@ namespace WebMCam
 {
     public partial class FormOptions : Form
     {
+        private const string defaultArgs = "-framerate {avg:fps} -i {format} {audio} -c:v libvpx -b:v 1M -r {fps} {output}";
+
         private Properties.Settings settings = Properties.Settings.Default;
 
         public FormOptions()
@@ -15,15 +17,12 @@ namespace WebMCam
 
         private void FormOptions_Load(object sender, EventArgs e)
         {
-            comboBoxImageFormat.Items.AddRange(new string[]
-                { "PNG", "BMP", "JPG", "GIF" });
-
             // Set Defaults if not set
             if (settings.FFmpegPath.Length < 1)
                 settings.FFmpegPath = "ffmpeg.exe";
 
             if (settings.FFmpegArguments.Length < 1)
-                settings.FFmpegArguments = "-framerate {rfps} -i {format} {audio} -c:v libvpx -r {fps} {output}";
+                settings.FFmpegArguments = defaultArgs;
 
             if (settings.ImageFormat.Length < 1)
                 settings.ImageFormat = "PNG";
@@ -38,7 +37,7 @@ namespace WebMCam
             return textBoxFFmpegArguments.Text;
         }
 
-        public string getFFmpegLocation()
+        public string getFFmpegPath()
         {
             return textBoxFFmpegPath.Text.Replace(Environment.NewLine, " ");
         }
@@ -62,15 +61,6 @@ namespace WebMCam
             }
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            settings.FFmpegPath = textBoxFFmpegPath.Text;
-            settings.FFmpegArguments = textBoxFFmpegArguments.Text;
-            settings.ImageFormat = comboBoxImageFormat.Text;
-            settings.Save();
-            Close();
-        }
-
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
@@ -80,6 +70,20 @@ namespace WebMCam
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 textBoxFFmpegPath.Text = openFileDialog.FileName;
+        }
+
+        private void buttonResetArguments_Click(object sender, EventArgs e)
+        {
+            textBoxFFmpegArguments.Text = defaultArgs;
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            settings.FFmpegPath = textBoxFFmpegPath.Text;
+            settings.FFmpegArguments = textBoxFFmpegArguments.Text;
+            settings.ImageFormat = comboBoxImageFormat.Text;
+            settings.Save();
+            Close();
         }
     }
 }
