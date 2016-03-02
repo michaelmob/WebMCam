@@ -152,7 +152,7 @@
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "2.0.2";
+            this.linkGithub.Text = "2.0.3";
             this.linkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
