@@ -31,8 +31,8 @@ namespace WebMCam
             ffmpegArguments = ffmpegArguments
                 .Replace("{duration}", duration.ToString())
                 .Replace("{format}", frameFormat)
-                .Replace("{fps}", fps.ToString())
-                .Replace("{avg:fps}", avg.ToString())
+                .Replace("{fps}", fps.ToString().Replace(',', '.'))
+                .Replace("{avg:fps}", avg.ToString().Replace(',', '.'))
                 .Replace("{audio}", audio);
         }
 
