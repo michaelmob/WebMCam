@@ -6,7 +6,7 @@ namespace WebMCam
 {
     public partial class FormOptions : Form
     {
-        private const string defaultArgs = "-framerate {avg:fps} -i {format} {audio} -c:v libvpx -b:v 1M -r {fps} {output}";
+        private const string defaultArgs = "-framerate {avg:fps} -i {format} {audio} -c:v libvpx -b:v 2M -r {avg:fps} {output}";
 
         private Properties.Settings settings = Properties.Settings.Default;
 

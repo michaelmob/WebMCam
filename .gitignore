@@ -51,7 +51,7 @@ artifacts/
 *.meta
 *.obj
 *.pch
-*.cache
+*.[Cc]ache
 *.pdb
 *.pgc
 *.pgd
@@ -104,6 +104,7 @@ _ReSharper*/
 
 # TeamCity is a build add-in
 _TeamCity*
+
 
 # DotCover is a Code Coverage Tool
 *.dotCover

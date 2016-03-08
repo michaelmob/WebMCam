@@ -1,31 +1,36 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using System.Timers;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using NAudio.Wave;
 
 class Recorder
 {
+    // Public Settings
     public Rectangle region;
+    public string status = "Idle";
     public float fps = 30;
+    public bool drawCursor = true;
+
+    // Public Information
     public float averageFps { get; private set; }
     public float duration { get; private set; }
     public int frames { get; private set; }
     public string tempPath { get; private set; }
-    public bool drawCursor = true;
-    public bool isRecording {
-        get { return captureTimer.Enabled; }
-        private set { }
-    }
+    public bool isRecording { get; private set; }
 
-    private float fofSum = 0;
-    private Timer durationTimer = new Timer();
-    private Timer captureTimer = new Timer();
+    // Image Capturing
     private ImageFormat imageFormat = ImageFormat.Png;
     private string imageExtension = ".png";
 
+    // Timers
+    uint durationTimerId;
+    uint captureTimerId;
+    PInvoke.MMTimerProc durationTimerDelegate;
+    PInvoke.MMTimerProc captureTimerDelegate;
+
+    // Audio Capturing
     private bool recordAudio;
     private WasapiLoopbackCapture audioSource;
     private WaveFileWriter audioFile;
@@ -43,23 +48,15 @@ class Recorder
     /* Start Capturing */
     public bool Start(bool recordAudio = false)
     {
-        if (captureTimer.Enabled)
+        if (isRecording)
             return false;
 
         // Reset
+        status = "Pending";
         frames = 0;
-        fofSum = 0;
 
         // Create Temporary Directory
         CreateTemporaryPath();
-
-        // Set Duration 
-        durationTimer.Interval = 100;
-        durationTimer.Elapsed += new ElapsedEventHandler(DurationTick);
-
-        // Set Capture Timer
-        captureTimer.Interval = 800 / fps;
-        captureTimer.Elapsed += new ElapsedEventHandler(CaptureTick);
 
         // Setup Audio Recording
         if (recordAudio)
@@ -71,30 +68,42 @@ class Recorder
             audioFile = new WaveFileWriter(Path.Combine(tempPath, "audio.wav"), audioSource.WaveFormat);
         }
 
-        // Enable Timers
-        durationTimer.Enabled = true;
-        captureTimer.Enabled = true;
+        // Enable Capture Timer
+        durationTimerDelegate = new PInvoke.MMTimerProc(DurationTick);
+        durationTimerId = PInvoke.timeSetEvent(100, 0, durationTimerDelegate, 0, 1);
+
+        // Enable Duration Timer
+        captureTimerDelegate = new PInvoke.MMTimerProc(CaptureTick);
+        captureTimerId = PInvoke.timeSetEvent((uint)(1000 / fps), 0, captureTimerDelegate, 0, 1);
 
         if (recordAudio)
             audioSource.StartRecording();
 
+        status = "Recording";
         isRecording = true;
-
         return isRecording;
     }
 
     /* Stop Capturing */
     public bool Stop()
     {
-        if (!captureTimer.Enabled)
+        if (!isRecording)
             return false;
 
+        // Stop Capturing Audio
         if(recordAudio)
             audioSource.StopRecording();
 
-        // Set Timers
-        durationTimer.Enabled = false;
-        captureTimer.Enabled = false;
+        // Kill Timers
+        PInvoke.timeKillEvent(captureTimerId);
+        PInvoke.timeKillEvent(durationTimerId);
+        
+        captureTimerId = 0;
+        captureTimerDelegate = null;
+        durationTimerId = 0;
+        durationTimerDelegate = null;
+
+        status = "Idle";
         isRecording = false;
         return isRecording;
     }
@@ -107,12 +116,29 @@ class Recorder
     }
 
     /* Tick once a second second, update duration and current FPS */
-    private void DurationTick(object sender, ElapsedEventArgs e)
+    private void DurationTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
     {
-        duration += (float)0.1;
+        duration += (float).1;
         averageFps = frames / duration;
+        Console.WriteLine(averageFps);
     }
 
+    /* Capture and save file every (1000 / fps) */
+    private void CaptureTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
+    {
+        var bmp = Capture();
+        frames++;
+
+        new System.Threading.Thread(delegate () {
+            try
+            {
+                bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
+                bmp.Dispose();
+            } catch { }
+        }).Start();
+    }
+
+    /* Write captured Audio to file */
     void WriteAudio(object sender, WaveInEventArgs e)
     {
         if (audioFile == null)
@@ -122,6 +148,7 @@ class Recorder
         audioFile.Flush();
     }
 
+    /* Dispose of audioSource and audioFile on finish recording */
     void RecordingStopped(object sender, StoppedEventArgs e)
     {
         if (audioSource != null)
@@ -135,18 +162,6 @@ class Recorder
             audioFile.Dispose();
             audioFile = null;
         }
-    }
-
-    /* Capture and save file every (1000 / fps) */
-    private void CaptureTick(object sender, ElapsedEventArgs e)
-    {
-        Bitmap bmp = Capture();
-        frames++;
-
-        // If saving was faster, we would be able to achieve higher FPS
-        // the bottleneck does not seem to be CopyFromScreen
-        bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
-        bmp.Dispose();
     }
 
     /* Capture screenshot */
@@ -193,6 +208,14 @@ class Recorder
 
 public class PInvoke
 {
+    public delegate void MMTimerProc(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2);
+
+    [DllImport("winmm.dll")]
+    public static extern uint timeSetEvent(uint uDelay, uint uResolution, [MarshalAs(UnmanagedType.FunctionPtr)] MMTimerProc lpTimeProc, uint dwUser, int fuEvent);
+
+    [DllImport("winmm.dll")]
+    public static extern uint timeKillEvent(uint uTimerID);
+
     [StructLayout(LayoutKind.Sequential)]
     public struct CursorInfo { public int cbSize; public int flags; public IntPtr hCursor; public Point ptScreenPos; }
 
@@ -201,4 +224,5 @@ public class PInvoke
 
     [DllImport("user32.dll", SetLastError = true)]
     public static extern bool DrawIconEx(IntPtr hdc, int xLeft, int yTop, IntPtr hIcon, int cxWidth, int cyHeight, int istepIfAniCur, IntPtr hbrFlickerFreeDraw, int diFlags);
+
 }
