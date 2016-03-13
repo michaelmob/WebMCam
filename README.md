@@ -9,11 +9,11 @@ Capture frames in real-time and save them as WebM.
 <b>Main Form</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormMain.png)
 
-<b>Options Form</b><br/>
-![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormOptions.png)
-
 <b>Select/Remove Frames</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormShowFrames.png)
+
+<b>Options Form</b><br/>
+![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormOptions.png)
 
 <b>WebM Examples:</b><br/>
 https://github.com/thetarkus/WebMCam/tree/master/Preview
