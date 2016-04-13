@@ -82,6 +82,9 @@ namespace WebMCam
                 recorder.Start(checkBoxCaptureAudio.Checked);
                 timerRecord.Start();
 
+                if(Properties.Settings.Default.AltWindowTracking)
+                    timerTracker.Start();
+
                 FormBorderStyle = FormBorderStyle.FixedDialog;
 
                 return;
@@ -92,6 +95,7 @@ namespace WebMCam
                 // Stop
                 recorder.Stop();
                 timerRecord.Stop();
+                timerTracker.Stop();
 
                 // Set Text
                 ((Button)sender).Text = "Record";

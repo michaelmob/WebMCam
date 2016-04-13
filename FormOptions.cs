@@ -30,6 +30,7 @@ namespace WebMCam
             textBoxFFmpegPath.Text = settings.FFmpegPath;
             textBoxFFmpegArguments.Text = settings.FFmpegArguments;
             comboBoxImageFormat.Text = settings.ImageFormat;
+            checkBoxAltWindowTracking.Checked = settings.AltWindowTracking;
         }
 
         public string getFFmpegArguments()
@@ -82,6 +83,7 @@ namespace WebMCam
             settings.FFmpegPath = textBoxFFmpegPath.Text;
             settings.FFmpegArguments = textBoxFFmpegArguments.Text;
             settings.ImageFormat = comboBoxImageFormat.Text;
+            settings.AltWindowTracking = checkBoxAltWindowTracking.Checked;
             settings.Save();
             Close();
         }

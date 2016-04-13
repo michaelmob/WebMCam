@@ -37,6 +37,7 @@
             this.labelImageFormat = new System.Windows.Forms.Label();
             this.comboBoxImageFormat = new System.Windows.Forms.ComboBox();
             this.buttonResetArguments = new System.Windows.Forms.Button();
+            this.checkBoxAltWindowTracking = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBoxFFmpegArguments
@@ -66,7 +67,7 @@
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonSave.Location = new System.Drawing.Point(129, 143);
+            this.buttonSave.Location = new System.Drawing.Point(129, 166);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(193, 27);
             this.buttonSave.TabIndex = 0;
@@ -139,7 +140,7 @@
             // 
             this.buttonResetArguments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonResetArguments.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonResetArguments.Location = new System.Drawing.Point(3, 143);
+            this.buttonResetArguments.Location = new System.Drawing.Point(3, 166);
             this.buttonResetArguments.Name = "buttonResetArguments";
             this.buttonResetArguments.Size = new System.Drawing.Size(124, 27);
             this.buttonResetArguments.TabIndex = 7;
@@ -147,11 +148,22 @@
             this.buttonResetArguments.UseVisualStyleBackColor = true;
             this.buttonResetArguments.Click += new System.EventHandler(this.buttonResetArguments_Click);
             // 
+            // checkBoxAltWindowTracking
+            // 
+            this.checkBoxAltWindowTracking.AutoSize = true;
+            this.checkBoxAltWindowTracking.Location = new System.Drawing.Point(3, 145);
+            this.checkBoxAltWindowTracking.Name = "checkBoxAltWindowTracking";
+            this.checkBoxAltWindowTracking.Size = new System.Drawing.Size(194, 17);
+            this.checkBoxAltWindowTracking.TabIndex = 8;
+            this.checkBoxAltWindowTracking.Text = "Alternative window tracking method";
+            this.checkBoxAltWindowTracking.UseVisualStyleBackColor = true;
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 172);
+            this.ClientSize = new System.Drawing.Size(325, 195);
+            this.Controls.Add(this.checkBoxAltWindowTracking);
             this.Controls.Add(this.buttonResetArguments);
             this.Controls.Add(this.comboBoxImageFormat);
             this.Controls.Add(this.labelImageFormat);
@@ -186,5 +198,6 @@
         private System.Windows.Forms.Label labelImageFormat;
         private System.Windows.Forms.ComboBox comboBoxImageFormat;
         private System.Windows.Forms.Button buttonResetArguments;
+        private System.Windows.Forms.CheckBox checkBoxAltWindowTracking;
     }
 }

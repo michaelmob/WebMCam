@@ -41,6 +41,7 @@
             this.timerRecord = new System.Windows.Forms.Timer(this.components);
             this.checkBoxCaptureAudio = new System.Windows.Forms.CheckBox();
             this.linkLabelFFmpeg = new System.Windows.Forms.LinkLabel();
+            this.timerTracker = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFramerate)).BeginInit();
             this.SuspendLayout();
@@ -152,7 +153,7 @@
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "2.1.0";
+            this.linkGithub.Text = "2.1.1b";
             this.linkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
@@ -183,6 +184,11 @@
             this.linkLabelFFmpeg.Text = "FFmpeg";
             this.linkLabelFFmpeg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkLabelFFmpeg.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelFFmpeg_LinkClicked);
+            // 
+            // timerTracker
+            // 
+            this.timerTracker.Interval = 10;
+            this.timerTracker.Tick += new System.EventHandler(this.FormMain_Move);
             // 
             // FormMain
             // 
@@ -231,6 +237,7 @@
         private System.Windows.Forms.Timer timerRecord;
         private System.Windows.Forms.CheckBox checkBoxCaptureAudio;
         private System.Windows.Forms.LinkLabel linkLabelFFmpeg;
+        private System.Windows.Forms.Timer timerTracker;
     }
 }
 

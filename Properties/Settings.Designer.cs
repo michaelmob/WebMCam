@@ -58,5 +58,17 @@ namespace WebMCam.Properties {
                 this["ImageFormat"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AltWindowTracking {
+            get {
+                return ((bool)(this["AltWindowTracking"]));
+            }
+            set {
+                this["AltWindowTracking"] = value;
+            }
+        }
     }
 }
