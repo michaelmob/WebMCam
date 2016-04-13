@@ -4,6 +4,12 @@ WebMCam
 Release / Downloads:
 https://github.com/TheTarkus/WebMCam/releases
 
+NAudio Repository:
+https://github.com/naudio/NAudio
+
+FFmpeg Website:
+https://www.ffmpeg.org/
+
 Capture frames in real-time and save them as WebM.
 
 <b>Main Form</b><br/>
