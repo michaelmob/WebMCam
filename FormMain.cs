@@ -164,6 +164,7 @@ namespace WebMCam
                 TopMost = false;
 
                 // Edit
+                checkBoxFollow.Checked = false;
                 var showFramesResult = showFrames(!checkBoxCaptureAudio.Checked);
 
                 // Process if showFrames was successful

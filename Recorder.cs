@@ -207,14 +207,26 @@ class Recorder
     /// </summary>
     private void CaptureTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
     {
-        var bmp = Capture();
-        frames++;
 
         Task.Run(() =>
         {
+            var bmp = Capture();
             bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
             bmp.Dispose();
+            frames++;
         });
+
+        // Insane!!
+        /*new System.Threading.Thread(delegate () {
+            try
+            {
+                var bmp = Capture();
+                bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
+                bmp.Dispose();
+                frames++;
+            }
+            catch { }
+        }).Start();*/
     }
 
     /// <summary>
@@ -257,7 +269,7 @@ class Recorder
                     var hdc = graphics.GetHdc();
                     PInvoke.DrawIconEx(hdc, cursorInfo.ptScreenPos.X - region.X,
                         cursorInfo.ptScreenPos.Y - region.Y, cursorInfo.hCursor,
-                        0, 0, 0, IntPtr.Zero, 0x0003 );
+                        0, 0, 0, IntPtr.Zero, 0x0003);
                     graphics.ReleaseHdc();
                 }
         }
