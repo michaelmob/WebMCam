@@ -51,7 +51,6 @@
             this.textBoxData.Size = new System.Drawing.Size(631, 392);
             this.textBoxData.TabIndex = 0;
             this.textBoxData.WordWrap = false;
-            this.textBoxData.TextChanged += new System.EventHandler(this.textBoxData_TextChanged);
             // 
             // progressBar
             // 

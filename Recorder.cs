@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using NAudio.Wave;
+using System.Threading.Tasks;
 
 class Recorder
 {
@@ -19,6 +20,7 @@ class Recorder
     public int frames { get; private set; }
     public string tempPath { get; private set; }
     public bool isRecording { get; private set; }
+    public bool isPaused { get; private set; }
 
     // Image Capturing
     private ImageFormat imageFormat = ImageFormat.Png;
@@ -35,7 +37,10 @@ class Recorder
     private WasapiLoopbackCapture audioSource;
     private WaveFileWriter audioFile;
 
-    /* Constructor -- Set Image format for Saving */
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="imageFormat">Image Format to save images as</param>
     public Recorder(ImageFormat imageFormat = null)
     {
         if (imageFormat == null)
@@ -45,7 +50,11 @@ class Recorder
         this.imageExtension = "." + imageFormat.ToString().ToLower();
     }
 
-    /* Start Capturing */
+    /// <summary>
+    /// Start Recording
+    /// </summary>
+    /// <param name="recordAudio">Record Audio</param>
+    /// <returns>Successful</returns>
     public bool Start(bool recordAudio = false)
     {
         if (isRecording)
@@ -64,10 +73,101 @@ class Recorder
             this.recordAudio = recordAudio;
             audioSource = new WasapiLoopbackCapture();
             audioSource.DataAvailable += new EventHandler<WaveInEventArgs>(WriteAudio);
-            audioSource.RecordingStopped += new EventHandler<StoppedEventArgs>(RecordingStopped);
             audioFile = new WaveFileWriter(Path.Combine(tempPath, "audio.wav"), audioSource.WaveFormat);
+
+            audioSource.StartRecording();
         }
 
+        // Start Timers
+        StartTimers();
+
+        status = "Recording";
+        isRecording = true;
+        return isRecording;
+    }
+
+    /// <summary>
+    /// Stop Recording
+    /// </summary>
+    /// <returns>Successful</returns>
+    public bool Stop()
+    {
+        if (!isRecording)
+            return false;
+
+        // Stop Capturing Audio
+        if (recordAudio)
+        {
+            audioSource.StopRecording();
+
+            if (audioSource != null)
+            {
+                audioSource.Dispose();
+                audioSource = null;
+            }
+
+            if (audioFile != null)
+            {
+                audioFile.Dispose();
+                audioFile = null;
+            }
+        }
+
+        // Kill Timers
+        StopTimers();
+
+        status = "Idle";
+        isRecording = false;
+        return isRecording;
+    }
+
+    /// <summary>
+    /// Toggle recording to pause or resume if paused
+    /// </summary>
+    /// <returns>Successful</returns>
+    public bool Pause()
+    {
+        if (!isRecording)
+            return false;
+
+        // Paused; needs to be resumed
+        if (isPaused)
+        {
+            // Resume Audio
+            if(recordAudio)
+                audioSource.StartRecording();
+            StartTimers();
+            status = "Recording";
+        }
+
+        // Recording; needs to be paused
+        else
+        {
+            // Pause Audio
+            if (recordAudio)
+                audioSource.StopRecording();
+            StopTimers();
+            status = "Paused";
+        }
+
+        isPaused = !isPaused;
+        return true;
+    }
+
+    /// <summary>
+    /// Redirects to Pause()
+    /// </summary>
+    /// <returns>Successful</returns>
+    public bool Resume()
+    {
+        return Pause();
+    }
+
+    /// <summary>
+    /// Start Recording Timers
+    /// </summary>
+    private void StartTimers()
+    {
         // Enable Capture Timer
         durationTimerDelegate = new PInvoke.MMTimerProc(DurationTick);
         durationTimerId = PInvoke.timeSetEvent(100, 0, durationTimerDelegate, 0, 1);
@@ -75,47 +175,27 @@ class Recorder
         // Enable Duration Timer
         captureTimerDelegate = new PInvoke.MMTimerProc(CaptureTick);
         captureTimerId = PInvoke.timeSetEvent((uint)(1000 / fps), 0, captureTimerDelegate, 0, 1);
-
-        if (recordAudio)
-            audioSource.StartRecording();
-
-        status = "Recording";
-        isRecording = true;
-        return isRecording;
     }
 
-    /* Stop Capturing */
-    public bool Stop()
+    /// <summary>
+    /// Stop Recording Timers
+    /// </summary>
+    private void StopTimers()
     {
-        if (!isRecording)
-            return false;
-
-        // Stop Capturing Audio
-        if(recordAudio)
-            audioSource.StopRecording();
-
         // Kill Timers
         PInvoke.timeKillEvent(captureTimerId);
         PInvoke.timeKillEvent(durationTimerId);
-        
+
+        // Nullify
         captureTimerId = 0;
         captureTimerDelegate = null;
         durationTimerId = 0;
         durationTimerDelegate = null;
-
-        status = "Idle";
-        isRecording = false;
-        return isRecording;
     }
 
-    /* Delete Temp Folder */
-    public bool Flush()
-    {
-        Directory.Delete(tempPath, true);
-        return !File.Exists(tempPath);
-    }
-
-    /* Tick once a second second, update duration and current FPS */
+    /// <summary>
+    /// Tick once a second second, update duration and current FPS
+    /// </summary>
     private void DurationTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
     {
         duration += (float).1;
@@ -123,22 +203,26 @@ class Recorder
         Console.WriteLine(averageFps);
     }
 
-    /* Capture and save file every (1000 / fps) */
+    /// <summary>
+    /// Capture and save file every (1000 / fps)
+    /// </summary>
     private void CaptureTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
     {
         var bmp = Capture();
         frames++;
 
-        new System.Threading.Thread(delegate () {
-            try
-            {
-                bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
-                bmp.Dispose();
-            } catch { }
-        }).Start();
+        Task.Run(() =>
+        {
+            bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
+            bmp.Dispose();
+        });
     }
 
-    /* Write captured Audio to file */
+    /// <summary>
+    /// Write captured Audio to file
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     void WriteAudio(object sender, WaveInEventArgs e)
     {
         if (audioFile == null)
@@ -148,23 +232,10 @@ class Recorder
         audioFile.Flush();
     }
 
-    /* Dispose of audioSource and audioFile on finish recording */
-    void RecordingStopped(object sender, StoppedEventArgs e)
-    {
-        if (audioSource != null)
-        {
-            audioSource.Dispose();
-            audioSource = null;
-        }
-
-        if (audioFile != null)
-        {
-            audioFile.Dispose();
-            audioFile = null;
-        }
-    }
-
-    /* Capture screenshot */
+    /// <summary>
+    /// Capture screenshot
+    /// </summary>
+    /// <returns>Captured bitmap of region area</returns>
     public Bitmap Capture()
     {
         // Create Bitmap and drawing surface from the bmp variable
@@ -197,12 +268,24 @@ class Recorder
         return bmp;
     }
 
-    /* Create temporary directory to store the iamges */
+    /// <summary>
+    /// Create temporary directory to store the images
+    /// </summary>
     public void CreateTemporaryPath()
     {
         string tempPath = Path.GetTempFileName() + "_WebMCam";
         Directory.CreateDirectory(tempPath);
         this.tempPath = tempPath;
+    }
+
+    /// <summary>
+    /// Delete Temp Folder
+    /// </summary>
+    /// <returns>Successful</returns>
+    public bool Flush()
+    {
+        Directory.Delete(tempPath, true);
+        return !Directory.Exists(tempPath);
     }
 }
 

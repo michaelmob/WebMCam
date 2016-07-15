@@ -42,6 +42,9 @@
             this.checkBoxCaptureAudio = new System.Windows.Forms.CheckBox();
             this.linkLabelFFmpeg = new System.Windows.Forms.LinkLabel();
             this.timerTracker = new System.Windows.Forms.Timer(this.components);
+            this.buttonPause = new System.Windows.Forms.Button();
+            this.checkBoxFollow = new System.Windows.Forms.CheckBox();
+            this.timerFollow = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFramerate)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +53,7 @@
             // 
             this.buttonToggle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonToggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonToggle.Location = new System.Drawing.Point(302, 99);
+            this.buttonToggle.Location = new System.Drawing.Point(347, 124);
             this.buttonToggle.Name = "buttonToggle";
             this.buttonToggle.Size = new System.Drawing.Size(110, 35);
             this.buttonToggle.TabIndex = 0;
@@ -67,7 +70,7 @@
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.displayBox.Location = new System.Drawing.Point(2, 2);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(298, 243);
+            this.displayBox.Size = new System.Drawing.Size(343, 290);
             this.displayBox.TabIndex = 1;
             this.displayBox.TabStop = false;
             // 
@@ -78,7 +81,7 @@
             this.checkBoxDrawCursor.Checked = true;
             this.checkBoxDrawCursor.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDrawCursor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxDrawCursor.Location = new System.Drawing.Point(306, 26);
+            this.checkBoxDrawCursor.Location = new System.Drawing.Point(351, 26);
             this.checkBoxDrawCursor.Name = "checkBoxDrawCursor";
             this.checkBoxDrawCursor.Size = new System.Drawing.Size(90, 18);
             this.checkBoxDrawCursor.TabIndex = 0;
@@ -88,7 +91,7 @@
             // numericUpDownFramerate
             // 
             this.numericUpDownFramerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownFramerate.Location = new System.Drawing.Point(333, 73);
+            this.numericUpDownFramerate.Location = new System.Drawing.Point(378, 98);
             this.numericUpDownFramerate.Maximum = new decimal(new int[] {
             200,
             0,
@@ -111,7 +114,7 @@
             // labelFPS
             // 
             this.labelFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelFPS.Location = new System.Drawing.Point(303, 73);
+            this.labelFPS.Location = new System.Drawing.Point(348, 98);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(33, 18);
             this.labelFPS.TabIndex = 4;
@@ -122,7 +125,7 @@
             // 
             this.buttonOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOptions.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonOptions.Location = new System.Drawing.Point(302, 140);
+            this.buttonOptions.Location = new System.Drawing.Point(347, 165);
             this.buttonOptions.Name = "buttonOptions";
             this.buttonOptions.Size = new System.Drawing.Size(110, 35);
             this.buttonOptions.TabIndex = 0;
@@ -137,7 +140,7 @@
             this.checkBoxTopMost.Checked = true;
             this.checkBoxTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxTopMost.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxTopMost.Location = new System.Drawing.Point(306, 3);
+            this.checkBoxTopMost.Location = new System.Drawing.Point(351, 3);
             this.checkBoxTopMost.Name = "checkBoxTopMost";
             this.checkBoxTopMost.Size = new System.Drawing.Size(102, 18);
             this.checkBoxTopMost.TabIndex = 0;
@@ -148,12 +151,12 @@
             // linkGithub
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkGithub.Location = new System.Drawing.Point(302, 222);
+            this.linkGithub.Location = new System.Drawing.Point(347, 269);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "2.1.1b";
+            this.linkGithub.Text = "2.2.0";
             this.linkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
@@ -166,7 +169,7 @@
             this.checkBoxCaptureAudio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxCaptureAudio.AutoSize = true;
             this.checkBoxCaptureAudio.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.checkBoxCaptureAudio.Location = new System.Drawing.Point(306, 49);
+            this.checkBoxCaptureAudio.Location = new System.Drawing.Point(351, 74);
             this.checkBoxCaptureAudio.Name = "checkBoxCaptureAudio";
             this.checkBoxCaptureAudio.Size = new System.Drawing.Size(99, 18);
             this.checkBoxCaptureAudio.TabIndex = 0;
@@ -176,7 +179,7 @@
             // linkLabelFFmpeg
             // 
             this.linkLabelFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelFFmpeg.Location = new System.Drawing.Point(302, 199);
+            this.linkLabelFFmpeg.Location = new System.Drawing.Point(347, 246);
             this.linkLabelFFmpeg.Name = "linkLabelFFmpeg";
             this.linkLabelFFmpeg.Size = new System.Drawing.Size(110, 23);
             this.linkLabelFFmpeg.TabIndex = 5;
@@ -190,11 +193,43 @@
             this.timerTracker.Interval = 10;
             this.timerTracker.Tick += new System.EventHandler(this.FormMain_Move);
             // 
+            // buttonPause
+            // 
+            this.buttonPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonPause.Location = new System.Drawing.Point(347, 165);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(110, 35);
+            this.buttonPause.TabIndex = 6;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Visible = false;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
+            // 
+            // checkBoxFollow
+            // 
+            this.checkBoxFollow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxFollow.AutoSize = true;
+            this.checkBoxFollow.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkBoxFollow.Location = new System.Drawing.Point(351, 50);
+            this.checkBoxFollow.Name = "checkBoxFollow";
+            this.checkBoxFollow.Size = new System.Drawing.Size(95, 18);
+            this.checkBoxFollow.TabIndex = 7;
+            this.checkBoxFollow.Text = "Follow Cursor";
+            this.checkBoxFollow.UseVisualStyleBackColor = true;
+            this.checkBoxFollow.CheckedChanged += new System.EventHandler(this.checkBoxFollow_CheckedChanged);
+            // 
+            // timerFollow
+            // 
+            this.timerFollow.Interval = 25;
+            this.timerFollow.Tick += new System.EventHandler(this.timerFollow_Tick);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(414, 247);
+            this.ClientSize = new System.Drawing.Size(459, 294);
+            this.Controls.Add(this.checkBoxFollow);
+            this.Controls.Add(this.buttonPause);
             this.Controls.Add(this.linkLabelFFmpeg);
             this.Controls.Add(this.checkBoxCaptureAudio);
             this.Controls.Add(this.checkBoxTopMost);
@@ -238,6 +273,9 @@
         private System.Windows.Forms.CheckBox checkBoxCaptureAudio;
         private System.Windows.Forms.LinkLabel linkLabelFFmpeg;
         private System.Windows.Forms.Timer timerTracker;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.CheckBox checkBoxFollow;
+        private System.Windows.Forms.Timer timerFollow;
     }
 }
 
