@@ -200,7 +200,6 @@ class Recorder
     {
         duration += (float).1;
         averageFps = frames / duration;
-        Console.WriteLine(averageFps);
     }
 
     /// <summary>

@@ -12,6 +12,10 @@ https://www.ffmpeg.org/
 
 Capture frames in real-time and save them as WebM.
 
+Hotkeys: (Must run as Administrator)
+* Ctrl+F12 to Record
+* Ctrl+F11 to Pause
+
 <b>Main Form</b><br/>
 ![ScreenShot](https://raw.githubusercontent.com/thetarkus/WebMCam/master/Preview/FormMain.png)
 

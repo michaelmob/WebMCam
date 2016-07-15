@@ -88,8 +88,6 @@ namespace WebMCam
             info.Arguments = ffmpegArguments.Replace("{output}",
                 string.Format("-y \"{0}\"", outputLocation));
 
-            textBoxData.TextChanged += textBoxData_TextChanged;
-
             process.StartInfo = info;
             process.OutputDataReceived += process_DataReceived;
             process.ErrorDataReceived += process_DataReceived;
@@ -102,6 +100,8 @@ namespace WebMCam
             textBoxData.AppendText(Environment.NewLine);
             textBoxData.AppendText("-");
             textBoxData.AppendText(Environment.NewLine);
+
+            textBoxData.TextChanged += textBoxData_TextChanged;
 
             process.Start();
             process.BeginOutputReadLine();
@@ -135,6 +135,7 @@ namespace WebMCam
         private void textBoxData_TextChanged(object sender, EventArgs e)
         {
             string line = textBoxData.Lines[textBoxData.Lines.Length - 2];
+            Console.WriteLine(line);
             
             if (line.StartsWith("frame=") && framesCount > -1)
             {
