@@ -207,7 +207,9 @@ class Recorder
     /// </summary>
     private void CaptureTick(uint timerid, uint msg, IntPtr user, uint dw1, uint dw2)
     {
-
+        // TODO: Make this write to a single file, rather than multiple little ones
+        // as the little ones will always be slower than a single file. After the recording,
+        // the single file can be expanded into multiple (when FS performance is less needed) for ffmpeg
         Task.Run(() =>
         {
             var bmp = Capture();
@@ -215,18 +217,6 @@ class Recorder
             bmp.Dispose();
             frames++;
         });
-
-        // Insane!!
-        /*new System.Threading.Thread(delegate () {
-            try
-            {
-                var bmp = Capture();
-                bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
-                bmp.Dispose();
-                frames++;
-            }
-            catch { }
-        }).Start();*/
     }
 
     /// <summary>

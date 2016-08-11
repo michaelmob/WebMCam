@@ -1,0 +1,1 @@
+https://github.com/naudio/NAudio/blob/master/license.txt

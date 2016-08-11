@@ -70,5 +70,17 @@ namespace WebMCam.Properties {
                 this["AltWindowTracking"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public decimal Framerate {
+            get {
+                return ((decimal)(this["Framerate"]));
+            }
+            set {
+                this["Framerate"] = value;
+            }
+        }
     }
 }

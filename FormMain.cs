@@ -14,10 +14,10 @@ namespace WebMCam
 
     public partial class FormMain : Form
     {
-        // Global
         private FormOptions formOptions;
         private Recorder recorder;
-        private string beforeText;
+        private Attach attach;
+        private Size previousSize;
 
         // Hotkeys
         Hotkeys toggleHotkey = new Hotkeys();
@@ -28,6 +28,7 @@ namespace WebMCam
         /// </summary>
         public FormMain()
         {
+            DoubleBuffered = true;
             InitializeComponent();
 
             try
@@ -51,13 +52,11 @@ namespace WebMCam
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FormMain_Load(object sender, EventArgs e)
+        private async void FormMain_Load(object sender, EventArgs e)
         {
-            Text += " " + linkGithub.Text;
-            beforeText = Text;
+            FormMain_Resize(sender, e);
             formOptions = new FormOptions();
-
-            // Hotkeys
+            await Updater.CheckAsync(linkGithub.Text);
 
             // Just to load in the settings
             formOptions.Opacity = 0;
@@ -70,6 +69,9 @@ namespace WebMCam
                 MessageBox.Show("FFmpeg.exe does not exist, nothing will work properly. Please specify it's location in Options. " +
                     Environment.NewLine + Environment.NewLine + "You can download it by clicking the FFmpeg link on the main form.",
                     "FFmpeg Missing!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            // Set FPS from previous
+            numericUpDownFramerate.Value = Properties.Settings.Default.Framerate;
         }
 
         /// <summary>
@@ -85,6 +87,18 @@ namespace WebMCam
             recorder.region = new Rectangle(
                 displayBox.PointToScreen(Point.Empty),
                 displayBox.Size);
+        }
+
+        /// <summary>
+        /// When form resizes update Title
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            FormMain_Move(null, e);
+            Text = string.Format("WebMCam [{0}x{1}]",
+                displayBox.Size.Width, displayBox.Size.Height);
         }
 
         /// <summary>
@@ -130,13 +144,17 @@ namespace WebMCam
                 buttonToggle.Text = "Stop";
                 buttonPause.Visible = true;
 
+                // Update Settings
+                Properties.Settings.Default.Framerate = numericUpDownFramerate.Value;
+                Properties.Settings.Default.Save();
+
                 // Create recorder and set options
                 recorder = new Recorder(formOptions.getImageFormat());
                 recorder.fps = (float)numericUpDownFramerate.Value;
                 recorder.drawCursor = checkBoxDrawCursor.Checked;
 
-                // Trigger FormMain_Move to get region of displayBox
-                FormMain_Move(sender, e);
+                // Trigger FormMain_Resize to get region of displayBox
+                FormMain_Resize(sender, e);
 
                 // Start
                 recorder.Start(checkBoxCaptureAudio.Checked);
@@ -160,7 +178,7 @@ namespace WebMCam
                 // Set Text
                 buttonToggle.Text = "Record";
                 buttonPause.Visible = false;
-                Text = beforeText;
+                FormMain_Resize(sender, e);
                 TopMost = false;
 
                 // Edit
@@ -173,11 +191,29 @@ namespace WebMCam
 
                 // Delete leftovers
                 recorder.Flush();
+                recorder = null;
 
                 FormBorderStyle = FormBorderStyle.Sizable;
                 TopMost = checkBoxTopMost.Checked;
             }
 
+        }
+
+        /// <summary>
+        /// Initiate Attach class, and start timerAttach to attach to next clicked window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBoxAttach_CheckedChanged(object sender, EventArgs e)
+        {
+            attach = new Attach();
+            
+            if(checkBoxAttach.Checked)
+                previousSize = Size;
+            else
+                Size = previousSize;
+
+            timerAttach.Enabled = checkBoxAttach.Checked;
         }
 
         /// <summary>
@@ -235,7 +271,8 @@ namespace WebMCam
             if (recorder == null)
                 return;
 
-            Text = string.Format("WebMCam [{0}f / {1:F1}s = {2:F2} FPS]",
+            Text = string.Format("WebMCam [{0}x{1}] [{2}f / {3:F1}s = {4:F2} FPS]",
+                displayBox.Size.Width, displayBox.Size.Height,
                 recorder.frames, recorder.duration, recorder.averageFps);
 
             if (recorder.isPaused)
@@ -278,6 +315,43 @@ namespace WebMCam
         }
 
         /// <summary>
+        /// Timer to make recording window attach/follow another window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerAttach_Tick(object sender, EventArgs e)
+        {
+            if (!attach.isSet)
+            {
+                Text = "Click any Window";
+                attach.Wait();
+                return;
+            }
+
+            var borderWidth = SystemInformation.BorderSize.Width;
+            var titleHeight = SystemInformation.CaptionHeight;
+            var location = attach.Size();
+
+            Width = location.Width - location.X + 115;
+            Height = location.Height - location.Y + titleHeight;
+            Location = new Point(
+                location.X - borderWidth,
+                location.Y - titleHeight);
+        }
+
+        /// <summary>
+        /// Show information of hotkeys
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkHotkeys_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show("Press Ctrl+F12 to start or stop recording." + Environment.NewLine +
+                "Press Ctrl+F11 to pause or unpause a recording.", "Hotkey Information",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
         /// Open FFmpeg URL
         /// </summary>
         /// <param name="sender"></param>
@@ -296,6 +370,5 @@ namespace WebMCam
         {
             Process.Start("https://github.com/thetarkus/WebMCam");
         }
-        
     }
 }
