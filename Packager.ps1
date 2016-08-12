@@ -6,8 +6,6 @@ if(Test-Path -Path "bin/Release/Resources" ) {
     rmdir -r bin/Release/Resources/
 }
 
-exit
-
 # Create temporary Output dir
 mkdir bin/Output
 
