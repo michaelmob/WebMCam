@@ -2,9 +2,11 @@ $version = Get-Content VERSION;
 
 # Move Resources to Release dir
 if(Test-Path -Path "bin/Release/Resources" ) {
-    move -f bin/Release/Resources/* bin/Release/
-    rmdir bin/Release/Resources/
+    move bin/Release/Resources/* bin/Release/
+    rmdir -r bin/Release/Resources/
 }
+
+exit
 
 # Create temporary Output dir
 mkdir bin/Output
