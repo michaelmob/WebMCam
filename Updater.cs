@@ -25,7 +25,7 @@ namespace WebMCam
                 var newVersion = new Version(newVersionStr);
                 var oldVersion = new Version(oldVersionStr);
 
-                if(newVersion.CompareTo(oldVersion) < 0)
+                if(newVersion.CompareTo(oldVersion) > 0)
                 {
                     var result = MessageBox.Show(
                         string.Format(

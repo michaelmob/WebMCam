@@ -25,7 +25,7 @@ foreach ($file in $required_files) {
 }
 
 Add-Type -A System.IO.Compression.FileSystem
-[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCamv$version.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCam-$version.zip")
 
 # Pt2 Create output-ffmpeg.zip
 $ffmpeg_files = @(
@@ -38,7 +38,7 @@ foreach ($file in $ffmpeg_files) {
     copy bin/Release/$file bin/Output/$file
 }
 
-[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCamv$version-FFmpeg.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCam-$version-FFmpeg.zip")
 
 # Cleanup
 rmdir -r bin/Output

@@ -16,8 +16,11 @@ namespace WebMCam
     {
         private FormOptions formOptions;
         private Recorder recorder;
+
+        // Attachment
         private Attach attach;
         private Size previousSize;
+        private Point previousLocation;
 
         // Hotkeys
         Hotkeys toggleHotkey = new Hotkeys();
@@ -99,6 +102,21 @@ namespace WebMCam
             FormMain_Move(null, e);
             Text = string.Format("WebMCam [{0}x{1}]",
                 displayBox.Size.Width, displayBox.Size.Height);
+        }
+
+        /// <summary>
+        /// On Form right-click show the sizer
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FormMain_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            textBoxSize.Text = string.Format("{0}x{1}", displayBox.Width, displayBox.Height);
+            textBoxSize.Visible = !textBoxSize.Visible;
+            buttonSizeSet.Visible = !buttonSizeSet.Visible;
         }
 
         /// <summary>
@@ -200,6 +218,31 @@ namespace WebMCam
         }
 
         /// <summary>
+        /// Resize frame
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSizeSet_Click(object sender, EventArgs e)
+        {
+            textBoxSize.Visible = false;
+            buttonSizeSet.Visible = false;
+
+            try
+            {
+                var size = textBoxSize.Text.Split('x');
+                var addWidth = Convert.ToInt32(size[0]) - displayBox.Width;
+                var addHeight = Convert.ToInt32(size[1]) - displayBox.Height;
+
+                Width += addWidth;
+                Height += addHeight;
+            }
+            catch
+            {
+                /* Suppress */
+            }
+        }
+
+        /// <summary>
         /// Initiate Attach class, and start timerAttach to attach to next clicked window
         /// </summary>
         /// <param name="sender"></param>
@@ -207,12 +250,19 @@ namespace WebMCam
         private void checkBoxAttach_CheckedChanged(object sender, EventArgs e)
         {
             attach = new Attach();
-            
-            if(checkBoxAttach.Checked)
-                previousSize = Size;
-            else
-                Size = previousSize;
 
+            if (checkBoxAttach.Checked)
+            {
+                previousSize = Size;
+                previousLocation = Location;
+            }
+            else
+            {
+                FormMain_Resize(null, e);
+                Size = previousSize;
+                Location = previousLocation;
+            }
+            
             timerAttach.Enabled = checkBoxAttach.Checked;
         }
 
@@ -340,15 +390,19 @@ namespace WebMCam
         }
 
         /// <summary>
-        /// Show information of hotkeys
+        /// Show information about things and hidden features
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void linkHotkeys_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show("Press Ctrl+F12 to start or stop recording." + Environment.NewLine +
-                "Press Ctrl+F11 to pause or unpause a recording.", "Hotkey Information",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var n = Environment.NewLine;
+            MessageBox.Show(
+                "Press Ctrl+F12 to start or stop recording." + n +
+                "Press Ctrl+F11 to pause or unpause a recording." + n + n +
+                "Right click on the form to show the sizing interface.",
+                
+                "Hotkey Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
