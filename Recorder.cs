@@ -239,6 +239,15 @@ class Recorder
     /// <returns>Captured bitmap of region area</returns>
     public Bitmap Capture()
     {
+        /* For future attempts,
+         * - Average capture w/ cursor is 100ms
+         * - Writing 300 images to a filestream was 14 seconds than 300 images with .Save() method
+         * - Draw cursor adds roughly 30ms to a capture
+         * - Locking bmp bits and copying them to byte[] did not work on any attempt I tried
+         * 
+         * Method below is most concise and is *possibly* the most efficient
+         */
+
         // Create Bitmap and drawing surface from the bmp variable
         // this will allow CopyFromScreen to "copy" the screen to the variable's address
         var bmp = new Bitmap(region.Width - 2, region.Height - 2, PixelFormat.Format32bppRgb);
