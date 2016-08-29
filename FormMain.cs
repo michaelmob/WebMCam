@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace WebMCam
@@ -19,12 +19,16 @@ namespace WebMCam
 
         // Attachment
         private Attach attach;
+
         private Size previousSize;
         private Point previousLocation;
 
         // Hotkeys
-        Hotkeys toggleHotkey = new Hotkeys();
-        Hotkeys pauseHotkey = new Hotkeys();
+        private Hotkeys toggleHotkey = new Hotkeys();
+
+        private Hotkeys pauseHotkey = new Hotkeys();
+
+        private Hotkeys followHotkey = new Hotkeys();
 
         /// <summary>
         /// Constructor
@@ -43,6 +47,10 @@ namespace WebMCam
                 // Register Pause/Resume Hotkey
                 pauseHotkey.KeyPressed += new EventHandler<KeyPressedEventArgs>(buttonPause_Click);
                 pauseHotkey.RegisterHotKey(WebMCam.ModifierKeys.Control, Keys.F11);
+
+                // Register Follow/Unfollow Hotkey
+                followHotkey.KeyPressed += new EventHandler<KeyPressedEventArgs>(followToggle_Click);
+                followHotkey.RegisterHotKey(WebMCam.ModifierKeys.Control, Keys.F10);
             }
             catch
             {
@@ -156,8 +164,8 @@ namespace WebMCam
         private void buttonToggle_Click(object sender, EventArgs e)
         {
             // Start Recording
-            if(buttonToggle.Text == "Record")
-            { 
+            if (buttonToggle.Text == "Record")
+            {
                 // Set Text
                 buttonToggle.Text = "Stop";
                 buttonPause.Visible = true;
@@ -179,7 +187,7 @@ namespace WebMCam
                 timerRecord.Start();
 
                 // Set Alt Window Tracking if the option is set
-                if(Properties.Settings.Default.AltWindowTracking)
+                if (Properties.Settings.Default.AltWindowTracking)
                     timerTracker.Start();
 
                 FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -204,7 +212,7 @@ namespace WebMCam
                 var showFramesResult = showFrames(!checkBoxCaptureAudio.Checked);
 
                 // Process if showFrames was successful
-                if(showFramesResult.Item1)
+                if (showFramesResult.Item1)
                     processFrames(showFramesResult.Item2);
 
                 // Delete leftovers
@@ -214,7 +222,6 @@ namespace WebMCam
                 FormBorderStyle = FormBorderStyle.Sizable;
                 TopMost = checkBoxTopMost.Checked;
             }
-
         }
 
         /// <summary>
@@ -262,7 +269,7 @@ namespace WebMCam
                 Size = previousSize;
                 Location = previousLocation;
             }
-            
+
             timerAttach.Enabled = checkBoxAttach.Checked;
         }
 
@@ -312,6 +319,16 @@ namespace WebMCam
         }
 
         /// <summary>
+        /// Pause/Resume active recording
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void followToggle_Click(object sender, EventArgs e)
+        {
+            timerFollow.Enabled = checkBoxFollow.Checked = !checkBoxFollow.Checked;
+        }
+
+        /// <summary>
         /// Timer to update Title text while recording
         /// </summary>
         /// <param name="sender"></param>
@@ -340,11 +357,11 @@ namespace WebMCam
             var cursor = displayBox.PointToClient(Cursor.Position);
 
             // Cursor is out of bounds on X-axis
-            if (cursor.X < 1 || cursor.X > ClientSize.Width)
+            if (cursor.X < 1 || cursor.X > displayBox.Size.Width)
             {
                 // Cursor hit the right
-                if (Cursor.Position.X > realLocation.X + ClientSize.Width)
-                    Location = new Point(Cursor.Position.X - ClientSize.Width, Location.Y);
+                if (Cursor.Position.X > realLocation.X + displayBox.Size.Width)
+                    Location = new Point(Cursor.Position.X - displayBox.Size.Width - 10, Location.Y);
 
                 // Cursor hit the left
                 else
@@ -401,7 +418,7 @@ namespace WebMCam
                 "Press Ctrl+F12 to start or stop recording." + n +
                 "Press Ctrl+F11 to pause or unpause a recording." + n + n +
                 "Right click on the form to show the sizing interface.",
-                
+
                 "Hotkey Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
