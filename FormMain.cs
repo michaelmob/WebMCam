@@ -25,9 +25,7 @@ namespace WebMCam
 
         // Hotkeys
         private Hotkeys toggleHotkey = new Hotkeys();
-
         private Hotkeys pauseHotkey = new Hotkeys();
-
         private Hotkeys followHotkey = new Hotkeys();
 
         /// <summary>
@@ -108,8 +106,13 @@ namespace WebMCam
         private void FormMain_Resize(object sender, EventArgs e)
         {
             FormMain_Move(null, e);
-            Text = string.Format("WebMCam [{0}x{1}]",
-                displayBox.Size.Width, displayBox.Size.Height);
+            Text = string.Format("WebMCam [{0}x{1}]", displayBox.Size.Width, displayBox.Size.Height);
+
+            if (displayBox.Size.Width > 1280 || displayBox.Size.Height > 720)
+                buttonWarning.Visible = true;
+
+            else if (buttonWarning.Visible)
+                buttonWarning.Visible = false;
         }
 
         /// <summary>
@@ -407,6 +410,16 @@ namespace WebMCam
         }
 
         /// <summary>
+        /// Warning Button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonWarning_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Recording high resolutions may not work as expected.", "Good luck...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /// <summary>
         /// Show information about things and hidden features
         /// </summary>
         /// <param name="sender"></param>
@@ -415,6 +428,7 @@ namespace WebMCam
         {
             var n = Environment.NewLine;
             MessageBox.Show(
+                "Press Ctrl+F10 to initiate cursor following." + n +
                 "Press Ctrl+F12 to start or stop recording." + n +
                 "Press Ctrl+F11 to pause or unpause a recording." + n + n +
                 "Right click on the form to show the sizing interface.",

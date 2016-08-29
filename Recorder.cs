@@ -239,7 +239,8 @@ class Recorder
     /// <returns>Captured bitmap of region area</returns>
     public Bitmap Capture()
     {
-        /* For future attempts,
+        /*
+         * For future attempts,
          * - Average capture w/ cursor is 100ms
          * - Writing 300 images to a filestream was 14 seconds than 300 images with .Save() method
          * - Draw cursor adds roughly 30ms to a capture

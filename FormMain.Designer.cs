@@ -50,6 +50,7 @@
             this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.buttonSizeSet = new System.Windows.Forms.Button();
             this.textBoxSize = new System.Windows.Forms.TextBox();
+            this.buttonWarning = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFramerate)).BeginInit();
             this.SuspendLayout();
@@ -161,7 +162,7 @@
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
             this.linkGithub.TabStop = true;
-            this.linkGithub.Text = "2.3.1";
+            this.linkGithub.Text = "2.3.2";
             this.linkGithub.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.linkGithub.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkGithub_LinkClicked);
             // 
@@ -279,11 +280,27 @@
             this.textBoxSize.TabIndex = 11;
             this.textBoxSize.Visible = false;
             // 
+            // buttonWarning
+            // 
+            this.buttonWarning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonWarning.BackColor = System.Drawing.Color.OrangeRed;
+            this.buttonWarning.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonWarning.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.buttonWarning.Location = new System.Drawing.Point(365, 230);
+            this.buttonWarning.Name = "buttonWarning";
+            this.buttonWarning.Size = new System.Drawing.Size(110, 23);
+            this.buttonWarning.TabIndex = 12;
+            this.buttonWarning.Text = "Warning!";
+            this.buttonWarning.UseVisualStyleBackColor = false;
+            this.buttonWarning.Visible = false;
+            this.buttonWarning.Click += new System.EventHandler(this.buttonWarning_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 325);
+            this.Controls.Add(this.buttonWarning);
             this.Controls.Add(this.textBoxSize);
             this.Controls.Add(this.buttonSizeSet);
             this.Controls.Add(this.checkBoxAttach);
@@ -342,6 +359,7 @@
         private System.Windows.Forms.LinkLabel linkHelp;
         private System.Windows.Forms.Button buttonSizeSet;
         private System.Windows.Forms.TextBox textBoxSize;
+        private System.Windows.Forms.Button buttonWarning;
     }
 }
 
