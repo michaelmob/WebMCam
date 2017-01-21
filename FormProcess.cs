@@ -12,17 +12,21 @@ namespace WebMCam
         public string outputLocation = null;
 
         private Process process = new Process();
-        private string framesPath;
         private int framesCount;
+        private string framesPath;
+        private string videoCodec;
         private string sText;
 
-        public FormProcess(string framesPath, int framesCount = -1)
+
+        public FormProcess(string framesPath, string videoCodec = "libvpx", int framesCount = -1)
         {
             this.framesPath = framesPath;
             this.framesCount = framesCount;
+            this.videoCodec = videoCodec;
 
             InitializeComponent();
         }
+
 
         /// <summary>
         /// Replace arguments with data from recorder
@@ -44,6 +48,7 @@ namespace WebMCam
                 .Replace("{audio}", audio);
         }
 
+
         /// <summary>
         /// Create SaveFileDialog to find where the user wants to put their file
         /// </summary>
@@ -53,7 +58,7 @@ namespace WebMCam
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "Choose File Location";
             saveFileDialog.FileName = "output.webm";
-            saveFileDialog.Filter = "Video Formats (*.webm, *.mp4)|*.webm;*.mp4";
+            saveFileDialog.Filter = "WebM (*.webm)|*.webm|MPEG-4 (*.mp4)|*.mp4|Graphics Interchange Format (*.gif)|*.gif";
             saveFileDialog.DefaultExt = "webm";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -61,6 +66,33 @@ namespace WebMCam
 
             return null;
         }
+
+
+        /// <summary>
+        /// Get video codec to use from output file name.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private string getVideoCodec(string fileName)
+        {
+            var format = Path.GetExtension(fileName).ToUpper();
+
+            // Select codec
+            switch (format)
+            {
+                case ".WEBM":
+                    return "libvpx";
+
+                case ".MP4":
+                    return "libx264";
+
+                case ".GIF":
+                    return "gif";
+            }
+
+            return "libvpx";
+        }
+
 
         private void FormProcess_Load(object sender, EventArgs e)
         {
@@ -85,8 +117,9 @@ namespace WebMCam
 
             info.WorkingDirectory = framesPath;
             info.FileName = ffmpegPath;
-            info.Arguments = ffmpegArguments.Replace("{output}",
-                string.Format("-y \"{0}\"", outputLocation));
+            info.Arguments = ffmpegArguments
+                .Replace("{codec}", getVideoCodec(outputLocation))
+                .Replace("{output}", string.Format("-y \"{0}\"", outputLocation));
 
             process.StartInfo = info;
             process.OutputDataReceived += process_DataReceived;
@@ -110,6 +143,7 @@ namespace WebMCam
             BringToFront();
         }
 
+
         /// <summary>
         /// Write output from FFmpeg to textBoxData
         /// </summary>
@@ -124,6 +158,7 @@ namespace WebMCam
                 textBoxData.AppendText(e.Data + Environment.NewLine);
             }));
         }
+
 
         /// <summary>
         /// When the textbox text changes: if it starts with 'frame=' we need to update
@@ -155,6 +190,7 @@ namespace WebMCam
             Text = string.Format("{0} [{1}%]", sText, progressBar.Value);
         }
 
+
         /// <summary>
         /// Cancel processing
         /// </summary>
@@ -170,6 +206,7 @@ namespace WebMCam
                 catch { }
             Close();
         }
+
 
         /// <summary>
         /// Open output file

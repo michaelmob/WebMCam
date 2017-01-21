@@ -149,7 +149,10 @@ namespace WebMCam
         private void processFrames(int framesCount)
         {
             var format = formOptions.getImageFormat().ToString().ToLower();
-            var formProcess = new FormProcess(recorder.tempPath, framesCount);
+            var formProcess = new FormProcess(recorder.tempPath, "", framesCount);
+            string videoCodec = "";
+
+            Console.WriteLine(format);
 
             formProcess.ffmpegPath = formOptions.getFFmpegPath();
             formProcess.ffmpegArguments = formOptions.getFFmpegArguments();
@@ -194,11 +197,10 @@ namespace WebMCam
                     timerTracker.Start();
 
                 FormBorderStyle = FormBorderStyle.FixedDialog;
-                return;
             }
 
             // Stop Recording
-            {
+            else {
                 // Stop
                 recorder.Stop();
                 timerRecord.Stop();

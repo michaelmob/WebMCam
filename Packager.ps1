@@ -1,13 +1,13 @@
 $version = Get-Content VERSION;
 
 # Move Resources to Release dir
-if(Test-Path -Path "bin/Release/Resources" ) {
-    move bin/Release/Resources/* bin/Release/
-    rmdir -r bin/Release/Resources/
+if(Test-Path -Path "$PSScriptRoot/bin/Release/Resources" ) {
+    move $PSScriptRoot/bin/Release/Resources/* $PSScriptRoot/bin/Release/
+    rmdir -r $PSScriptRoot/bin/Release/Resources/
 }
 
 # Create temporary Output dir
-mkdir bin/Output
+mkdir $PSScriptRoot/bin/Output
 
 # Pt1 Create output.zip
 $required_files = @(
@@ -21,11 +21,11 @@ $required_files = @(
 )
 
 foreach ($file in $required_files) {
-    copy bin/Release/$file bin/Output/$file
+    copy $PSScriptRoot/bin/Release/$file $PSScriptRoot/bin/Output/$file
 }
 
 Add-Type -A System.IO.Compression.FileSystem
-[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCam-$version.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory("$PSScriptRoot/bin/Output", "$PSScriptRoot/bin/WebMCam-$version.zip")
 
 # Pt2 Create output-ffmpeg.zip
 $ffmpeg_files = @(
@@ -35,10 +35,10 @@ $ffmpeg_files = @(
 );
 
 foreach ($file in $ffmpeg_files) {
-    copy bin/Release/$file bin/Output/$file
+    copy $PSScriptRoot/bin/Release/$file $PSScriptRoot/bin/Output/$file
 }
 
-[IO.Compression.ZipFile]::CreateFromDirectory("bin/Output", "bin/WebMCam-$version-FFmpeg.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory("$PSScriptRoot/bin/Output", "$PSScriptRoot/bin/WebMCam-$version-FFmpeg.zip")
 
 # Cleanup
 rmdir -r bin/Output
