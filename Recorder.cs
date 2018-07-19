@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading;
 using NAudio.Wave;
 using System.Threading.Tasks;
 
@@ -17,7 +19,7 @@ class Recorder
     // Public Information
     public float averageFps { get; private set; }
     public float duration { get; private set; }
-    public int frames { get; private set; }
+    public int frames { get { return _frames; }}
     public string tempPath { get; private set; }
     public bool isRecording { get; private set; }
     public bool isPaused { get; private set; }
@@ -25,6 +27,7 @@ class Recorder
     // Image Capturing
     private ImageFormat imageFormat = ImageFormat.Png;
     private string imageExtension = ".png";
+    int _frames;
 
     // Timers
     uint durationTimerId;
@@ -62,7 +65,7 @@ class Recorder
 
         // Reset
         status = "Pending";
-        frames = 0;
+        _frames = 0;
 
         // Create Temporary Directory
         CreateTemporaryPath();
@@ -213,9 +216,13 @@ class Recorder
         Task.Run(() =>
         {
             var bmp = Capture();
-            bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
+            int frame = Interlocked.Increment(ref _frames);
+
+            string path = Path.Combine(tempPath, "_" + frame + imageExtension);
+            Debug.Assert(!File.Exists(path));
+
+            bmp.Save(path, imageFormat);
             bmp.Dispose();
-            frames++;
         });
     }
 
