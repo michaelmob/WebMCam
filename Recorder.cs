@@ -215,13 +215,17 @@ class Recorder
         // the single file can be expanded into multiple (when FS performance is less needed) for ffmpeg
         Task.Run(() =>
         {
+            //Ignore after stop has been requested.
+            if (captureTimerDelegate == null)
+                return;
+
             var bmp = Capture();
             int frame = Interlocked.Increment(ref _frames);
+            string outputPath = Path.Combine(tempPath, "_" + frame + imageExtension);
 
-            string path = Path.Combine(tempPath, "_" + frame + imageExtension);
-            Debug.Assert(!File.Exists(path));
+            Debug.Assert(!File.Exists(outputPath));
 
-            bmp.Save(path, imageFormat);
+            bmp.Save(outputPath, imageFormat);
             bmp.Dispose();
         });
     }
