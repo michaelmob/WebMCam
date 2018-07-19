@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading;
 using NAudio.Wave;
 using System.Threading.Tasks;
 
@@ -17,7 +19,7 @@ class Recorder
     // Public Information
     public float averageFps { get; private set; }
     public float duration { get; private set; }
-    public int frames { get; private set; }
+    public int frames { get { return _frames; }}
     public string tempPath { get; private set; }
     public bool isRecording { get; private set; }
     public bool isPaused { get; private set; }
@@ -25,6 +27,7 @@ class Recorder
     // Image Capturing
     private ImageFormat imageFormat = ImageFormat.Png;
     private string imageExtension = ".png";
+    int _frames;
 
     // Timers
     uint durationTimerId;
@@ -62,7 +65,7 @@ class Recorder
 
         // Reset
         status = "Pending";
-        frames = 0;
+        _frames = 0;
 
         // Create Temporary Directory
         CreateTemporaryPath();
@@ -212,10 +215,18 @@ class Recorder
         // the single file can be expanded into multiple (when FS performance is less needed) for ffmpeg
         Task.Run(() =>
         {
+            //Ignore after stop has been requested.
+            if (captureTimerDelegate == null)
+                return;
+
             var bmp = Capture();
-            bmp.Save(Path.Combine(tempPath, "_" + frames.ToString() + imageExtension), imageFormat);
+            int frame = Interlocked.Increment(ref _frames);
+            string outputPath = Path.Combine(tempPath, "_" + frame + imageExtension);
+
+            Debug.Assert(!File.Exists(outputPath));
+
+            bmp.Save(outputPath, imageFormat);
             bmp.Dispose();
-            frames++;
         });
     }
 
