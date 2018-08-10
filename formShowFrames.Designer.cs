@@ -35,6 +35,7 @@
             this.contextMenuStripFrames = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBoxFrame = new System.Windows.Forms.PictureBox();
+            this.markToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripFrames.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFrame)).BeginInit();
             this.SuspendLayout();
@@ -57,21 +58,24 @@
             this.listBoxFrames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listBoxFrames.ContextMenuStrip = this.contextMenuStripFrames;
+            this.listBoxFrames.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBoxFrames.FormattingEnabled = true;
             this.listBoxFrames.Location = new System.Drawing.Point(0, 0);
             this.listBoxFrames.Name = "listBoxFrames";
             this.listBoxFrames.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBoxFrames.Size = new System.Drawing.Size(120, 199);
             this.listBoxFrames.TabIndex = 0;
+            this.listBoxFrames.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxFrames_DrawItem);
             this.listBoxFrames.SelectedIndexChanged += new System.EventHandler(this.listBoxFrames_SelectedIndexChanged);
             this.listBoxFrames.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listBoxFrames_KeyDown);
             // 
             // contextMenuStripFrames
             // 
             this.contextMenuStripFrames.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteToolStripMenuItem});
+            this.deleteToolStripMenuItem,
+            this.markToolStripMenuItem});
             this.contextMenuStripFrames.Name = "contextMenuStripFrames";
-            this.contextMenuStripFrames.Size = new System.Drawing.Size(108, 26);
+            this.contextMenuStripFrames.Size = new System.Drawing.Size(108, 48);
             // 
             // deleteToolStripMenuItem
             // 
@@ -91,6 +95,13 @@
             this.pictureBoxFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxFrame.TabIndex = 2;
             this.pictureBoxFrame.TabStop = false;
+            // 
+            // markToolStripMenuItem
+            // 
+            this.markToolStripMenuItem.Name = "markToolStripMenuItem";
+            this.markToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.markToolStripMenuItem.Text = "Mark";
+            this.markToolStripMenuItem.Click += new System.EventHandler(this.markToolStripMenuItem_Click);
             // 
             // FormShowFrames
             // 
@@ -119,5 +130,6 @@
         private System.Windows.Forms.PictureBox pictureBoxFrame;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripFrames;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem markToolStripMenuItem;
     }
 }

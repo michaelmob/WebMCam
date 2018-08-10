@@ -16,6 +16,7 @@ namespace WebMCam
         private string framesPath;
         private string imageExtension;
         private bool allowDeletion;
+        private List<string> markedFrames = new List<string>();
 
         public FormShowFrames(string framesPath, ImageFormat imageFormat, bool allowDeletion = true)
         {
@@ -85,6 +86,25 @@ namespace WebMCam
             }
         }
 
+        private void markToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (var i = listBoxFrames.SelectedItems.Count - 1; i > -1; i--)
+            {
+                var frame = listBoxFrames.SelectedItems[i].ToString();
+
+                if (markedFrames.Contains(frame))
+                {
+                    markedFrames.Remove(listBoxFrames.SelectedItems[i].ToString());
+                }
+                else
+                {
+                    markedFrames.Add(listBoxFrames.SelectedItems[i].ToString());
+                }
+            }
+
+            listBoxFrames.Refresh();
+        }
+
         private void buttonDone_Click(object sender, EventArgs e)
         {
             List<FileInfo> framesList = new DirectoryInfo(framesPath)
@@ -107,6 +127,17 @@ namespace WebMCam
             // Delete Key
             if (e.KeyValue == (char)Keys.Delete)
                 deleteToolStripMenuItem_Click(sender, e);
+        }
+
+        private void listBoxFrames_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            var text = ((ListBox)sender).Items[e.Index].ToString();
+            Brush brush = markedFrames.Contains(text) ? Brushes.Red : Brushes.Black;
+
+            e.Graphics.DrawString(text, e.Font, brush, e.Bounds, StringFormat.GenericDefault);
+            e.DrawFocusRectangle();
         }
     }
 }
