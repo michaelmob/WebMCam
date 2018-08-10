@@ -66,7 +66,11 @@ namespace WebMCam
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!allowDeletion)
+            {
+                MessageBox.Show("Cannot delete frames when audio is recorded.", "Notice",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
+            }
 
             // Loop MUST be inverse otherwise it will delete the wrong frames
             for (var i = listBoxFrames.SelectedItems.Count - 1; i > -1; i--)
