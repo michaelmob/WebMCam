@@ -73,6 +73,13 @@ namespace WebMCam
             formOptions.Hide();
             formOptions.Opacity = 100;
 
+            // Remember window size
+            var size = formOptions.getWindowSize();
+            if (size.Height > 1 && size.Width > 1)
+            {
+                Size = size;
+            }
+
             // Check for FFmpeg otherwise warn the user
             if (!File.Exists(Properties.Settings.Default.FFmpegPath))
                 MessageBox.Show("FFmpeg.exe does not exist, nothing will work properly. Please specify it's location in Options. " +
@@ -81,6 +88,16 @@ namespace WebMCam
 
             // Set FPS from previous
             numericUpDownFramerate.Value = Properties.Settings.Default.Framerate;
+        }
+
+        /// <summary>
+        /// Save window dimensions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            formOptions.saveWindowSize(Size);
         }
 
         /// <summary>

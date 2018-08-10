@@ -326,6 +326,7 @@
             this.Text = "WebMCam";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FormMain_MouseClick);
             this.Move += new System.EventHandler(this.FormMain_Move);

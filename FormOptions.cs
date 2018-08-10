@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 
@@ -31,6 +32,7 @@ namespace WebMCam
             textBoxFFmpegArguments.Text = settings.FFmpegArguments;
             comboBoxImageFormat.Text = settings.ImageFormat;
             checkBoxAltWindowTracking.Checked = settings.AltWindowTracking;
+            checkBoxRememberSize.Checked = settings.RememberSize;
         }
 
         public string getFFmpegArguments()
@@ -62,13 +64,31 @@ namespace WebMCam
             }
         }
 
+        public Size getWindowSize()
+        {
+            if (!settings.RememberSize)
+            {
+                return new Size(0, 0);
+            }
+            
+            return new Size(settings.SizeWidth, settings.SizeHeight);
+        }
+
+        public void saveWindowSize(Size size)
+        {
+            settings.SizeWidth = size.Width;
+            settings.SizeHeight = size.Height;
+            settings.Save();
+        }
+
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "FFmpeg (*.exe)|*.exe";
-            openFileDialog.FileName = "ffmpeg.exe";
-            openFileDialog.DefaultExt = "exe";
-
+            var openFileDialog = new OpenFileDialog()
+            {
+                Filter = "FFmpeg (*.exe)|*.exe",
+                FileName = "ffmpeg.exe",
+                DefaultExt = "exe"
+            };
             if (openFileDialog.ShowDialog() == DialogResult.OK)
                 textBoxFFmpegPath.Text = openFileDialog.FileName;
         }
@@ -84,6 +104,7 @@ namespace WebMCam
             settings.FFmpegArguments = textBoxFFmpegArguments.Text;
             settings.ImageFormat = comboBoxImageFormat.Text;
             settings.AltWindowTracking = checkBoxAltWindowTracking.Checked;
+            settings.RememberSize = checkBoxRememberSize.Checked;
             settings.Save();
             Close();
         }

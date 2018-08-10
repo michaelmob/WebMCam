@@ -39,6 +39,7 @@
             this.comboBoxImageFormat = new System.Windows.Forms.ComboBox();
             this.buttonResetArguments = new System.Windows.Forms.Button();
             this.checkBoxAltWindowTracking = new System.Windows.Forms.CheckBox();
+            this.checkBoxRememberSize = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBoxFFmpegArguments
@@ -68,7 +69,7 @@
             this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSave.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonSave.Location = new System.Drawing.Point(129, 166);
+            this.buttonSave.Location = new System.Drawing.Point(129, 192);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(193, 27);
             this.buttonSave.TabIndex = 0;
@@ -141,7 +142,7 @@
             // 
             this.buttonResetArguments.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonResetArguments.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonResetArguments.Location = new System.Drawing.Point(3, 166);
+            this.buttonResetArguments.Location = new System.Drawing.Point(3, 192);
             this.buttonResetArguments.Name = "buttonResetArguments";
             this.buttonResetArguments.Size = new System.Drawing.Size(124, 27);
             this.buttonResetArguments.TabIndex = 7;
@@ -159,11 +160,22 @@
             this.checkBoxAltWindowTracking.Text = "Alternative window tracking method";
             this.checkBoxAltWindowTracking.UseVisualStyleBackColor = true;
             // 
+            // checkBoxRememberSize
+            // 
+            this.checkBoxRememberSize.AutoSize = true;
+            this.checkBoxRememberSize.Location = new System.Drawing.Point(3, 168);
+            this.checkBoxRememberSize.Name = "checkBoxRememberSize";
+            this.checkBoxRememberSize.Size = new System.Drawing.Size(137, 17);
+            this.checkBoxRememberSize.TabIndex = 9;
+            this.checkBoxRememberSize.Text = "Remember window size";
+            this.checkBoxRememberSize.UseVisualStyleBackColor = true;
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(325, 195);
+            this.ClientSize = new System.Drawing.Size(325, 221);
+            this.Controls.Add(this.checkBoxRememberSize);
             this.Controls.Add(this.checkBoxAltWindowTracking);
             this.Controls.Add(this.buttonResetArguments);
             this.Controls.Add(this.comboBoxImageFormat);
@@ -201,5 +213,6 @@
         private System.Windows.Forms.ComboBox comboBoxImageFormat;
         private System.Windows.Forms.Button buttonResetArguments;
         private System.Windows.Forms.CheckBox checkBoxAltWindowTracking;
+        private System.Windows.Forms.CheckBox checkBoxRememberSize;
     }
 }
