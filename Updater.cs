@@ -20,7 +20,7 @@ namespace WebMCam
         {
             try
             {
-                var newVersionStr = new WebClient().DownloadString(new Uri(versionUrl));
+                var newVersionStr = new WebClient().DownloadString(new Uri(versionUrl)).Trim();
 
                 var newVersion = new Version(newVersionStr);
                 var oldVersion = new Version(oldVersionStr);
