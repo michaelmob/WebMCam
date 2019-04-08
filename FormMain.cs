@@ -110,9 +110,22 @@ namespace WebMCam
             if (recorder == null)
                 return;
 
-            recorder.region = new Rectangle(
-                displayBox.PointToScreen(Point.Empty),
-                displayBox.Size);
+            switch (checkBoxFullScreen.CheckState)
+            {
+                // set recorder region to full screen when checked
+                case CheckState.Checked:
+                    recorder.region = Screen.GetBounds(this);
+                    break;
+                case CheckState.Indeterminate:
+                    recorder.region = Screen.GetWorkingArea(this);
+                    break;
+                case CheckState.Unchecked:
+                default:
+                    recorder.region = new Rectangle(
+                        displayBox.PointToScreen(Point.Empty),
+                        displayBox.Size);
+                    break;
+            }
         }
 
         /// <summary>
@@ -204,7 +217,10 @@ namespace WebMCam
 
                 // Trigger FormMain_Resize to get region of displayBox
                 FormMain_Resize(sender, e);
-
+                if (checkBoxHide.Checked)
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                }
                 // Start
                 recorder.Start(checkBoxCaptureAudio.Checked);
                 timerRecord.Start();
@@ -217,7 +233,8 @@ namespace WebMCam
             }
 
             // Stop Recording
-            else {
+            else
+            {
                 // Stop
                 recorder.Stop();
                 timerRecord.Stop();
