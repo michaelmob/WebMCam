@@ -51,6 +51,8 @@
             this.buttonSizeSet = new System.Windows.Forms.Button();
             this.textBoxSize = new System.Windows.Forms.TextBox();
             this.buttonWarning = new System.Windows.Forms.Button();
+            this.checkBoxFullScreen = new System.Windows.Forms.CheckBox();
+            this.checkBoxHide = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFramerate)).BeginInit();
             this.SuspendLayout();
@@ -59,9 +61,9 @@
             // 
             this.buttonToggle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonToggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonToggle.Location = new System.Drawing.Point(365, 148);
+            this.buttonToggle.Location = new System.Drawing.Point(365, 189);
             this.buttonToggle.Name = "buttonToggle";
-            this.buttonToggle.Size = new System.Drawing.Size(110, 35);
+            this.buttonToggle.Size = new System.Drawing.Size(110, 23);
             this.buttonToggle.TabIndex = 0;
             this.buttonToggle.Text = "Record";
             this.buttonToggle.UseVisualStyleBackColor = true;
@@ -76,7 +78,7 @@
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.displayBox.Location = new System.Drawing.Point(2, 2);
             this.displayBox.Name = "displayBox";
-            this.displayBox.Size = new System.Drawing.Size(361, 321);
+            this.displayBox.Size = new System.Drawing.Size(361, 338);
             this.displayBox.TabIndex = 1;
             this.displayBox.TabStop = false;
             // 
@@ -97,7 +99,7 @@
             // numericUpDownFramerate
             // 
             this.numericUpDownFramerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownFramerate.Location = new System.Drawing.Point(396, 122);
+            this.numericUpDownFramerate.Location = new System.Drawing.Point(396, 164);
             this.numericUpDownFramerate.Maximum = new decimal(new int[] {
             200,
             0,
@@ -120,7 +122,7 @@
             // labelFPS
             // 
             this.labelFPS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelFPS.Location = new System.Drawing.Point(366, 122);
+            this.labelFPS.Location = new System.Drawing.Point(366, 164);
             this.labelFPS.Name = "labelFPS";
             this.labelFPS.Size = new System.Drawing.Size(33, 18);
             this.labelFPS.TabIndex = 4;
@@ -131,9 +133,9 @@
             // 
             this.buttonOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOptions.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonOptions.Location = new System.Drawing.Point(365, 189);
+            this.buttonOptions.Location = new System.Drawing.Point(365, 218);
             this.buttonOptions.Name = "buttonOptions";
-            this.buttonOptions.Size = new System.Drawing.Size(110, 35);
+            this.buttonOptions.Size = new System.Drawing.Size(110, 23);
             this.buttonOptions.TabIndex = 0;
             this.buttonOptions.Text = "Options";
             this.buttonOptions.UseVisualStyleBackColor = true;
@@ -157,7 +159,7 @@
             // linkGithub
             // 
             this.linkGithub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkGithub.Location = new System.Drawing.Point(365, 300);
+            this.linkGithub.Location = new System.Drawing.Point(365, 317);
             this.linkGithub.Name = "linkGithub";
             this.linkGithub.Size = new System.Drawing.Size(110, 23);
             this.linkGithub.TabIndex = 0;
@@ -185,7 +187,7 @@
             // linkLabelFFmpeg
             // 
             this.linkLabelFFmpeg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabelFFmpeg.Location = new System.Drawing.Point(365, 277);
+            this.linkLabelFFmpeg.Location = new System.Drawing.Point(365, 294);
             this.linkLabelFFmpeg.Name = "linkLabelFFmpeg";
             this.linkLabelFFmpeg.Size = new System.Drawing.Size(110, 23);
             this.linkLabelFFmpeg.TabIndex = 5;
@@ -202,9 +204,9 @@
             // buttonPause
             // 
             this.buttonPause.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonPause.Location = new System.Drawing.Point(365, 189);
+            this.buttonPause.Location = new System.Drawing.Point(365, 217);
             this.buttonPause.Name = "buttonPause";
-            this.buttonPause.Size = new System.Drawing.Size(110, 35);
+            this.buttonPause.Size = new System.Drawing.Size(110, 23);
             this.buttonPause.TabIndex = 6;
             this.buttonPause.Text = "Pause";
             this.buttonPause.UseVisualStyleBackColor = true;
@@ -250,7 +252,7 @@
             // linkHelp
             // 
             this.linkHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkHelp.Location = new System.Drawing.Point(365, 254);
+            this.linkHelp.Location = new System.Drawing.Point(365, 271);
             this.linkHelp.Name = "linkHelp";
             this.linkHelp.Size = new System.Drawing.Size(110, 23);
             this.linkHelp.TabIndex = 9;
@@ -286,7 +288,7 @@
             this.buttonWarning.BackColor = System.Drawing.Color.OrangeRed;
             this.buttonWarning.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonWarning.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonWarning.Location = new System.Drawing.Point(365, 230);
+            this.buttonWarning.Location = new System.Drawing.Point(365, 247);
             this.buttonWarning.Name = "buttonWarning";
             this.buttonWarning.Size = new System.Drawing.Size(110, 23);
             this.buttonWarning.TabIndex = 12;
@@ -295,13 +297,40 @@
             this.buttonWarning.Visible = false;
             this.buttonWarning.Click += new System.EventHandler(this.buttonWarning_Click);
             // 
+            // checkBoxFullScreen
+            // 
+            this.checkBoxFullScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxFullScreen.AutoSize = true;
+            this.checkBoxFullScreen.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkBoxFullScreen.Location = new System.Drawing.Point(369, 122);
+            this.checkBoxFullScreen.Name = "checkBoxFullScreen";
+            this.checkBoxFullScreen.Size = new System.Drawing.Size(85, 18);
+            this.checkBoxFullScreen.TabIndex = 8;
+            this.checkBoxFullScreen.Text = "Full Screen";
+            this.checkBoxFullScreen.ThreeState = true;
+            this.checkBoxFullScreen.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxHide
+            // 
+            this.checkBoxHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxHide.AutoSize = true;
+            this.checkBoxHide.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.checkBoxHide.Location = new System.Drawing.Point(369, 143);
+            this.checkBoxHide.Name = "checkBoxHide";
+            this.checkBoxHide.Size = new System.Drawing.Size(104, 18);
+            this.checkBoxHide.TabIndex = 8;
+            this.checkBoxHide.Text = "Minimized Rec.";
+            this.checkBoxHide.UseVisualStyleBackColor = true;
+            // 
             // FormMain
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(477, 325);
+            this.ClientSize = new System.Drawing.Size(477, 342);
             this.Controls.Add(this.buttonWarning);
             this.Controls.Add(this.textBoxSize);
             this.Controls.Add(this.buttonSizeSet);
+            this.Controls.Add(this.checkBoxHide);
+            this.Controls.Add(this.checkBoxFullScreen);
             this.Controls.Add(this.checkBoxAttach);
             this.Controls.Add(this.checkBoxFollow);
             this.Controls.Add(this.buttonPause);
@@ -360,6 +389,8 @@
         private System.Windows.Forms.Button buttonSizeSet;
         private System.Windows.Forms.TextBox textBoxSize;
         private System.Windows.Forms.Button buttonWarning;
+        private System.Windows.Forms.CheckBox checkBoxFullScreen;
+        private System.Windows.Forms.CheckBox checkBoxHide;
     }
 }
 
