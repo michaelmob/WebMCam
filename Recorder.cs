@@ -5,8 +5,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
-using NAudio.Wave;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
+using CSCore.SoundIn;
+using CSCore.Codecs.WAV;
+using CSCore;
 
 class Recorder
 {
@@ -19,7 +23,7 @@ class Recorder
     // Public Information
     public float averageFps { get; private set; }
     public float duration { get; private set; }
-    public int frames { get { return _frames; }}
+    public int frames { get { return _frames; } }
     public string tempPath { get; private set; }
     public bool isRecording { get; private set; }
     public bool isPaused { get; private set; }
@@ -38,7 +42,8 @@ class Recorder
     // Audio Capturing
     private bool recordAudio;
     private WasapiLoopbackCapture audioSource;
-    private WaveFileWriter audioFile;
+    private WaveWriter audioFile;
+    public static bool ForceStereoAudio = true;
 
     /// <summary>
     /// Constructor
@@ -75,10 +80,29 @@ class Recorder
         {
             this.recordAudio = recordAudio;
             audioSource = new WasapiLoopbackCapture();
-            audioSource.DataAvailable += new EventHandler<WaveInEventArgs>(WriteAudio);
-            audioFile = new WaveFileWriter(Path.Combine(tempPath, "audio.wav"), audioSource.WaveFormat);
+            audioSource.DataAvailable += new EventHandler<DataAvailableEventArgs>(WriteAudio);
+            try
+            {
+                audioSource.Initialize();
+            }
+            catch (COMException exception)
+            {
+                if (exception.Message.Contains("0x88890008") && audioSource.WaveFormat.Channels > 2)
+                {
+                    //this specific exception is most likely caused by "Headphone Virtualization" enabled in device control panel properties
+                    var waveFormatTag = (audioSource.WaveFormat.WaveFormatTag == AudioEncoding.Extensible) ? AudioEncoding.IeeeFloat : audioSource.WaveFormat.WaveFormatTag;
+                    var waveFormat = new WaveFormat(audioSource.WaveFormat.SampleRate, audioSource.WaveFormat.BitsPerSample, Math.Min(audioSource.WaveFormat.Channels, 2), waveFormatTag);
+                    audioSource = new WasapiLoopbackCapture(0, waveFormat);
+                    audioSource.DataAvailable += new EventHandler<DataAvailableEventArgs>(WriteAudio);
+                    audioSource.Initialize();
+                }
+                else
+                    throw exception;
+            }
 
-            audioSource.StartRecording();
+            audioFile = new WaveWriter(Path.Combine(tempPath, "audio.wav"), audioSource.WaveFormat);
+
+            audioSource.Start();
         }
 
         // Start Timers
@@ -101,7 +125,7 @@ class Recorder
         // Stop Capturing Audio
         if (recordAudio)
         {
-            audioSource.StopRecording();
+            audioSource.Stop();
 
             if (audioSource != null)
             {
@@ -137,8 +161,8 @@ class Recorder
         if (isPaused)
         {
             // Resume Audio
-            if(recordAudio)
-                audioSource.StartRecording();
+            if (recordAudio)
+                audioSource.Start();
             StartTimers();
             status = "Recording";
         }
@@ -148,7 +172,7 @@ class Recorder
         {
             // Pause Audio
             if (recordAudio)
-                audioSource.StopRecording();
+                audioSource.Stop();
             StopTimers();
             status = "Paused";
         }
@@ -235,13 +259,13 @@ class Recorder
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    void WriteAudio(object sender, WaveInEventArgs e)
+    void WriteAudio(object sender, DataAvailableEventArgs e)
     {
         if (audioFile == null)
             return;
 
-        audioFile.Write(e.Buffer, 0, e.BytesRecorded);
-        audioFile.Flush();
+        audioFile.Write(e.Data, 0, e.ByteCount);
+        //audioFile.flu();
     }
 
     /// <summary>
